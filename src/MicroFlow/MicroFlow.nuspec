@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>$PackageId$</id>
+    <version>$version$</version>
+    <authors>Andrey Karpov</authors>
+    <owners>Andrey Karpov</owners>
+    <title>MicroFlow</title>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://raw.githubusercontent.com/akarpov89/MicroFlow/master/License.txt</licenseUrl>
+    <description>Lightweight framework to create workflows.</description>
+    <copyright>Copyright &#x00A9; 2015 Andrey Karpov</copyright>
+    <tags>workflow</tags>
+  </metadata>
+  <files>
+    <file src="..\..\output\$configuration$\**\MicroFlow*.dll" target="dotFiles\" />
+    <file src="..\..\output\$configuration$\**\MicroFlow*.pdb" target="dotFiles\" />
+  </files>
+</package>
