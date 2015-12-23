@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace MicroFlow
 {
-    public abstract class SyncActivity<TResult> : Activity<TResult>
+    public abstract class SynchronousActivity<TResult> : Activity<TResult>
     {
         protected sealed override Task<TResult> ExecuteCore()
         {
@@ -11,7 +11,7 @@ namespace MicroFlow
 
             try
             {
-                TResult result = ExecuteSyncActivity();
+                TResult result = ExecuteSynchronously();
                 tcs.TrySetResult(result);
             }
             catch (Exception ex)
@@ -22,6 +22,6 @@ namespace MicroFlow
             return tcs.Task;
         }
 
-        protected abstract TResult ExecuteSyncActivity();
+        protected abstract TResult ExecuteSynchronously();
     }
 }

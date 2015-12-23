@@ -3,7 +3,7 @@ using MicroFlow;
 
 namespace Sample
 {
-    internal class InputActivity : SyncActivity<int>
+    internal class InputActivity : SynchronousActivity<int>
     {
         private readonly IReadService _readService;
         private readonly IWriteService _writeService;
@@ -14,7 +14,7 @@ namespace Sample
             _writeService = writeService;
         }
 
-        protected override int ExecuteSyncActivity()
+        protected override int ExecuteSynchronously()
         {
             _writeService.Write("Input number: ");
             return Convert.ToInt32(_readService.Read());

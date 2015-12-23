@@ -3,7 +3,7 @@ using MicroFlow;
 
 namespace Sample
 {
-    public class MyCancellationHandler : UnitActivity
+    public class MyCancellationHandler : VoidActivity
     {
         protected override void ExecuteAction()
         {

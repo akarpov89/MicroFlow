@@ -2,7 +2,7 @@
 
 namespace MicroFlow
 {
-    public sealed class DefaultHandlersSetter : UnitVisitor
+    public sealed class DefaultHandlersSetter : VoidVisitor
     {
         private readonly IActivityNode _cancellationHandler;
         private readonly IErrorHandlerNode _errorHandler;

@@ -24,7 +24,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>    
+    <Optimize>true</Optimize>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -68,7 +68,7 @@
     <Compile Include="Binding\ActivityBinder.cs" />
     <Compile Include="FlowNodes\Interfaces.cs" />
     <Compile Include="Utilities\TaskHandlersCollectionExtensions.cs" />
-    <Compile Include="FlowNodeVisitors\UnitVisitor.cs" />
+    <Compile Include="FlowNodeVisitors\VoidVisitor.cs" />
     <Compile Include="Binding\Variable.cs" />
     <Compile Include="Flow\BuildBlockAction.cs" />
     <Compile Include="Logging\ConsoleLogger.cs" />
@@ -103,11 +103,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Binding\Result.cs" />
     <Compile Include="FlowNodes\SwitchNode.cs" />
-    <Compile Include="Activities\SyncActivity.cs" />
+    <Compile Include="Activities\SynchronousActivity.cs" />
     <Compile Include="Utilities\TaskHelper.cs" />
     <Compile Include="Utilities\TypeUtils.cs" />
-    <Compile Include="Utilities\Unit.cs" />
-    <Compile Include="Activities\UnitActivity.cs" />
+    <Compile Include="Utilities\Void.cs" />
+    <Compile Include="Activities\VoidActivity.cs" />
     <Compile Include="Utilities\ExpressionHelper.cs" />
     <Compile Include="Validation\ValidatorCollection.cs" />
   </ItemGroup>

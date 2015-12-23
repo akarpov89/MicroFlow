@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace MicroFlow
 {
-    public class BlockSelfContainednessValidator : UnitVisitor
+    public class BlockSelfContainednessValidator : VoidVisitor
     {
         private readonly BlockNode _block;
         private readonly IFlowNode _defaultCancellationHandler;

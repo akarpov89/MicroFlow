@@ -1,0 +1,1 @@
+build.cmd & %nuget% push "MicroFlow.%version%.nupkg"

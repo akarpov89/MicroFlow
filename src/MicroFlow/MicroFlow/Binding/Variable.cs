@@ -30,7 +30,7 @@ namespace MicroFlow
 
         private event Action OnRemoveBindings;
 
-        public void Assign(T value)
+        internal void Assign(T value)
         {
             CurrentValue = value;
         }

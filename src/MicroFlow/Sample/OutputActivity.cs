@@ -2,7 +2,7 @@
 
 namespace Sample
 {
-    internal class OutputActivity : UnitActivity
+    internal class OutputActivity : VoidActivity
     {
         private readonly IWriteService _writeService;
 

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
-using System.Reflection;
 using MicroFlow;
 
 namespace Sample
@@ -10,13 +8,6 @@ namespace Sample
         private static void Main(string[] args)
         {
             RunSecondFlow();
-
-            return;
-            Expression<Func<string, int>> expr = s => s.Length;
-            var param = expr.Parameters[0];
-            var memberExpression = (MemberExpression)expr.Body;
-            bool b1 = memberExpression.Expression.Equals(param);
-            bool b2 = memberExpression.Member is PropertyInfo;
         }
 
         private static void RunThirdFlow()

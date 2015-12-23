@@ -3,7 +3,7 @@ using MicroFlow;
 
 namespace Sample
 {
-    public class MyAsyncSum : UnitActivity
+    public class MyAsyncSum : VoidActivity
     {
         [Required]
         public int A { get; set; }

@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 
 namespace MicroFlow
 {
-    public abstract class FlowValidator : UnitVisitor
+    public abstract class FlowValidator : VoidVisitor
     {
         protected FlowValidator()
         {

@@ -4,7 +4,7 @@ using MicroFlow;
 
 namespace Sample
 {
-    public class MyErrorHandler : UnitActivity, IErrorHandler
+    public class MyErrorHandler : VoidActivity, IErrorHandler
     {
         public Exception Exception { get; set; }
 

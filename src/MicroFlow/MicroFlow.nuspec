@@ -8,6 +8,7 @@
     <title>MicroFlow</title>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>https://raw.githubusercontent.com/akarpov89/MicroFlow/master/License.txt</licenseUrl>
+    <projectUrl>https://github.com/akarpov89/MicroFlow</projectUrl>
     <description>Lightweight framework to create workflows.</description>
     <copyright>Copyright &#x00A9; 2015 Andrey Karpov</copyright>
     <tags>workflow</tags>

@@ -2,9 +2,9 @@ using MicroFlow;
 
 namespace Sample
 {
-    public class SelectStrategy : SyncActivity<Strategy>
+    public class SelectStrategy : SynchronousActivity<Strategy>
     {
-        protected override Strategy ExecuteSyncActivity()
+        protected override Strategy ExecuteSynchronously()
         {
             return Strategy.UpdateExisting;
         }
