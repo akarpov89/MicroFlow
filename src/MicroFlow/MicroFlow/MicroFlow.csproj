@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{261D091D-3793-4492-B6A8-41E6C0A4DC8B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MicroFlow</RootNamespace>
+    <AssemblyName>MicroFlow</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>4</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Activities\Activity.cs" />
+    <Compile Include="Activities\RequiredAttribute.cs" />
+    <Compile Include="Binding\AfterCompletionUpdater.cs" />
+    <Compile Include="Binding\ExpressionBinding.cs" />
+    <Compile Include="Binding\FailureBinding.cs" />
+    <Compile Include="Binding\IBindingInfoAnalyzer.cs" />
+    <Compile Include="Binding\IPropertyBindingInfo.cs" />
+    <Compile Include="Binding\PropertyBindingKind.cs" />
+    <Compile Include="Binding\ResultBinding.cs" />
+    <Compile Include="Binding\ValueBinding.cs" />
+    <Compile Include="DependencyInjection\IServiceCollection.cs" />
+    <Compile Include="DependencyInjection\IServiceProvider.cs" />
+    <Compile Include="DependencyInjection\ServiceCollection.cs" />
+    <Compile Include="DependencyInjection\ServiceCollectionExtensions.cs" />
+    <Compile Include="DependencyInjection\ServiceDescriptor.cs" />
+    <Compile Include="DependencyInjection\ServiceLifetime.cs" />
+    <Compile Include="DependencyInjection\ServiceProvider.cs" />
+    <Compile Include="Execution\DefaultHandlersSetter.cs" />
+    <Compile Include="FlowNodes\ActivityDescriptor.cs" />
+    <Compile Include="FlowNodes\ActivityNode`1.cs" />
+    <Compile Include="FlowNodes\BlockNode.cs" />
+    <Compile Include="FlowNodes\ErrorHandlerNode.cs" />
+    <Compile Include="FlowNodes\FlowNode.cs" />
+    <Compile Include="FlowNodes\FlowNodeKind.cs" />
+    <Compile Include="FlowNodes\ForkJoinNode.cs" />
+    <Compile Include="FlowNodes\ConnectableNode.cs" />
+    <Compile Include="Binding\ActivityBinder.cs" />
+    <Compile Include="FlowNodes\Interfaces.cs" />
+    <Compile Include="Utilities\TaskHandlersCollectionExtensions.cs" />
+    <Compile Include="FlowNodeVisitors\UnitVisitor.cs" />
+    <Compile Include="Binding\Variable.cs" />
+    <Compile Include="Flow\BuildBlockAction.cs" />
+    <Compile Include="Logging\ConsoleLogger.cs" />
+    <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Logging\LoggerExtensions.cs" />
+    <Compile Include="Logging\LogLevel.cs" />
+    <Compile Include="Logging\NullLogger.cs" />
+    <Compile Include="Utilities\Assertion.cs" />
+    <Compile Include="Utilities\InjectableObjectsCollection.cs" />
+    <Compile Include="Utilities\JetBrainsAnnotations.cs" />
+    <Compile Include="Validation\BlockAcyclityValidator.cs" />
+    <Compile Include="Validation\BlockSelfContainednessValidator.cs" />
+    <Compile Include="Validation\ConnectionValidator.cs" />
+    <Compile Include="Validation\FlowValidationException.cs" />
+    <Compile Include="Validation\FlowValidator.cs" />
+    <Compile Include="Validation\IValidatorCollection.cs" />
+    <Compile Include="Validation\NeighborsVisitor.cs" />
+    <Compile Include="Validation\ReachabilityValidator.cs" />
+    <Compile Include="Validation\ActivityInitializationValidator.cs" />
+    <Compile Include="Validation\ValidationError.cs" />
+    <Compile Include="Validation\ValidationResult.cs" />
+    <Compile Include="Flow\Flow.cs" />
+    <Compile Include="Utilities\InjectableObject.cs" />
+    <Compile Include="FlowNodes\ActivityNode.cs" />
+    <Compile Include="Activities\BackgroundActivity.cs" />
+    <Compile Include="Flow\FlowBuilder.cs" />
+    <Compile Include="FlowNodes\DecisionNode.cs" />
+    <Compile Include="Execution\FlowRunner.cs" />
+    <Compile Include="Activities\IActivity.cs" />
+    <Compile Include="Activities\IErrorHandler.cs" />
+    <Compile Include="FlowNodeVisitors\INodeVisitor.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Binding\Result.cs" />
+    <Compile Include="FlowNodes\SwitchNode.cs" />
+    <Compile Include="Activities\SyncActivity.cs" />
+    <Compile Include="Utilities\TaskHelper.cs" />
+    <Compile Include="Utilities\TypeUtils.cs" />
+    <Compile Include="Utilities\Unit.cs" />
+    <Compile Include="Activities\UnitActivity.cs" />
+    <Compile Include="Utilities\ExpressionHelper.cs" />
+    <Compile Include="Validation\ValidatorCollection.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
