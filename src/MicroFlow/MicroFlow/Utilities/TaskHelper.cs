@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 
 namespace MicroFlow
 {
-    public static class TaskHelper
+    internal static class TaskHelper
     {
         private static Task s_completedTask;
         private static Task s_cancelledTask;

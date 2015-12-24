@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 
 namespace MicroFlow
 {
-    public static class Assertion
+    internal static class Assertion
     {
         public static T NotNull<T>(this T value) where T : class
         {

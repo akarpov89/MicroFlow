@@ -2,7 +2,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/yqymhi8dqekg778u?svg=true)](https://ci.appveyor.com/project/akarpov89/microflow)
 
-Lightweight framework to create workflows
+Lightweight workflow engine
 
 #### Special thanks
 

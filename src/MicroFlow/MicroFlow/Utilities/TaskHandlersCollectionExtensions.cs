@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace MicroFlow
 {
-    public static class TaskHandlersCollectionExtensions
+    internal static class TaskHandlersCollectionExtensions
     {
         public static void ExecuteTaskHandlers(
             [CanBeNull] this List<ActivityTaskHandler> taskHandlers, [NotNull] Task<object> activityTask)

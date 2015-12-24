@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 
 namespace MicroFlow
 {
-    public static class TypeUtils
+    internal static class TypeUtils
     {
         [NotNull]
         public static Func<object> CreateDefaultConstructorFactoryOf<T>()
