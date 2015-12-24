@@ -2,22 +2,22 @@
 
 namespace MicroFlow
 {
-    public sealed class DefaultHandlersSetter : VoidVisitor
+    public sealed class DefaultHandlersSetter : NodeVisitor
     {
         private readonly IActivityNode _cancellationHandler;
-        private readonly IErrorHandlerNode _errorHandler;
+        private readonly IFaultHandlerNode _faultHandler;
         private readonly FlowBuilder _flowBuilder;
 
         public DefaultHandlersSetter([NotNull] FlowBuilder flowBuilder)
         {
             _flowBuilder = flowBuilder.NotNull();
-            _errorHandler = flowBuilder.DefaultFailureHandler;
+            _faultHandler = flowBuilder.DefaultFaultHandler;
             _cancellationHandler = flowBuilder.DefaultCancellationHandler;
         }
 
         public void Execute()
         {
-            if (_errorHandler != null || _cancellationHandler != null)
+            if (_faultHandler != null || _cancellationHandler != null)
             {
                 foreach (IFlowNode node in _flowBuilder.Nodes)
                 {
@@ -32,11 +32,11 @@ namespace MicroFlow
 
         protected override void VisitActivity<TActivity>(ActivityNode<TActivity> activityNode)
         {
-            if (activityNode.FailureHandler == null &&
-                activityNode != _errorHandler &&
-                _errorHandler != null)
+            if (activityNode.FaultHandler == null &&
+                activityNode != _faultHandler &&
+                _faultHandler != null)
             {
-                activityNode.ConnectFailureTo(_errorHandler);
+                activityNode.ConnectFaultTo(_faultHandler);
             }
 
             if (activityNode.CancellationHandler == null &&
@@ -53,9 +53,9 @@ namespace MicroFlow
 
         protected override void VisitForkJoin(ForkJoinNode forkJoinNode)
         {
-            if (forkJoinNode.FailureHandler == null && _errorHandler != null)
+            if (forkJoinNode.FaultHandler == null && _faultHandler != null)
             {
-                forkJoinNode.ConnectFailureTo(_errorHandler);
+                forkJoinNode.ConnectFaultTo(_faultHandler);
             }
 
             if (forkJoinNode.CancellationHandler == null && _cancellationHandler != null)

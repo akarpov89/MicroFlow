@@ -43,7 +43,7 @@
     <Compile Include="Activities\RequiredAttribute.cs" />
     <Compile Include="Binding\AfterCompletionUpdater.cs" />
     <Compile Include="Binding\ExpressionBinding.cs" />
-    <Compile Include="Binding\FailureBinding.cs" />
+    <Compile Include="Binding\FaultBinding.cs" />
     <Compile Include="Binding\IBindingInfoAnalyzer.cs" />
     <Compile Include="Binding\IPropertyBindingInfo.cs" />
     <Compile Include="Binding\PropertyBindingKind.cs" />
@@ -60,7 +60,7 @@
     <Compile Include="FlowNodes\ActivityDescriptor.cs" />
     <Compile Include="FlowNodes\ActivityNode`1.cs" />
     <Compile Include="FlowNodes\BlockNode.cs" />
-    <Compile Include="FlowNodes\ErrorHandlerNode.cs" />
+    <Compile Include="FlowNodes\FaultHandlerNode.cs" />
     <Compile Include="FlowNodes\FlowNode.cs" />
     <Compile Include="FlowNodes\FlowNodeKind.cs" />
     <Compile Include="FlowNodes\ForkJoinNode.cs" />
@@ -68,7 +68,7 @@
     <Compile Include="Binding\ActivityBinder.cs" />
     <Compile Include="FlowNodes\Interfaces.cs" />
     <Compile Include="Utilities\TaskHandlersCollectionExtensions.cs" />
-    <Compile Include="FlowNodeVisitors\VoidVisitor.cs" />
+    <Compile Include="FlowNodeVisitors\NodeVisitor.cs" />
     <Compile Include="Binding\Variable.cs" />
     <Compile Include="Flow\BuildBlockAction.cs" />
     <Compile Include="Logging\ConsoleLogger.cs" />
@@ -98,16 +98,15 @@
     <Compile Include="FlowNodes\DecisionNode.cs" />
     <Compile Include="Execution\FlowRunner.cs" />
     <Compile Include="Activities\IActivity.cs" />
-    <Compile Include="Activities\IErrorHandler.cs" />
+    <Compile Include="Activities\IFaultHandlerActivity.cs" />
     <Compile Include="FlowNodeVisitors\INodeVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Binding\Result.cs" />
     <Compile Include="FlowNodes\SwitchNode.cs" />
-    <Compile Include="Activities\SynchronousActivity.cs" />
+    <Compile Include="Activities\SequentialActivity.cs" />
     <Compile Include="Utilities\TaskHelper.cs" />
     <Compile Include="Utilities\TypeUtils.cs" />
-    <Compile Include="Utilities\Void.cs" />
-    <Compile Include="Activities\VoidActivity.cs" />
+    <Compile Include="Utilities\Null.cs" />
     <Compile Include="Utilities\ExpressionHelper.cs" />
     <Compile Include="Validation\ValidatorCollection.cs" />
   </ItemGroup>

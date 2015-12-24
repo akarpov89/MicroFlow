@@ -72,7 +72,7 @@ namespace MicroFlow
         {
             activity.AssertNotNull("activity != null");
 
-            var bindingInfo = new FailureBinding(_propertyName, activity);
+            var bindingInfo = new FaultBinding(_propertyName, activity);
             _activityDescriptor.AddBindingInfo(bindingInfo);
 
             ActivityTaskHandler handler = task =>

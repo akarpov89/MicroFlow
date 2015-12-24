@@ -31,14 +31,14 @@ namespace MicroFlow
         IFlowNode CancellationHandler { get; }
 
         [CanBeNull]
-        IErrorHandlerNode FailureHandler { get; }
+        IFaultHandlerNode FaultHandler { get; }
 
         void RegisterActivityTaskHandler([NotNull] ActivityTaskHandler handler);
     }
 
-    public interface IErrorHandlerNode : IFlowNode
+    public interface IFaultHandlerNode : IFlowNode
     {
-        void SubscribeToErrorsOf([NotNull] IActivityNode node);
+        void SubscribeToExceptionsOf([NotNull] IActivityNode node);
     }
 
     public delegate void ActivityTaskHandler([NotNull] Task<object> activityTask);

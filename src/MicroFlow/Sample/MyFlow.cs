@@ -8,11 +8,11 @@ namespace Sample
 
         protected override void Build(FlowBuilder builder)
         {
-            ErrorHandlerNode<MyErrorHandler> errorHandler = builder.ErrorHandler<MyErrorHandler>("Global error handler");
+            FaultHandlerNode<MyFaultHandlerActivity> faultHandler = builder.FaultHandler<MyFaultHandlerActivity>("Global error handler");
             ActivityNode<MyCancellationHandler> cancellationHandler =
                 builder.Activity<MyCancellationHandler>("Global cancellation handler");
 
-            builder.WithDefaultFailureHandler(errorHandler);
+            builder.WithDefaultFaultHandler(faultHandler);
             builder.WithDefaultCancellationHandler(cancellationHandler);
 
             ActivityNode<InputActivity> inputFirst = builder.Activity<InputActivity>("Input first number");

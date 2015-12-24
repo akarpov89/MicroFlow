@@ -2,9 +2,9 @@ using JetBrains.Annotations;
 
 namespace MicroFlow
 {
-    public sealed class FailureBinding : IPropertyBindingInfo
+    public sealed class FaultBinding : IPropertyBindingInfo
     {
-        public FailureBinding(string propertyName, IActivityNode node)
+        public FaultBinding(string propertyName, IActivityNode node)
         {
             PropertyName = propertyName.NotNullOrEmpty("propertyName");
             Node = node.NotNull();
@@ -14,12 +14,12 @@ namespace MicroFlow
 
         public PropertyBindingKind Kind
         {
-            get { return PropertyBindingKind.Failure; }
+            get { return PropertyBindingKind.Fault; }
         }
 
         public TResult Analyze<TResult>(IBindingInfoAnalyzer<TResult> analyzer)
         {
-            return analyzer.NotNull().AnalyzeFailureBinding(this);
+            return analyzer.NotNull().AnalyzeFaultBinding(this);
         }
 
         [NotNull]

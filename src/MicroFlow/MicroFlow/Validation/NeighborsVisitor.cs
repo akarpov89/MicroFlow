@@ -8,7 +8,7 @@ namespace MicroFlow
             where TActivity : class, IActivity
         {
             if (activityNode.PointsTo != null) yield return activityNode.PointsTo;
-            if (activityNode.FailureHandler != null) yield return activityNode.FailureHandler;
+            if (activityNode.FaultHandler != null) yield return activityNode.FaultHandler;
             if (activityNode.CancellationHandler != null) yield return activityNode.CancellationHandler;
         }
 
@@ -27,7 +27,7 @@ namespace MicroFlow
         public IEnumerable<IFlowNode> VisitForkJoin(ForkJoinNode forkJoinNode)
         {
             if (forkJoinNode.PointsTo != null) yield return forkJoinNode.PointsTo;
-            if (forkJoinNode.FailureHandler != null) yield return forkJoinNode.FailureHandler;
+            if (forkJoinNode.FaultHandler != null) yield return forkJoinNode.FaultHandler;
             if (forkJoinNode.CancellationHandler != null) yield return forkJoinNode.CancellationHandler;
         }
 

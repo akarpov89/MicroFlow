@@ -11,14 +11,14 @@ namespace MicroFlow
 
         public IFlowNode CancellationHandler { get; internal set; }
 
-        public IErrorHandlerNode FailureHandler { get; internal set; }
+        public IFaultHandlerNode FaultHandler { get; internal set; }
 
         public override void RemoveConnections()
         {
             base.RemoveConnections();
 
             CancellationHandler = null;
-            FailureHandler = null;
+            FaultHandler = null;
         }
 
         public abstract void RegisterActivityTaskHandler(ActivityTaskHandler handler);
@@ -27,16 +27,16 @@ namespace MicroFlow
     public static class ActivityNodeExtensions
     {
         [NotNull]
-        public static TActivityNode ConnectFailureTo<TActivityNode>(
-            [NotNull] this TActivityNode from, [NotNull] IErrorHandlerNode to)
+        public static TActivityNode ConnectFaultTo<TActivityNode>(
+            [NotNull] this TActivityNode from, [NotNull] IFaultHandlerNode to)
             where TActivityNode : ActivityNode
         {
             from.AssertNotNull("from != null");
             to.AssertNotNull("to != null");
-            from.FailureHandler.AssertIsNull("Failure handler is already set");
+            from.FaultHandler.AssertIsNull("Fault handler is already set");
 
-            from.FailureHandler = to;
-            to.SubscribeToErrorsOf(from);
+            from.FaultHandler = to;
+            to.SubscribeToExceptionsOf(from);
             return from;
         }
 

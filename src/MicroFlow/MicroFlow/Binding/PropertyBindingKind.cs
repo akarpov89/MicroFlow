@@ -5,6 +5,6 @@ namespace MicroFlow
         Value,
         Expression,
         Result,
-        Failure
+        Fault
     }
 }

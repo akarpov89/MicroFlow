@@ -64,6 +64,30 @@ namespace MicroFlow
             return tcs.Task;
         }
 
+        public static Task<Null> ToTaskOfNull(this Task task)
+        {
+            var tcs = new TaskCompletionSource<Null>();
+
+            task.ContinueWith(t =>
+            {
+                if (t.IsCanceled)
+                {
+                    tcs.TrySetCanceled();
+                }
+                else if (t.IsFaulted)
+                {
+                    Debug.Assert(t.Exception != null, "t.Exception != null");
+                    tcs.TrySetException(t.Exception.InnerExceptions);
+                }
+                else
+                {
+                    tcs.TrySetResult(null);
+                }
+            }, TaskContinuationOptions.ExecuteSynchronously);
+
+            return tcs.Task;
+        }
+
         public static Task<TResult> Cancelled<TResult>()
         {
             var tcs = new TaskCompletionSource<TResult>();
@@ -105,7 +129,7 @@ namespace MicroFlow
                 var exceptions = new List<Exception>();
                 var results = new T[completedTasks.Length];
 
-                bool hasFailures = false;
+                bool hasFaults = false;
                 bool hasCancellations = false;
 
                 for (int i = 0; i < completedTasks.Length; ++i)
@@ -116,7 +140,7 @@ namespace MicroFlow
                     {
                         Debug.Assert(task.Exception != null);
                         exceptions.AddRange(task.Exception.InnerExceptions);
-                        hasFailures = true;
+                        hasFaults = true;
                     }
                     else if (task.IsCanceled)
                     {
@@ -128,7 +152,7 @@ namespace MicroFlow
                     }
                 }
 
-                if (hasFailures)
+                if (hasFaults)
                 {
                     tcs.TrySetException(exceptions);
                 }

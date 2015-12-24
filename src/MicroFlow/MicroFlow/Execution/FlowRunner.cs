@@ -218,7 +218,7 @@ namespace MicroFlow
                 string message = string.Format("At node: {0}{1}Faulted", node, Environment.NewLine);
                 Log.Exception(message, task.Exception);
 
-                IErrorHandlerNode handlerNode = node.FailureHandler;
+                IFaultHandlerNode handlerNode = node.FaultHandler;
                 Debug.Assert(handlerNode != null);
 
                 return handlerNode.Accept(this);

@@ -3,9 +3,9 @@ using MicroFlow;
 
 namespace Sample
 {
-    public class MyCancellationHandler : VoidActivity
+    public class MyCancellationHandler : SequentialActivity
     {
-        protected override void ExecuteAction()
+        protected override void ExecuteActivity()
         {
             Console.WriteLine("Cancellation handler!");
         }

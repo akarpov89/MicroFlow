@@ -9,7 +9,7 @@ namespace Sample
     {
         public int X { get; set; }
 
-        protected override Task<int> ExecuteCore()
+        public override Task<int> Execute()
         {
             return Task.Factory.StartNew(() =>
             {

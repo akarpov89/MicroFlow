@@ -13,7 +13,7 @@ namespace MicroFlow
         [NotNull] private readonly List<IFlowNode> _nodes = new List<IFlowNode>();
 
         [CanBeNull]
-        public IErrorHandlerNode DefaultFailureHandler { get; private set; }
+        public IFaultHandlerNode DefaultFaultHandler { get; private set; }
 
         [CanBeNull]
         public IActivityNode DefaultCancellationHandler { get; private set; }
@@ -104,17 +104,17 @@ namespace MicroFlow
         }
 
         [NotNull]
-        public ErrorHandlerNode<TActivity> ErrorHandler<TActivity>()
-            where TActivity : class, IErrorHandler
+        public FaultHandlerNode<TActivity> FaultHandler<TActivity>()
+            where TActivity : class, IFaultHandlerActivity
         {
-            return AddNode(new ErrorHandlerNode<TActivity>());
+            return AddNode(new FaultHandlerNode<TActivity>());
         }
 
         [NotNull]
-        public ErrorHandlerNode<TActivity> ErrorHandler<TActivity>([NotNull] string name)
-            where TActivity : class, IErrorHandler
+        public FaultHandlerNode<TActivity> FaultHandler<TActivity>([NotNull] string name)
+            where TActivity : class, IFaultHandlerActivity
         {
-            return ErrorHandler<TActivity>().WithName(name);
+            return FaultHandler<TActivity>().WithName(name);
         }
 
         [NotNull]
@@ -137,13 +137,13 @@ namespace MicroFlow
         }
 
         [NotNull]
-        public FlowBuilder WithDefaultFailureHandler([NotNull] IErrorHandlerNode handler)
+        public FlowBuilder WithDefaultFaultHandler([NotNull] IFaultHandlerNode handler)
         {
             handler.AssertNotNull("handler != null");
-            DefaultFailureHandler.AssertIsNull("Default failure handler is already set");
+            DefaultFaultHandler.AssertIsNull("Default fault handler is already set");
             handler.AssertIsItemOf(_nodes, "Handler must be part of the flow");
 
-            DefaultFailureHandler = handler;
+            DefaultFaultHandler = handler;
             return this;
         }
 
@@ -163,7 +163,7 @@ namespace MicroFlow
         public void Clear()
         {
             DefaultCancellationHandler = null;
-            DefaultFailureHandler = null;
+            DefaultFaultHandler = null;
 
             foreach (IFlowNode node in _nodes)
             {

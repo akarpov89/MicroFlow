@@ -12,7 +12,7 @@ namespace MicroFlow
             {
                 if (!_reachableNodes.Contains(node) &&
                     node != flowBuilder.InitialNode &&
-                    node != flowBuilder.DefaultFailureHandler &&
+                    node != flowBuilder.DefaultFaultHandler &&
                     node != flowBuilder.DefaultCancellationHandler)
                 {
                     Result.AddError(node, "Node isn't reachable from any other node");
@@ -61,7 +61,7 @@ namespace MicroFlow
         private void VisitActivityNode(IActivityNode node)
         {
             AddReachable(node.PointsTo);
-            AddReachable(node.FailureHandler);
+            AddReachable(node.FaultHandler);
             AddReachable(node.CancellationHandler);
         }
 

@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 
 namespace MicroFlow
 {
@@ -10,12 +9,16 @@ namespace MicroFlow
             return Execute().Convert<TResult, object>();
         }
 
-        public Task<TResult> Execute()
+        public abstract Task<TResult> Execute();
+    }
+
+    public abstract class Activity : Activity<Null>
+    {
+        public override Task<Null> Execute()
         {
-            return ExecuteCore();
+            return ExecuteCore().ToTaskOfNull();
         }
 
-        [NotNull]
-        protected abstract Task<TResult> ExecuteCore();
+        protected abstract Task ExecuteCore();
     }
 }

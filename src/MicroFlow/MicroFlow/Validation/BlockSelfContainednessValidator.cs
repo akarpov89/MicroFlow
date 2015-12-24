@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 
 namespace MicroFlow
 {
-    public class BlockSelfContainednessValidator : VoidVisitor
+    public class BlockSelfContainednessValidator : NodeVisitor
     {
         private readonly BlockNode _block;
         private readonly IFlowNode _defaultCancellationHandler;
-        private readonly IFlowNode _defaultErrorHandler;
+        private readonly IFlowNode _defaultFaultHandler;
 
         public BlockSelfContainednessValidator(
             [NotNull] BlockNode block,
-            [CanBeNull] IFlowNode defaultErrorHandler, [CanBeNull] IFlowNode defaultCancellationHandler)
+            [CanBeNull] IFlowNode defaultFaultHandler, [CanBeNull] IFlowNode defaultCancellationHandler)
         {
             _block = block.NotNull();
-            _defaultErrorHandler = defaultErrorHandler;
+            _defaultFaultHandler = defaultFaultHandler;
             _defaultCancellationHandler = defaultCancellationHandler;
 
             Result = new ValidationResult();
@@ -66,13 +65,13 @@ namespace MicroFlow
         private void VisitActivityNode(ActivityNode activityNode)
         {
             CheckIfNodeIsInsideBlock(activityNode.PointsTo);
-            CheckIfNodeIsInsideBlock(activityNode.FailureHandler);
+            CheckIfNodeIsInsideBlock(activityNode.FaultHandler);
             CheckIfNodeIsInsideBlock(activityNode.CancellationHandler);
         }
 
         private void CheckIfNodeIsInsideBlock(IFlowNode node)
         {
-            if (node == null || node == _defaultErrorHandler || node == _defaultCancellationHandler) return;
+            if (node == null || node == _defaultFaultHandler || node == _defaultCancellationHandler) return;
 
             if (_block.InnerNodes.IndexOf(node) == -1)
             {

@@ -3,7 +3,7 @@ using MicroFlow;
 
 namespace Sample
 {
-    public class MyAsyncSum : VoidActivity
+    public class MyAsyncSum : SequentialActivity
     {
         [Required]
         public int A { get; set; }
@@ -14,7 +14,7 @@ namespace Sample
         [Required]
         public int C { get; set; }
 
-        protected override void ExecuteAction()
+        protected override void ExecuteActivity()
         {
             Console.WriteLine($"{A} + {B} + {C} = {A + B + C}");
         }

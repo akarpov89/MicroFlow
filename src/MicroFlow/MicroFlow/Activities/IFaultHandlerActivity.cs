@@ -2,7 +2,7 @@ using System;
 
 namespace MicroFlow
 {
-    public interface IErrorHandler : IActivity<Void>
+    public interface IFaultHandlerActivity : IActivity
     {
         Exception Exception { get; set; }
     }

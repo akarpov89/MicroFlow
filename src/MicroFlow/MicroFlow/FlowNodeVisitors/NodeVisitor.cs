@@ -2,36 +2,36 @@
 
 namespace MicroFlow
 {
-    public abstract class VoidVisitor : INodeVisitor<Void>
+    public abstract class NodeVisitor : INodeVisitor<Null>
     {
-        Void INodeVisitor<Void>.VisitActivity<TActivity>(ActivityNode<TActivity> activityNode)
+        Null INodeVisitor<Null>.VisitActivity<TActivity>(ActivityNode<TActivity> activityNode)
         {
             VisitActivity(activityNode);
-            return Void.Instance;
+            return null;
         }
 
-        Void INodeVisitor<Void>.VisitSwitch<TChoice>(SwitchNode<TChoice> switchNode)
+        Null INodeVisitor<Null>.VisitSwitch<TChoice>(SwitchNode<TChoice> switchNode)
         {
             VisitSwitch(switchNode);
-            return Void.Instance;
+            return null;
         }
 
-        Void INodeVisitor<Void>.VisitCondition(DecisionNode decisionNode)
+        Null INodeVisitor<Null>.VisitCondition(DecisionNode decisionNode)
         {
             VisitCondition(decisionNode);
-            return Void.Instance;
+            return null;
         }
 
-        Void INodeVisitor<Void>.VisitForkJoin(ForkJoinNode forkJoinNode)
+        Null INodeVisitor<Null>.VisitForkJoin(ForkJoinNode forkJoinNode)
         {
             VisitForkJoin(forkJoinNode);
-            return Void.Instance;
+            return null;
         }
 
-        Void INodeVisitor<Void>.VisitBlock(BlockNode blockNode)
+        Null INodeVisitor<Null>.VisitBlock(BlockNode blockNode)
         {
             VisitBlock(blockNode);
-            return Void.Instance;
+            return null;
         }
 
         protected abstract void VisitActivity<TActivity>([NotNull] ActivityNode<TActivity> activityNode)

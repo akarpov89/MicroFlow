@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="ConsoleReadService.cs" />
     <Compile Include="ConsoleWriteService.cs" />
     <Compile Include="InputActivity.cs" />
@@ -50,16 +49,13 @@
     <Compile Include="MyAsyncActivity.cs" />
     <Compile Include="MyAsyncSum.cs" />
     <Compile Include="MyCancellationHandler.cs" />
-    <Compile Include="MyErrorHandler.cs" />
+    <Compile Include="MyFaultHandlerActivity.cs" />
     <Compile Include="MyFlow.cs" />
     <Compile Include="MyFlowWithBlock.cs" />
     <Compile Include="MySecondFlow.cs" />
     <Compile Include="OutputActivity.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SelectStrategy.cs" />
-    <Compile Include="Strategy.cs" />
-    <Compile Include="WizardPageCompletionSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MicroFlow\MicroFlow.csproj">

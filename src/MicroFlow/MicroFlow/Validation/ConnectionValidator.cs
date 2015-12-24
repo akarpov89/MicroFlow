@@ -94,7 +94,7 @@ namespace MicroFlow
             }
 
             var containednessValidator = new BlockSelfContainednessValidator(
-                blockNode, Flow.DefaultFailureHandler, Flow.DefaultCancellationHandler);
+                blockNode, Flow.DefaultFaultHandler, Flow.DefaultCancellationHandler);
 
             ValidationResult isSelfContainedResult = containednessValidator.Validate();
 
@@ -113,17 +113,17 @@ namespace MicroFlow
         private void CheckActivityNode(IActivityNode node)
         {
             CheckSelfReference(node, node.PointsTo);
-            CheckSelfReference(node, node.FailureHandler);
+            CheckSelfReference(node, node.FaultHandler);
             CheckSelfReference(node, node.CancellationHandler);
 
-            if (node.FailureHandler == null && Flow.DefaultFailureHandler == null)
+            if (node.FaultHandler == null && Flow.DefaultFaultHandler == null)
             {
-                Result.AddError(node, "Neither node nor the flow has failure handler");
+                Result.AddError(node, "Neither node nor the flow has a fault handler");
             }
 
             if (node.CancellationHandler == null && Flow.DefaultCancellationHandler == null)
             {
-                Result.AddError(node, "Neither node nor the flow has cancellation handler");
+                Result.AddError(node, "Neither node nor the flow has a cancellation handler");
             }
         }
 

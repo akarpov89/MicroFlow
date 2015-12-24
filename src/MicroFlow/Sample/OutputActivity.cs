@@ -2,7 +2,7 @@
 
 namespace Sample
 {
-    internal class OutputActivity : VoidActivity
+    internal class OutputActivity : SequentialActivity
     {
         private readonly IWriteService _writeService;
 
@@ -13,7 +13,7 @@ namespace Sample
 
         public string Message { get; set; }
 
-        protected override void ExecuteAction()
+        protected override void ExecuteActivity()
         {
             _writeService.Write(Message);
         }

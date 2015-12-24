@@ -8,10 +8,10 @@ namespace Sample
 
         protected override void Build(FlowBuilder builder)
         {
-            ErrorHandlerNode<MyErrorHandler> globalFailureHandler = builder.ErrorHandler<MyErrorHandler>();
+            FaultHandlerNode<MyFaultHandlerActivity> globalFaultHandler = builder.FaultHandler<MyFaultHandlerActivity>();
             ActivityNode<MyCancellationHandler> globalCancellationHandler = builder.Activity<MyCancellationHandler>();
 
-            builder.WithDefaultFailureHandler(globalFailureHandler);
+            builder.WithDefaultFaultHandler(globalFaultHandler);
             builder.WithDefaultCancellationHandler(globalCancellationHandler);
 
             Variable<int> myVar = builder.Variable<int>();

@@ -4,11 +4,11 @@ using MicroFlow;
 
 namespace Sample
 {
-    public class MyErrorHandler : VoidActivity, IErrorHandler
+    public class MyFaultHandlerActivity : SequentialActivity, IFaultHandlerActivity
     {
         public Exception Exception { get; set; }
 
-        protected override void ExecuteAction()
+        protected override void ExecuteActivity()
         {
             var aggregateException = Exception as AggregateException;
             if (aggregateException != null)

@@ -8,10 +8,10 @@ namespace Sample
 
         protected override void Build(FlowBuilder builder)
         {
-            ErrorHandlerNode<MyErrorHandler> eh = builder.ErrorHandler<MyErrorHandler>();
+            FaultHandlerNode<MyFaultHandlerActivity> eh = builder.FaultHandler<MyFaultHandlerActivity>();
             ActivityNode<MyCancellationHandler> ch = builder.Activity<MyCancellationHandler>();
 
-            builder.WithDefaultFailureHandler(eh);
+            builder.WithDefaultFaultHandler(eh);
             builder.WithDefaultCancellationHandler(ch);
 
             ForkJoinNode forkJoin = builder.ForkJoin("My fork join node");
@@ -26,9 +26,9 @@ namespace Sample
             third.Bind(a => a.X).To(19);
 
             ActivityNode<MyAsyncSum> sum = builder.Activity<MyAsyncSum>("Sum action");
-            //sum.Bind(x => x.A).ToResultOf(first);
-            //sum.Bind(x => x.B).ToResultOf(second);
-            //sum.Bind(x => x.C).ToResultOf(third);
+            sum.Bind(x => x.A).ToResultOf(first);
+            sum.Bind(x => x.B).ToResultOf(second);
+            sum.Bind(x => x.C).ToResultOf(third);
 
             builder.Initial(forkJoin);
 

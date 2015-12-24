@@ -11,6 +11,6 @@ namespace MicroFlow
         TResult AnalyzeResultBinding<TProperty, TActivity>([NotNull] ResultBinding<TProperty, TActivity> resultBinding)
             where TActivity : class, IActivity<TProperty>;
 
-        TResult AnalyzeFailureBinding([NotNull] FailureBinding failureBinding);
+        TResult AnalyzeFaultBinding([NotNull] FaultBinding faultBinding);
     }
 }

@@ -1,41 +1,57 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 
 namespace MicroFlow
 {
     public abstract class BackgroundActivity<TResult> : Activity<TResult>
     {
-        [CanBeNull]
-        public TaskScheduler Scheduler { get; set; }
+        private CancellationTokenSource _cts;
 
+        public TaskScheduler Scheduler { get; set; }
         public bool IsLongRunning { get; set; }
 
-        protected override Task<TResult> ExecuteCore()
+        public override Task<TResult> Execute()
         {
-            if (Scheduler != null)
-            {
-                return Task.Factory.StartNew(
-                    () => ExecuteSyncAction(),
-                    CancellationToken.None, IsLongRunning ? TaskCreationOptions.LongRunning : TaskCreationOptions.None,
-                    Scheduler);
-            }
+            _cts = new CancellationTokenSource();
 
-            var tcs = new TaskCompletionSource<TResult>();
-
-            try
-            {
-                tcs.TrySetResult(ExecuteSyncAction());
-            }
-            catch (Exception ex)
-            {
-                tcs.TrySetException(ex);
-            }
-
-            return tcs.Task;
+            return Task.Factory.StartNew(
+                () => ExecuteCore(_cts.Token),
+                _cts.Token, IsLongRunning ? TaskCreationOptions.LongRunning : TaskCreationOptions.None,
+                Scheduler ?? TaskScheduler.Default);
         }
 
-        protected abstract TResult ExecuteSyncAction();
+        public void Cancel()
+        {
+            _cts.AssertNotNull("Activity isn't started");
+            _cts.Cancel();
+        }
+
+        protected abstract TResult ExecuteCore(CancellationToken token);
+    }
+
+    public abstract class BackgroundActivity : Activity
+    {
+        private CancellationTokenSource _cts;
+
+        public TaskScheduler Scheduler { get; set; }
+        public bool IsLongRunning { get; set; }
+
+        protected override Task ExecuteCore()
+        {
+            _cts = new CancellationTokenSource();
+
+            return Task.Factory.StartNew(
+                () => ExecuteActivity(_cts.Token),
+                _cts.Token, IsLongRunning ? TaskCreationOptions.LongRunning : TaskCreationOptions.None,
+                Scheduler ?? TaskScheduler.Current);
+        }
+
+        public void Cancel()
+        {
+            _cts.AssertNotNull("Activity isn't started");
+            _cts.Cancel();
+        }
+
+        protected abstract void ExecuteActivity(CancellationToken token);
     }
 }
