@@ -11,10 +11,10 @@
     <projectUrl>https://github.com/akarpov89/MicroFlow</projectUrl>
     <description>Lightweight framework to create workflows.</description>
     <copyright>Copyright &#x00A9; 2015 Andrey Karpov</copyright>
-    <tags>workflow</tags>
+    <tags>Workflow .NET</tags>
   </metadata>
   <files>
-    <file src="..\..\output\$configuration$\**\MicroFlow*.dll" target="dotFiles\" />
-    <file src="..\..\output\$configuration$\**\MicroFlow*.pdb" target="dotFiles\" />
+    <file src="..\..\output\$configuration$\**\MicroFlow*.dll" target="lib\net40\" />
+    <file src="..\..\output\$configuration$\**\MicroFlow*.pdb" target="lib\net40\" />
   </files>
 </package>
