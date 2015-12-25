@@ -3,7 +3,7 @@ using MicroFlow;
 
 namespace Sample
 {
-    internal class InputActivity : SequentialActivity<int>
+    internal class InputActivity : SyncActivity<int>
     {
         private readonly IReadService _readService;
         private readonly IWriteService _writeService;

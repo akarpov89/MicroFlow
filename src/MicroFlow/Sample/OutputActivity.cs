@@ -2,7 +2,7 @@
 
 namespace Sample
 {
-    internal class OutputActivity : SequentialActivity
+    internal class OutputActivity : SyncActivity
     {
         private readonly IWriteService _writeService;
 

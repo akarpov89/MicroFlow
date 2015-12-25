@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace MicroFlow
 {
-    public abstract class SequentialActivity<TResult> : Activity<TResult>
+    public abstract class SyncActivity<TResult> : Activity<TResult>
     {
         public sealed override Task<TResult> Execute()
         {
@@ -25,7 +25,7 @@ namespace MicroFlow
         protected abstract TResult ExecuteActivity();
     }
 
-    public abstract class SequentialActivity : Activity
+    public abstract class SyncActivity : Activity
     {
         protected sealed override Task ExecuteCore()
         {

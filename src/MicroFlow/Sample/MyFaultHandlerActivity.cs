@@ -4,7 +4,7 @@ using MicroFlow;
 
 namespace Sample
 {
-    public class MyFaultHandlerActivity : SequentialActivity, IFaultHandlerActivity
+    public class MyFaultHandlerActivity : SyncActivity, IFaultHandlerActivity
     {
         public Exception Exception { get; set; }
 

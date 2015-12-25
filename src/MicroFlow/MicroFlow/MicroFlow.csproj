@@ -103,7 +103,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Binding\Result.cs" />
     <Compile Include="FlowNodes\SwitchNode.cs" />
-    <Compile Include="Activities\SequentialActivity.cs" />
+    <Compile Include="Activities\SyncActivity.cs" />
     <Compile Include="Utilities\TaskHelper.cs" />
     <Compile Include="Utilities\TypeUtils.cs" />
     <Compile Include="Utilities\Null.cs" />
