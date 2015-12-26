@@ -53,25 +53,20 @@ namespace MicroFlow
             }
         }
 
-        protected override void VisitCondition(DecisionNode decisionNode)
+        protected override void VisitCondition(ConditionNode conditionNode)
         {
-            if (decisionNode.Condition == null)
+            if (conditionNode.Condition == null)
             {
-                Result.AddError(decisionNode, "Condition isn't set");
+                Result.AddError(conditionNode, "Condition isn't set");
             }
 
-            if (decisionNode.WhenFalse == null)
+            if (conditionNode.WhenTrue == null)
             {
-                Result.AddError(decisionNode, "False branch isn't set");
+                Result.AddError(conditionNode, "True branch isn't set");
             }
 
-            if (decisionNode.WhenTrue == null)
-            {
-                Result.AddError(decisionNode, "True branch isn't set");
-            }
-
-            CheckSelfReference(decisionNode, decisionNode.WhenFalse);
-            CheckSelfReference(decisionNode, decisionNode.WhenTrue);
+            CheckSelfReference(conditionNode, conditionNode.WhenFalse);
+            CheckSelfReference(conditionNode, conditionNode.WhenTrue);
         }
 
         protected override void VisitForkJoin(ForkJoinNode forkJoinNode)

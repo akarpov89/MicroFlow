@@ -30,7 +30,7 @@ namespace Sample
             sum.Bind(x => x.B).ToResultOf(second);
             sum.Bind(x => x.C).ToResultOf(third);
 
-            builder.Initial(forkJoin);
+            builder.WithInitialNode(forkJoin);
 
             forkJoin.ConnectTo(sum);
         }

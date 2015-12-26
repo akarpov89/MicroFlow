@@ -5,7 +5,7 @@ namespace MicroFlow
     public enum FlowNodeKind
     {
         Activity,
-        Decision,
+        Condition,
         Switch,
         ForkJoin,
         Block
@@ -19,8 +19,8 @@ namespace MicroFlow
             {
                 case FlowNodeKind.Activity:
                     return "Activity";
-                case FlowNodeKind.Decision:
-                    return "Decision";
+                case FlowNodeKind.Condition:
+                    return "Condition";
                 case FlowNodeKind.Switch:
                     return "Switch";
                 case FlowNodeKind.ForkJoin:

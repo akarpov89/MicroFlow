@@ -21,28 +21,28 @@ namespace Sample
             Result<int> first = Result<int>.Of(inputFirst);
             Result<int> second = Result<int>.Of(inputSecond);
 
-            DecisionNode decision = builder.Decision("Check whether a first number is greater than a second");
-            decision.WithCondition(() => first.CurrentValue > second.CurrentValue);
+            ConditionNode condition = builder.Condition("Check whether a first number is greater than a second");
+            condition.WithCondition(() => first.Get() > second.Get());
 
             ActivityNode<OutputActivity> outputWhenTrue =
                 builder.Activity<OutputActivity>("Output condition when first greater than second");
             outputWhenTrue
                 .Bind(x => x.Message)
-                .To(() => $"{first.CurrentValue} > {second.CurrentValue}\r\n");
+                .To(() => $"{first.Get()} > {second.Get()}\r\n");
 
             ActivityNode<OutputActivity> outputWhenFalse =
                 builder.Activity<OutputActivity>("Output condition when second greater than first");
             outputWhenFalse
                 .Bind(x => x.Message)
-                .To(() => $"{first.CurrentValue} <= {second.CurrentValue}\r\n");
+                .To(() => $"{first.Get()} <= {second.Get()}\r\n");
 
-            builder.Initial(inputFirst);
+            builder.WithInitialNode(inputFirst);
 
             inputFirst.ConnectTo(inputSecond);
-            inputSecond.ConnectTo(decision);
+            inputSecond.ConnectTo(condition);
 
-            decision.ConnectTrueTo(outputWhenTrue)
-                .ConnectFalseTo(outputWhenFalse);
+            condition.ConnectTrueTo(outputWhenTrue)
+                     .ConnectFalseTo(outputWhenFalse);
 
             //var unused = builder.Activity<InputActivity>().WithName("Unused!");
         }

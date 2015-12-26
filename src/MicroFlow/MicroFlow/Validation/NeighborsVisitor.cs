@@ -18,10 +18,10 @@ namespace MicroFlow
             foreach (KeyValuePair<TChoice, IFlowNode> caseToNode in switchNode.Cases) yield return caseToNode.Value;
         }
 
-        public IEnumerable<IFlowNode> VisitCondition(DecisionNode decisionNode)
+        public IEnumerable<IFlowNode> VisitCondition(ConditionNode conditionNode)
         {
-            if (decisionNode.WhenFalse != null) yield return decisionNode.WhenFalse;
-            if (decisionNode.WhenTrue != null) yield return decisionNode.WhenTrue;
+            if (conditionNode.WhenFalse != null) yield return conditionNode.WhenFalse;
+            if (conditionNode.WhenTrue != null) yield return conditionNode.WhenTrue;
         }
 
         public IEnumerable<IFlowNode> VisitForkJoin(ForkJoinNode forkJoinNode)

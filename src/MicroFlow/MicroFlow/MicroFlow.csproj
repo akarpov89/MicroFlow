@@ -95,7 +95,7 @@
     <Compile Include="FlowNodes\ActivityNode.cs" />
     <Compile Include="Activities\BackgroundActivity.cs" />
     <Compile Include="Flow\FlowBuilder.cs" />
-    <Compile Include="FlowNodes\DecisionNode.cs" />
+    <Compile Include="FlowNodes\ConditionNode.cs" />
     <Compile Include="Execution\FlowRunner.cs" />
     <Compile Include="Activities\IActivity.cs" />
     <Compile Include="Activities\IFaultHandlerActivity.cs" />

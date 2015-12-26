@@ -17,17 +17,11 @@ namespace MicroFlow
         }
 
         [CanBeNull]
-        public T CurrentValue
+        public T Get()
         {
-            get
-            {
-                if (HasValue)
-                {
-                    return (T) _currentValue;
-                }
+            HasValue.AssertTrue("Value isn't set");
 
-                throw new InvalidOperationException("Value isn't set");
-            }
+            return (T) _currentValue;
         }
 
         public bool HasValue { get; private set; }
@@ -93,7 +87,7 @@ namespace MicroFlow
             Action<T> handler = OnResult;
             if (handler != null)
             {
-                handler(CurrentValue);
+                handler(Get());
             }
         }
     }

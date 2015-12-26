@@ -51,10 +51,10 @@ namespace MicroFlow
             }
         }
 
-        protected override void VisitCondition(DecisionNode decisionNode)
+        protected override void VisitCondition(ConditionNode conditionNode)
         {
-            CheckIfNodeIsInsideBlock(decisionNode.WhenFalse);
-            CheckIfNodeIsInsideBlock(decisionNode.WhenTrue);
+            CheckIfNodeIsInsideBlock(conditionNode.WhenFalse);
+            CheckIfNodeIsInsideBlock(conditionNode.WhenTrue);
         }
 
         protected override void VisitForkJoin(ForkJoinNode forkJoinNode)

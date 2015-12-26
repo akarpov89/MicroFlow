@@ -37,10 +37,10 @@ namespace MicroFlow
             }
         }
 
-        protected override void VisitCondition(DecisionNode decisionNode)
+        protected override void VisitCondition(ConditionNode conditionNode)
         {
-            AddReachable(decisionNode.WhenFalse);
-            AddReachable(decisionNode.WhenTrue);
+            AddReachable(conditionNode.WhenFalse);
+            AddReachable(conditionNode.WhenTrue);
         }
 
         protected override void VisitForkJoin(ForkJoinNode forkJoinNode)

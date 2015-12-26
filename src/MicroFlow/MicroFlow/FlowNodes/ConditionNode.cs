@@ -4,17 +4,17 @@ using JetBrains.Annotations;
 
 namespace MicroFlow
 {
-    public class DecisionNode : FlowNode
+    public class ConditionNode : FlowNode
     {
         [CanBeNull] private Func<bool> _compiledCondition;
 
-        internal DecisionNode()
+        internal ConditionNode()
         {
         }
 
         public override FlowNodeKind Kind
         {
-            get { return FlowNodeKind.Decision; }
+            get { return FlowNodeKind.Condition; }
         }
 
         [CanBeNull]
@@ -47,7 +47,7 @@ namespace MicroFlow
         }
 
         [NotNull]
-        public DecisionNode WithCondition([NotNull] Expression<Func<bool>> condition)
+        public ConditionNode WithCondition([NotNull] Expression<Func<bool>> condition)
         {
             condition.AssertNotNull("condition != null");
             Condition.AssertIsNull("Condition is already set");
@@ -58,7 +58,7 @@ namespace MicroFlow
         }
 
         [NotNull]
-        public DecisionNode ConnectTrueTo([NotNull] IFlowNode node)
+        public ConditionNode ConnectTrueTo([NotNull] IFlowNode node)
         {
             node.AssertNotNull("node != null");
             WhenTrue.AssertIsNull("True branch is already set");
@@ -68,7 +68,7 @@ namespace MicroFlow
         }
 
         [NotNull]
-        public DecisionNode ConnectFalseTo([NotNull] IFlowNode node)
+        public ConditionNode ConnectFalseTo([NotNull] IFlowNode node)
         {
             node.AssertNotNull("node != null");
             WhenFalse.AssertIsNull("False branch is already set");

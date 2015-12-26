@@ -54,15 +54,15 @@ namespace MicroFlow
         }
 
         [NotNull]
-        public DecisionNode Decision()
+        public ConditionNode Condition()
         {
-            return AddNode(new DecisionNode());
+            return AddNode(new ConditionNode());
         }
 
         [NotNull]
-        public DecisionNode Decision([NotNull] string name)
+        public ConditionNode Condition([NotNull] string name)
         {
-            return Decision().WithName(name);
+            return Condition().WithName(name);
         }
 
         [NotNull]
@@ -126,7 +126,7 @@ namespace MicroFlow
         }
 
         [NotNull]
-        public FlowBuilder Initial([NotNull] IFlowNode node)
+        public FlowBuilder WithInitialNode([NotNull] IFlowNode node)
         {
             node.AssertNotNull("node != null");
             InitialNode.AssertIsNull("Initial node is already specified");

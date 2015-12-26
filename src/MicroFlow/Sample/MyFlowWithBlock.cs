@@ -25,7 +25,7 @@ namespace Sample
             ActivityNode<OutputActivity> outAct = builder.Activity<OutputActivity>("Output act");
             outAct.Bind(x => x.Message).To(() => $"You entered {myVar.CurrentValue}\r\n");
 
-            builder.Initial(block);
+            builder.WithInitialNode(block);
 
             block.ConnectTo(outAct);
         }

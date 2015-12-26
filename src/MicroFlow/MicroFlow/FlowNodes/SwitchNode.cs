@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using JetBrains.Annotations;
@@ -51,12 +50,12 @@ namespace MicroFlow
         }
 
         [NotNull]
-        public SwitchNode<TChoice> WithChoice([NotNull] Expression<ChoiceProvider<TChoice>> choiceFunc)
+        public SwitchNode<TChoice> WithChoice([NotNull] Expression<ChoiceProvider<TChoice>> choiceExpression)
         {
-            choiceFunc.AssertNotNull("choiceFunc != null");
+            choiceExpression.AssertNotNull("choiceExpression != null");
             Choice.AssertIsNull("Choice is already set");
 
-            Choice = choiceFunc;
+            Choice = choiceExpression;
             _compiledChoice = Choice.Compile();
             return this;
         }

@@ -26,7 +26,7 @@ namespace MicroFlow
             }
         }
 
-        protected override void VisitCondition(DecisionNode decisionNode)
+        protected override void VisitCondition(ConditionNode conditionNode)
         {
         }
 

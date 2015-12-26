@@ -87,19 +87,19 @@ namespace MicroFlow
             return branch.Accept(this);
         }
 
-        public Task VisitCondition(DecisionNode decisionNode)
+        public Task VisitCondition(ConditionNode conditionNode)
         {
-            decisionNode.AssertNotNull("decisionNode != null");
+            conditionNode.AssertNotNull("conditionNode != null");
 
-            Log.Info("At node: {0}{1}Decision entered", decisionNode, Environment.NewLine);
+            Log.Info("At node: {0}{1}Condition entered", conditionNode, Environment.NewLine);
 
-            bool condition = decisionNode.EvaluateCondition();
+            bool condition = conditionNode.EvaluateCondition();
 
-            Log.Info("At node: {0}{1}Condition evaluated to: '{2}'", decisionNode, Environment.NewLine, condition);
+            Log.Info("At node: {0}{1}Condition evaluated to: '{2}'", conditionNode, Environment.NewLine, condition);
 
-            IFlowNode branch = condition ? decisionNode.WhenTrue : decisionNode.WhenFalse;
+            IFlowNode branch = condition ? conditionNode.WhenTrue : conditionNode.WhenFalse;
 
-            if (branch == null) throw new InvalidOperationException("Branch isn't set");
+            if (branch == null) return TaskHelper.CompletedTask;
 
             return branch.Accept(this);
         }

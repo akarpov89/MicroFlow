@@ -33,7 +33,7 @@ namespace Sample
             {
                 ActivityNode<InputActivity> a1 = builder.Activity<InputActivity>();
 
-                DecisionNode c = builder.Decision();
+                ConditionNode c = builder.Condition();
                 ActivityNode<InputActivity> a2 = builder.Activity<InputActivity>();
                 ActivityNode<InputActivity> a3 = builder.Activity<InputActivity>();
 

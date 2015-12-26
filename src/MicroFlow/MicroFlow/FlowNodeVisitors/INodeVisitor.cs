@@ -8,7 +8,7 @@ namespace MicroFlow
             where TActivity : class, IActivity;
 
         TResult VisitSwitch<TChoice>([NotNull] SwitchNode<TChoice> switchNode);
-        TResult VisitCondition([NotNull] DecisionNode decisionNode);
+        TResult VisitCondition([NotNull] ConditionNode conditionNode);
         TResult VisitForkJoin([NotNull] ForkJoinNode forkJoinNode);
         TResult VisitBlock([NotNull] BlockNode blockNode);
     }

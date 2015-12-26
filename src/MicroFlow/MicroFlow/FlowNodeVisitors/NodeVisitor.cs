@@ -16,9 +16,9 @@ namespace MicroFlow
             return null;
         }
 
-        Null INodeVisitor<Null>.VisitCondition(DecisionNode decisionNode)
+        Null INodeVisitor<Null>.VisitCondition(ConditionNode conditionNode)
         {
-            VisitCondition(decisionNode);
+            VisitCondition(conditionNode);
             return null;
         }
 
@@ -38,7 +38,7 @@ namespace MicroFlow
             where TActivity : class, IActivity;
 
         protected abstract void VisitSwitch<TChoice>([NotNull] SwitchNode<TChoice> switchNode);
-        protected abstract void VisitCondition([NotNull] DecisionNode decisionNode);
+        protected abstract void VisitCondition([NotNull] ConditionNode conditionNode);
         protected abstract void VisitForkJoin([NotNull] ForkJoinNode forkJoinNode);
         protected abstract void VisitBlock([NotNull] BlockNode blockNode);
     }
