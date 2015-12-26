@@ -22,13 +22,26 @@ namespace MicroFlow
         }
 
         public static ServiceDescriptor Singleton<TService, TImplementation>([NotNull] TImplementation instance)
-            where TImplementation : class, TService, new()
+            where TImplementation : class, TService
         {
             instance.AssertNotNull("instance != null");
 
             return new ServiceDescriptor
             {
                 ServiceType = typeof (TService),
+                ImplementationInstance = instance,
+                Lifetime = ServiceLifetime.Singleton
+            };
+        }
+
+        public static ServiceDescriptor Singleton<TService>([NotNull] object instance)
+        {
+            instance.AssertNotNull("instance != null");
+            (instance is TService).AssertTrue("Instance doesn't impelement service " + typeof(TService));
+
+            return new ServiceDescriptor
+            {
+                ServiceType = typeof(TService),
                 ImplementationInstance = instance,
                 Lifetime = ServiceLifetime.Singleton
             };

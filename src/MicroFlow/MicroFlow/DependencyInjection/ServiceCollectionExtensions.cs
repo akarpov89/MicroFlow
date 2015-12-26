@@ -14,9 +14,16 @@ namespace MicroFlow
 
         public static IServiceCollection AddSingleton<TService, TImplementation>(
             [NotNull] this IServiceCollection collection, [NotNull] TImplementation instance)
-            where TImplementation : class, TService, new()
+            where TImplementation : class, TService
         {
             collection.Add(ServiceDescriptor.Singleton<TService, TImplementation>(instance));
+            return collection;
+        }
+
+        public static IServiceCollection AddSingleton<TService>(
+            [NotNull] this IServiceCollection collection, [NotNull] object instance)
+        {
+            collection.Add(ServiceDescriptor.Singleton<TService>(instance));
             return collection;
         }
 
