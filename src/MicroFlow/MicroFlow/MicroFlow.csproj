@@ -67,6 +67,7 @@
     <Compile Include="FlowNodes\ConnectableNode.cs" />
     <Compile Include="Binding\ActivityBinder.cs" />
     <Compile Include="FlowNodes\Interfaces.cs" />
+    <Compile Include="Utilities\CurrentThreadTaskScheduler.cs" />
     <Compile Include="Utilities\TaskHandlersCollectionExtensions.cs" />
     <Compile Include="FlowNodeVisitors\NodeVisitor.cs" />
     <Compile Include="Binding\Variable.cs" />

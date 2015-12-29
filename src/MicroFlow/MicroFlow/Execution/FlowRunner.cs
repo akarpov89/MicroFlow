@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 
@@ -10,6 +11,17 @@ namespace MicroFlow
         private bool _isDisposed;
         private ILogger _log;
         private ServiceProvider _serviceProvider;
+
+        private readonly TaskScheduler _scheduler;
+
+        public FlowRunner()
+        {
+            var syncContext = SynchronizationContext.Current;
+
+            _scheduler = syncContext != null
+                ? TaskScheduler.FromCurrentSynchronizationContext()
+                : new CurrentThreadTaskScheduler();
+        }
 
         [NotNull]
         private ILogger Log
@@ -62,7 +74,7 @@ namespace MicroFlow
                     activityWrapper.Dispose();
 
                     return ExecuteNextNode(activityNode, t);
-                }, TaskContinuationOptions.ExecuteSynchronously);
+                }, _scheduler);
 
                 return continuation.Unwrap();
             }
@@ -134,7 +146,7 @@ namespace MicroFlow
                     activities.Dispose();
 
                     return ExecuteNextNode(forkJoinNode, t);
-                }, TaskContinuationOptions.ExecuteSynchronously);
+                }, _scheduler);
 
                 return continuation.Unwrap();
             }
@@ -174,7 +186,7 @@ namespace MicroFlow
                 }
 
                 return t;
-            }, TaskContinuationOptions.ExecuteSynchronously);
+            }, _scheduler);
 
             return pointsToContinuation.Unwrap();
         }
