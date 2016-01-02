@@ -14,7 +14,7 @@
     <tags>Workflow .NET</tags>
   </metadata>
   <files>
-    <file src="..\..\output\$configuration$\**\MicroFlow*.dll" target="lib\net40\" />
-    <file src="..\..\output\$configuration$\**\MicroFlow*.pdb" target="lib\net40\" />
+    <file src="output\$configuration$\**\MicroFlow.dll" target="lib\net40\" />
+    <file src="output\$configuration$\**\MicroFlow.pdb" target="lib\net40\" />
   </files>
 </package>
