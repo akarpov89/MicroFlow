@@ -5,25 +5,22 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-
-[assembly: AssemblyTitle("MicroFlow")]
-[assembly: AssemblyDescription("Lightweight framework to create workflows")]
+[assembly: AssemblyTitle("MicroFlow.Test")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Andrey Karpov")]
-[assembly: AssemblyProduct("MicroFlow")]
-[assembly: AssemblyCopyright("Copyright ©  2015, Andrey Karpov")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("MicroFlow.Test")]
+[assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.
-
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-
-[assembly: Guid("261d091d-3793-4492-b6a8-41e6c0a4dc8b")]
+[assembly: Guid("20a36ca6-8216-4c8e-9415-45004a2ca741")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -35,7 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-
-[assembly: AssemblyVersion("0.5.8.0")]
-[assembly: AssemblyFileVersion("0.5.8.0")]
-[assembly: InternalsVisibleTo("MicroFlow.Test")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
