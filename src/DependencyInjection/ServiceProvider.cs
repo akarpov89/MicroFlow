@@ -42,9 +42,8 @@ namespace MicroFlow
             serviceType.AssertNotNull("serviceType != null");
 
             ServiceDescriptor serviceDescriptor = FindServiceDescriptor(serviceType);
-            if (serviceDescriptor == null) return null;
 
-            return serviceDescriptor.GetInstance();
+            return serviceDescriptor?.GetInstance();
         }
 
         public void ReleaseService(object service)

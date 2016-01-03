@@ -38,17 +38,14 @@ namespace MicroFlow
             {
                 if (_services != null && _services.Length > 0)
                 {
-                    for (int i = 0; i < _services.Length; ++i)
+                    foreach (object service in _services)
                     {
-                        _serviceProvider.ReleaseService(_services[i]);
+                        _serviceProvider.ReleaseService(service);
                     }
                 }
 
                 var disposable = _instance as IDisposable;
-                if (disposable != null)
-                {
-                    disposable.Dispose();
-                }
+                disposable?.Dispose();
 
                 _isDisposed = true;
             }

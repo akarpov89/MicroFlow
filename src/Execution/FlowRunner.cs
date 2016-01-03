@@ -39,10 +39,7 @@ namespace MicroFlow
         {
             if (!_isDisposed)
             {
-                if (_serviceProvider != null)
-                {
-                    _serviceProvider.Dispose();
-                }
+                _serviceProvider?.Dispose();
 
                 _isDisposed = true;
             }
@@ -227,7 +224,7 @@ namespace MicroFlow
 
             if (task.IsFaulted)
             {
-                string message = string.Format("At node: {0}{1}Faulted", node, Environment.NewLine);
+                string message = $"At node: {node}{Environment.NewLine}Faulted";
                 Log.Exception(message, task.Exception);
 
                 IFaultHandlerNode handlerNode = node.FaultHandler;

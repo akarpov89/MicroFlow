@@ -15,16 +15,10 @@ namespace MicroFlow
         {
         }
 
-        public override FlowNodeKind Kind
-        {
-            get { return FlowNodeKind.Block; }
-        }
+        public override FlowNodeKind Kind => FlowNodeKind.Block;
 
         [NotNull]
-        public ReadOnlyCollection<IFlowNode> InnerNodes
-        {
-            get { return _nodes.AsReadOnly(); }
-        }
+        public ReadOnlyCollection<IFlowNode> InnerNodes => _nodes.AsReadOnly();
 
         public override TResult Accept<TResult>(INodeVisitor<TResult> visitor)
         {

@@ -6,12 +6,11 @@ namespace MicroFlow
 {
     public sealed class Result<T>
     {
-        private readonly Guid _sourceId;
         private object _currentValue;
 
         public Result(Guid sourceId)
         {
-            _sourceId = sourceId;
+            SourceId = sourceId;
             _currentValue = null;
             HasValue = false;
         }
@@ -26,10 +25,7 @@ namespace MicroFlow
 
         public bool HasValue { get; private set; }
 
-        public Guid SourceId
-        {
-            get { return _sourceId; }
-        }
+        public Guid SourceId { get; }
 
         private event Action<T> OnResult;
 
@@ -84,11 +80,7 @@ namespace MicroFlow
 
         private void ExecuteResultHandlers()
         {
-            Action<T> handler = OnResult;
-            if (handler != null)
-            {
-                handler(Get());
-            }
+            OnResult?.Invoke(Get());
         }
     }
 }

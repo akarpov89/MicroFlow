@@ -18,19 +18,13 @@ namespace MicroFlow
         {
         }
 
-        public override FlowNodeKind Kind
-        {
-            get { return FlowNodeKind.Switch; }
-        }
+        public override FlowNodeKind Kind => FlowNodeKind.Switch;
 
         [CanBeNull]
         public Expression<ChoiceProvider<TChoice>> Choice { get; private set; }
 
         [NotNull]
-        public IEnumerable<KeyValuePair<TChoice, IFlowNode>> Cases
-        {
-            get { return _cases; }
-        }
+        public IEnumerable<KeyValuePair<TChoice, IFlowNode>> Cases => _cases;
 
         [CanBeNull]
         public IFlowNode DefaultCase { get; private set; }

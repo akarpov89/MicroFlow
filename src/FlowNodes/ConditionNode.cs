@@ -12,10 +12,7 @@ namespace MicroFlow
         {
         }
 
-        public override FlowNodeKind Kind
-        {
-            get { return FlowNodeKind.Condition; }
-        }
+        public override FlowNodeKind Kind => FlowNodeKind.Condition;
 
         [CanBeNull]
         public Expression<Func<bool>> Condition { get; private set; }

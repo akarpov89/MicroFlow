@@ -12,10 +12,7 @@ namespace MicroFlow
 
         public string PropertyName { get; private set; }
 
-        public PropertyBindingKind Kind
-        {
-            get {return PropertyBindingKind.Value;}
-        }
+        public PropertyBindingKind Kind => PropertyBindingKind.Value;
 
         public TResult Analyze<TResult>(IBindingInfoAnalyzer<TResult> analyzer)
         {

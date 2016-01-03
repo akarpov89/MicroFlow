@@ -48,15 +48,9 @@ namespace MicroFlow
 
         public string Name { get; private set; }
 
-        Type IActivityDescriptor.ActivityType
-        {
-            get { return typeof (TActivity); }
-        }
+        Type IActivityDescriptor.ActivityType => typeof (TActivity);
 
-        public ReadOnlyCollection<IPropertyBindingInfo> PropertyBindings
-        {
-            get { return _propertyBindings.AsReadOnly(); }
-        }
+        public ReadOnlyCollection<IPropertyBindingInfo> PropertyBindings => _propertyBindings.AsReadOnly();
 
         void IActivityDescriptor.ExecuteInitializersFor(IActivity activity)
         {
@@ -133,15 +127,8 @@ namespace MicroFlow
 
         internal void UnregisterAllHandlers()
         {
-            if (_initializerActions != null)
-            {
-                _initializerActions.Clear();
-            }
-
-            if (_taskHandlers != null)
-            {
-                _taskHandlers.Clear();
-            }
+            _initializerActions?.Clear();
+            _taskHandlers?.Clear();
         }
     }
 }

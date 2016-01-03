@@ -21,9 +21,6 @@ namespace MicroFlow
             return Enumerable.Empty<Task>();
         }
 
-        public override int MaximumConcurrencyLevel
-        {
-            get { return 1; }
-        }
+        public override int MaximumConcurrencyLevel => 1;
     }
 }

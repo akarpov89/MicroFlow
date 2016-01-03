@@ -34,7 +34,7 @@ namespace MicroFlow
 
         public override string ToString()
         {
-            return string.Format("{{Node Kind: '{0}' Name: '{1}'}}", Kind, _name);
+            return $"{{Node Kind: '{Kind}' Name: '{_name}'}}";
         }
     }
 

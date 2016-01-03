@@ -14,10 +14,7 @@ namespace MicroFlow
 
         public string PropertyName { get; private set; }
 
-        public PropertyBindingKind Kind
-        {
-            get { return PropertyBindingKind.Expression; }
-        }
+        public PropertyBindingKind Kind => PropertyBindingKind.Expression;
 
         public TResult Analyze<TResult>(IBindingInfoAnalyzer<TResult> analyzer)
         {

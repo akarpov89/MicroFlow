@@ -15,15 +15,9 @@ namespace MicroFlow
         }
 
         [NotNull]
-        public ActivityDescriptor<TActivity> Descriptor
-        {
-            get { return _activityDescriptor; }
-        }
+        public ActivityDescriptor<TActivity> Descriptor => _activityDescriptor;
 
-        public override FlowNodeKind Kind
-        {
-            get { return FlowNodeKind.Activity; }
-        }
+        public override FlowNodeKind Kind => FlowNodeKind.Activity;
 
         public override TResult Accept<TResult>(INodeVisitor<TResult> visitor)
         {

@@ -34,9 +34,6 @@ namespace MicroFlow
         [NotNull]
         public string Message { get; private set; }
 
-        public bool IsGlobal
-        {
-            get { return NodeId == Guid.Empty; }
-        }
+        public bool IsGlobal => NodeId == Guid.Empty;
     }
 }

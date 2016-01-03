@@ -22,10 +22,7 @@ namespace MicroFlow
         public IFlowNode InitialNode { get; private set; }
 
         [NotNull]
-        public ReadOnlyCollection<IFlowNode> Nodes
-        {
-            get { return _nodes.AsReadOnly(); }
-        }
+        public ReadOnlyCollection<IFlowNode> Nodes => _nodes.AsReadOnly();
 
         [NotNull]
         public ActivityNode<TActivity> Activity<TActivity>()

@@ -21,11 +21,7 @@ namespace MicroFlow
 
         public void RemoveBindings()
         {
-            Action handler = OnRemoveBindings;
-            if (handler != null)
-            {
-                handler();
-            }
+            OnRemoveBindings?.Invoke();
         }
 
         private event Action OnRemoveBindings;

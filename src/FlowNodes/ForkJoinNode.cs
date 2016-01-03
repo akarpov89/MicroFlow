@@ -14,16 +14,10 @@ namespace MicroFlow
         {
         }
 
-        public override FlowNodeKind Kind
-        {
-            get { return FlowNodeKind.ForkJoin; }
-        }
+        public override FlowNodeKind Kind => FlowNodeKind.ForkJoin;
 
         [NotNull]
-        public ReadOnlyCollection<IActivityDescriptor> Forks
-        {
-            get { return _forks.AsReadOnly(); }
-        }
+        public ReadOnlyCollection<IActivityDescriptor> Forks => _forks.AsReadOnly();
 
         public override TResult Accept<TResult>(INodeVisitor<TResult> visitor)
         {
@@ -40,11 +34,7 @@ namespace MicroFlow
             }
 
             _forks.Clear();
-
-            if (_taskHandlers != null)
-            {
-                _taskHandlers.Clear();
-            }
+            _taskHandlers?.Clear();
         }
 
         public override void RegisterActivityTaskHandler(ActivityTaskHandler handler)

@@ -9,16 +9,10 @@ namespace MicroFlow
     {
         private readonly List<ValidationError> _errors = new List<ValidationError>();
 
-        public bool HasErrors
-        {
-            get { return _errors.Count > 0; }
-        }
+        public bool HasErrors => _errors.Count > 0;
 
         [NotNull]
-        public ReadOnlyCollection<ValidationError> Errors
-        {
-            get { return _errors.AsReadOnly(); }
-        }
+        public ReadOnlyCollection<ValidationError> Errors => _errors.AsReadOnly();
 
         public void AddError([NotNull] string errorMessage)
         {
