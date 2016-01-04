@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Andrey Karpov")]
 [assembly: AssemblyProduct("MicroFlow")]
-[assembly: AssemblyCopyright("Copyright ©  2015, Andrey Karpov")]
+[assembly: AssemblyCopyright("Copyright ©  2015-2016, Andrey Karpov")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

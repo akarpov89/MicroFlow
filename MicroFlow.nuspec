@@ -10,7 +10,7 @@
     <licenseUrl>https://raw.githubusercontent.com/akarpov89/MicroFlow/master/License.txt</licenseUrl>
     <projectUrl>https://github.com/akarpov89/MicroFlow</projectUrl>
     <description>Lightweight workflow engine.</description>
-    <copyright>Copyright &#x00A9; 2015 Andrey Karpov</copyright>
+    <copyright>Copyright &#x00A9; 2015-2016 Andrey Karpov</copyright>
     <tags>Workflow .NET</tags>
   </metadata>
   <files>

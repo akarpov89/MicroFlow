@@ -11,7 +11,7 @@
             _writer = writer;
         }
 
-        public override string Name => "Flow1";
+        public override string Name => "Flow1. Uses condition node";
 
         protected override void Build(FlowBuilder builder)
         {

@@ -5,15 +5,10 @@ namespace MicroFlow
 {
     public abstract class FlowValidator : NodeVisitor
     {
-        protected FlowValidator()
-        {
-            Result = new ValidationResult();
-        }
-
         protected FlowBuilder Flow { get; private set; }
 
         [NotNull]
-        public ValidationResult Result { get; private set; }
+        public ValidationResult Result { get; } = new ValidationResult();
 
         public bool Validate([NotNull] FlowBuilder flowBuilder)
         {

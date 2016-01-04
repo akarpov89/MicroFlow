@@ -56,9 +56,9 @@ namespace MicroFlow
 
                     if (currentProperty == beforeCurrentProperty)
                     {
-                        var message = string.Format(
-                            "Multiple initializers of the property {0}.{1}", 
-                            descriptor.ActivityType.Name, currentProperty);
+                        var message = 
+                            "Multiple initializers of the property " +
+                            $"{descriptor.ActivityType.Name}.{currentProperty}";
 
                         Result.AddError(descriptor, message);
                         break;
@@ -78,9 +78,9 @@ namespace MicroFlow
 
                 if (!hasInitializer)
                 {
-                    var message = string.Format(
-                        "No initializer of the property {0}.{1}", 
-                        descriptor.ActivityType.Name, requiredProperty);
+                    var message = 
+                        "No initializer of the property " +
+                        $"{descriptor.ActivityType.Name}.{requiredProperty}";
 
                     Result.AddError(descriptor, message);
                 }

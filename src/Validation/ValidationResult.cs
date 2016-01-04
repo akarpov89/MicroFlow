@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using JetBrains.Annotations;
 
 namespace MicroFlow
@@ -47,6 +48,12 @@ namespace MicroFlow
         public void ClearErrors()
         {
             _errors.Clear();
+        }
+
+        public IEnumerable<ValidationError> GetErrorsOf([NotNull] IFlowNode node)
+        {
+            node.AssertNotNull("node != null");
+            return _errors.Where(e => e.NodeId == node.Id);
         }
     }
 }

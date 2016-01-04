@@ -5,15 +5,14 @@ using NUnit.Framework;
 namespace MicroFlow.Test
 {
     [TestFixture]
-    public class Flow1Tests
+    public class Flow2Tests
     {
         [Test]
         public void FlowIsValid()
         {
             // Arrange
-            var reader = Substitute.For<IReader>();
             var writer = Substitute.For<IWriter>();
-            var flow = new Flow1(reader, writer);
+            var flow = new Flow2(writer);
 
             // Act
             var validationResult = flow.Validate();
@@ -23,12 +22,11 @@ namespace MicroFlow.Test
         }
 
         [Test, TestCaseSource(nameof(Cases))]
-        public void RunCase(string first, string second, string expectedMessage)
+        public void RunCase(int a, int b, int c, string expectedMessage)
         {
             // Arrange
-            var reader = new ArrayReader(first, second);
             var writer = Substitute.For<IWriter>();
-            var flow = new Flow1(reader, writer);
+            var flow = new Flow2(writer) {A = a, B = b, C = c};
 
             // Act
             flow.Run().Wait();
@@ -41,13 +39,11 @@ namespace MicroFlow.Test
         {
             get
             {
-                yield return Case("1", "2", "1 <= 2");
-                yield return Case("2", "1", "2 > 1");
-                yield return Case("42", "42", "42 <= 42");
+                yield return Case(1, 2, 3, "2 + 3 + 4 = 9");
+                yield return Case(0, 8, 19, "1 + 9 + 20 = 30");
             }
         }
 
-        public static TestCaseData Case(string first, string second, string message) 
-            => new TestCaseData(first, second, message);
+        private static TestCaseData Case(int a, int b, int c, string message) => new TestCaseData(a, b, c, message);
     }
 }

@@ -46,17 +46,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\DelayedIncrementActivity.cs" />
+    <Compile Include="Activities\DummyActivity.cs" />
     <Compile Include="Activities\MyCancellationHandler.cs" />
     <Compile Include="Activities\MyFaultHandler.cs" />
     <Compile Include="Activities\ReadIntActivity.cs" />
+    <Compile Include="Activities\SumActivity.cs" />
     <Compile Include="Activities\WriteMessageActivity.cs" />
     <Compile Include="Flows\Flow1.cs" />
+    <Compile Include="Flows\Flow2.cs" />
+    <Compile Include="Flows\Flow3.cs" />
     <Compile Include="FlowTests\Flow1Tests.cs" />
+    <Compile Include="FlowTests\Flow2Tests.cs" />
+    <Compile Include="FlowTests\Flow3Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DebugWriter.cs" />
     <Compile Include="Services\IReader.cs" />
     <Compile Include="Services\IWriter.cs" />
     <Compile Include="Services\ArrayReader.cs" />
+    <Compile Include="ValidationTests\ActivityInitializationValidatorTest.cs" />
+    <Compile Include="ValidationTests\BlockAcyclityCheckerTest.cs" />
+    <Compile Include="ValidationTests\BlockSelfContainednessValidatorTest.cs" />
+    <Compile Include="ValidationTests\ConnectionValidatorTest.cs" />
+    <Compile Include="ValidationTests\ReachabilityValidatorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -67,6 +79,7 @@
       <Name>MicroFlow</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

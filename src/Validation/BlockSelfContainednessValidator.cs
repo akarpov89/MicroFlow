@@ -20,7 +20,7 @@ namespace MicroFlow
             Result = new ValidationResult();
         }
 
-        public ValidationResult Result { get; private set; }
+        public ValidationResult Result { get; }
 
         public ValidationResult Validate()
         {
@@ -34,6 +34,7 @@ namespace MicroFlow
 
         protected override void VisitBlock(BlockNode blockNode)
         {
+            CheckIfNodeIsInsideBlock(blockNode.PointsTo);
         }
 
         protected override void VisitActivity<TActivity>(ActivityNode<TActivity> activityNode)

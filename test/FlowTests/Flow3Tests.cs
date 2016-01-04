@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace MicroFlow.Test
 {
     [TestFixture]
-    public class Flow1Tests
+    public class Flow3Tests
     {
         [Test]
         public void FlowIsValid()
@@ -13,7 +13,7 @@ namespace MicroFlow.Test
             // Arrange
             var reader = Substitute.For<IReader>();
             var writer = Substitute.For<IWriter>();
-            var flow = new Flow1(reader, writer);
+            var flow = new Flow3(reader, writer);
 
             // Act
             var validationResult = flow.Validate();
@@ -23,31 +23,27 @@ namespace MicroFlow.Test
         }
 
         [Test, TestCaseSource(nameof(Cases))]
-        public void RunCase(string first, string second, string expectedMessage)
+        public void RunCase(string inputNumber, string echoMessage)
         {
             // Arrange
-            var reader = new ArrayReader(first, second);
+            var reader = new ArrayReader(inputNumber);
             var writer = Substitute.For<IWriter>();
-            var flow = new Flow1(reader, writer);
+            var flow = new Flow3(reader, writer);
 
             // Act
             flow.Run().Wait();
 
             // Assert
-            writer.Received().Write(expectedMessage);
+            writer.Received().Write(echoMessage);
         }
 
         public static IEnumerable<TestCaseData> Cases
         {
             get
             {
-                yield return Case("1", "2", "1 <= 2");
-                yield return Case("2", "1", "2 > 1");
-                yield return Case("42", "42", "42 <= 42");
+                yield return new TestCaseData("1", "Echo: 1");
+                yield return new TestCaseData("42", "Echo: 42");
             }
         }
-
-        public static TestCaseData Case(string first, string second, string message) 
-            => new TestCaseData(first, second, message);
     }
 }
