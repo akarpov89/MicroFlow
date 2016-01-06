@@ -2,12 +2,7 @@
 {
     public class Flow2 : Flow
     {
-        private readonly IWriter _writer;
-
-        public Flow2(IWriter writer)
-        {
-            _writer = writer;
-        }
+        public IWriter Writer { get; set; }
 
         public int A { get; set; }
         public int B { get; set; }
@@ -46,7 +41,7 @@
 
         protected override void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IWriter>(_writer);
+            services.AddSingleton<IWriter>(Writer);
         }
     }
 }

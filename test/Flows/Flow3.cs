@@ -2,14 +2,8 @@
 {
     public class Flow3 : Flow
     {
-        private readonly IReader _reader;
-        private readonly IWriter _writer;
-
-        public Flow3(IReader reader, IWriter writer)
-        {
-            _reader = reader;
-            _writer = writer;
-        }
+        public IReader Reader { get; set; }
+        public IWriter Writer { get; set; }
 
         public override string Name => "Flow3. Uses block and variable";
 
@@ -38,8 +32,8 @@
 
         protected override void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IReader>(_reader);
-            services.AddSingleton<IWriter>(_writer);
+            services.AddSingleton<IReader>(Reader);
+            services.AddSingleton<IWriter>(Writer);
         }
     }
 }

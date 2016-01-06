@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 
 namespace MicroFlow
 {
-    internal static class TypeUtils
+    public static class TypeUtils
     {
         [NotNull]
         public static Func<object> CreateDefaultConstructorFactoryOf<T>()
@@ -22,7 +22,7 @@ namespace MicroFlow
 
             ConstructorInfo defaultConstuctor = type.GetConstructor(new Type[0]);
             if (defaultConstuctor == null)
-                throw new ArgumentException("The type '" + type + "' has not default constructor");
+                throw new ArgumentException("The type '" + type + "' has no default constructor");
 
             var dynamicMethod = new DynamicMethod("__Create__", typeof (object), null, type.Module);
             ILGenerator il = dynamicMethod.GetILGenerator();

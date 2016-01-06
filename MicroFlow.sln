@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroFlow", "src\MicroFlow.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroFlow.Test", "test\MicroFlow.Test.csproj", "{20A36CA6-8216-4C8E-9415-45004A2CA741}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroFlow.Graph", "src\Graph\MicroFlow.Graph.csproj", "{03D1A7DF-9356-4D9B-8595-444C990B4710}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{20A36CA6-8216-4C8E-9415-45004A2CA741}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20A36CA6-8216-4C8E-9415-45004A2CA741}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20A36CA6-8216-4C8E-9415-45004A2CA741}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03D1A7DF-9356-4D9B-8595-444C990B4710}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03D1A7DF-9356-4D9B-8595-444C990B4710}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03D1A7DF-9356-4D9B-8595-444C990B4710}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03D1A7DF-9356-4D9B-8595-444C990B4710}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

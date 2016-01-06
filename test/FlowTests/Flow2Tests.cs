@@ -12,7 +12,7 @@ namespace MicroFlow.Test
         {
             // Arrange
             var writer = Substitute.For<IWriter>();
-            var flow = new Flow2(writer);
+            var flow = new Flow2 {Writer = writer};
 
             // Act
             var validationResult = flow.Validate();
@@ -26,7 +26,7 @@ namespace MicroFlow.Test
         {
             // Arrange
             var writer = Substitute.For<IWriter>();
-            var flow = new Flow2(writer) {A = a, B = b, C = c};
+            var flow = new Flow2 {Writer = writer};
 
             // Act
             flow.Run().Wait();

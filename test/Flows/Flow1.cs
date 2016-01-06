@@ -2,14 +2,8 @@
 {
     public class Flow1 : Flow
     {
-        private readonly IReader _reader;
-        private readonly IWriter _writer;
-
-        public Flow1(IReader reader, IWriter writer)
-        {
-            _reader = reader;
-            _writer = writer;
-        }
+        public IReader Reader { get; set; }
+        public IWriter Writer { get; set; }
 
         public override string Name => "Flow1. Uses condition node";
 
@@ -52,8 +46,8 @@
 
         protected override void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IReader>(_reader);
-            services.AddSingleton<IWriter>(_writer);
+            services.AddSingleton<IReader>(Reader);
+            services.AddSingleton<IWriter>(Writer);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace MicroFlow.Test
             // Arrange
             var reader = Substitute.For<IReader>();
             var writer = Substitute.For<IWriter>();
-            var flow = new Flow1(reader, writer);
+            var flow = new Flow1 {Reader = reader, Writer = writer};
 
             // Act
             var validationResult = flow.Validate();
@@ -28,7 +28,7 @@ namespace MicroFlow.Test
             // Arrange
             var reader = new ArrayReader(first, second);
             var writer = Substitute.For<IWriter>();
-            var flow = new Flow1(reader, writer);
+            var flow = new Flow1 {Reader = reader, Writer = writer};
 
             // Act
             flow.Run().Wait();

@@ -7,14 +7,9 @@ namespace MicroFlow
     {
         private string _name;
 
-        protected FlowNode()
-        {
-            Id = Guid.NewGuid();
-        }
-
         public abstract FlowNodeKind Kind { get; }
 
-        public Guid Id { get; private set; }
+        public Guid Id { get; } = Guid.NewGuid();
 
         public string Name
         {
