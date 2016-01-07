@@ -21,16 +21,16 @@
             var first = Result<int>.Of(inputFirst);
             var second = Result<int>.Of(inputSecond);
 
-            var condition = builder.Condition("Check whether a first number is greater than a second");
+            var condition = builder.Condition("If first number > second number");
             condition.WithCondition(() => first.Get() > second.Get());
 
-            var outputWhenTrue = builder.Activity<WriteMessageActivity>("Output when first > second");
+            var outputWhenTrue = builder.Activity<WriteMessageActivity>("Output: first > second");
             outputWhenTrue
                 .Bind(x => x.Message)
                 .To(() => $"{first.Get()} > {second.Get()}");
 
             var outputWhenFalse =
-                builder.Activity<WriteMessageActivity>("Output when first <= second");
+                builder.Activity<WriteMessageActivity>("Output: first <= second");
             outputWhenFalse
                 .Bind(x => x.Message)
                 .To(() => $"{first.Get()} <= {second.Get()}");
