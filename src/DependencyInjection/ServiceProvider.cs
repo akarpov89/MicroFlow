@@ -67,10 +67,7 @@ namespace MicroFlow
         private void DisposeService([CanBeNull] object service)
         {
             var disposable = service as IDisposable;
-            if (disposable != null)
-            {
-                disposable.Dispose();
-            }
+            disposable?.Dispose();
         }
 
         private void AssertNotDisposed()
