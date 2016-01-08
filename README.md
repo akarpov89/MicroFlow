@@ -5,19 +5,28 @@
 ### Getting Started
 
 * [What is MicroFlow?](#what-is-microflow)
+* [NuGet Package](https://www.nuget.org/packages/MicroFlow/)
 * [Activities](#activities)
 * [Nodes](#nodes)
 * [Data flow](#data-flow)
 * [Creating the flow](#creating-the-flow)
 * [Graph generator](#graph-generator)
 * [Sample](#sample)
+* [License](https://raw.githubusercontent.com/akarpov89/MicroFlow/master/License.txt)
 
 ### What is MicroFlow?
 
 MicroFlow is a lightweight workflow engine. It allows to build workflows as flowcharts.
-Every flow is constructed from a limited number of connected nodes. 
+Every flow is constructed from a limited number of connected nodes.
 
-There are several node types:
+Features:
+* Code-centric, no XAML
+* Data flow friendly: easy to pass data from one activity to another
+* Integrated dependency injection
+* Flow validation
+* Supports visualization
+
+Available node types:
 * **activity** node represents user-defined action;
 * **condition** node represents decision (like `if-else` statement);
 * **switch** node represents multiway branch (like `switch` statement);
