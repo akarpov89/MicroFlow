@@ -28,7 +28,7 @@ There are several node types:
 
 The user-defined activities should inherit from one of the following base classes
 
-##### Activity&lt;TResult>&gt;
+##### Activity&lt;TResult&gt;
 The most generic activity returning the result of type `TResult`.
 An implementation must override the method
 ```cs
@@ -41,7 +41,7 @@ The most generic activity without returning value. An implementation must overri
 protected abstract Task ExecuteCore();
 ``` 
 
-##### SyncActivity&lt;TResult>&gt;
+##### SyncActivity&lt;TResult&gt;
 The base class of the synchronous activities returning the value of type `TResult`.
 An implemenation must override the method:
 ```cs
@@ -55,7 +55,7 @@ An implemenation must override the method:
 protected abstract void ExecuteActivity();
 ```
 
-##### BackgroundActivity&lt;TResult>&gt;
+##### BackgroundActivity&lt;TResult&gt;
 Provides the way to execute a function on a separate thread.
 An implemenation must override the method:
 ```cs
