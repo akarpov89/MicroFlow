@@ -256,7 +256,7 @@ sumTwoNumbers.Bind(a => a.FirstNumber).To(() => myVar.CurrentValue);
 
 Every flow is a subclass of the `Flow` abstract class. 
 The `Flow` base class provides the way to validate and run the
-the constructed flow via methods
+the constructed flow:
 ```cs
 public ValidationResult Validate();
 public Task Run();
@@ -518,5 +518,5 @@ public static void Main(string[] args)
 
 ### Special thanks
 
-<img src="https://pbs.twimg.com/profile_images/674917637646716928/lni0by_I.png" width="128px" align="left" />  
+<img src="https://pbs.twimg.com/profile_images/674917637646716928/lni0by_I.png" width="64px" />
 [ReSharper](http://www.jetbrains.com/resharper/) - the most advanced productivity add-in for Visual Studio!
