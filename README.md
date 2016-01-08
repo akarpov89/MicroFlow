@@ -519,4 +519,5 @@ public static void Main(string[] args)
 ### Special thanks
 
 <img src="https://pbs.twimg.com/profile_images/674917637646716928/lni0by_I.png" width="64px" />
+
 [ReSharper](http://www.jetbrains.com/resharper/) - the most advanced productivity add-in for Visual Studio!
