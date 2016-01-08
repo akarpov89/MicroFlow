@@ -13,7 +13,7 @@ namespace MicroFlow
         public bool HasErrors => _errors.Count > 0;
 
         [NotNull]
-        public ReadOnlyCollection<ValidationError> Errors => _errors.AsReadOnly();
+        public ReadOnlyCollection<ValidationError> Errors => new ReadOnlyCollection<ValidationError>(_errors);
 
         public void AddError([NotNull] string errorMessage)
         {

@@ -1,5 +1,7 @@
 ﻿using System;
+#if !PORTABLE
 using System.Collections.Generic;
+#endif
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -98,9 +100,13 @@ namespace MicroFlow
         [NotNull]
         public static Task<TResult> FromResult<TResult>(TResult value)
         {
+#if PORTABLE
+            return Task.FromResult(value);
+#else
             var tcs = new TaskCompletionSource<TResult>();
             tcs.SetResult(value);
             return tcs.Task;
+#endif
         }
 
         [NotNull]
@@ -122,6 +128,9 @@ namespace MicroFlow
         [NotNull]
         public static Task<T[]> WhenAll<T>(this Task<T>[] tasks)
         {
+#if PORTABLE
+            return Task.WhenAll(tasks);
+#else
             var tcs = new TaskCompletionSource<T[]>();
 
             Task.Factory.ContinueWhenAll(tasks, completedTasks =>
@@ -167,6 +176,7 @@ namespace MicroFlow
             }, TaskContinuationOptions.ExecuteSynchronously);
 
             return tcs.Task;
+#endif
         }
 
         [StructLayout(LayoutKind.Auto)]

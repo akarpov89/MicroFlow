@@ -65,18 +65,23 @@ namespace MicroFlow
             throw new AssertionException(message);
         }
 
+#if PORTABLE
+        [DataContract]
+#else
         [Serializable]
+#endif
         public class AssertionException : Exception
         {
             public AssertionException(string message)
               : base(message)
             {
             }
-
+#if !PORTABLE
             protected AssertionException(SerializationInfo info, StreamingContext context)
               : base(info, context)
             {
             }
+#endif
         }
     }
 }

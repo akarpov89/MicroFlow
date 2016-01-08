@@ -66,7 +66,11 @@ namespace MicroFlow
             type.AssertNotNull("type != null");
             serviceProvider.AssertNotNull("serviceProvider != null");
 
+#if PORTABLE
+            Debug.Assert(typeof (T).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()));
+#else
             Debug.Assert(typeof (T).IsAssignableFrom(type));
+#endif
 
             object[] services;
             object instance = CreateInstance(type, serviceProvider, out services);
@@ -76,7 +80,11 @@ namespace MicroFlow
 
         private static object CreateInstance(Type type, IServiceProvider serviceProvider, out object[] parameters)
         {
+#if PORTABLE
+            ConstructorInfo[] constructors = type.GetTypeInfo().DeclaredConstructors.ToArray();
+#else
             ConstructorInfo[] constructors = type.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
+#endif
 
             Array.Sort(constructors, new ByParametersCountComparer());
 

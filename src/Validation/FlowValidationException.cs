@@ -3,7 +3,11 @@ using System.Runtime.Serialization;
 
 namespace MicroFlow
 {
+#if PORTABLE
+    [DataContract]
+#else
     [Serializable]
+#endif
     public class FlowValidationException : Exception
     {
         public FlowValidationException()
@@ -18,12 +22,17 @@ namespace MicroFlow
         {
         }
 
+#if !PORTABLE
         protected FlowValidationException(
             SerializationInfo info,
             StreamingContext context) : base(info, context)
         {
         }
+#endif
 
+#if PORTABLE
+        [DataMember]
+#endif
         public ValidationResult ValidatonResult { get; internal set; }
     }
 }

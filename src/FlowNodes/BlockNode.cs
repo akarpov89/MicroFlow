@@ -18,7 +18,7 @@ namespace MicroFlow
         public override FlowNodeKind Kind => FlowNodeKind.Block;
 
         [NotNull]
-        public ReadOnlyCollection<IFlowNode> InnerNodes => _nodes.AsReadOnly();
+        public ReadOnlyCollection<IFlowNode> InnerNodes => new ReadOnlyCollection<IFlowNode>(_nodes);
 
         public override TResult Accept<TResult>(INodeVisitor<TResult> visitor)
         {

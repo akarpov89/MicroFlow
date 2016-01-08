@@ -50,7 +50,7 @@ namespace MicroFlow
 
         Type IActivityDescriptor.ActivityType => typeof (TActivity);
 
-        public ReadOnlyCollection<IPropertyBindingInfo> PropertyBindings => _propertyBindings.AsReadOnly();
+        public ReadOnlyCollection<IPropertyBindingInfo> PropertyBindings => new ReadOnlyCollection<IPropertyBindingInfo>(_propertyBindings);
 
         void IActivityDescriptor.ExecuteInitializersFor(IActivity activity)
         {
