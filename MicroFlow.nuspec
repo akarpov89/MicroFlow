@@ -16,5 +16,8 @@
   <files>
     <file src="output\$configuration$\**\MicroFlow.dll" target="lib\net40\" />
     <file src="output\$configuration$\**\MicroFlow.pdb" target="lib\net40\" />
+    <file src="output\$configuration$\**\MicroFlow.Graph.exe" target="tools" />
+    <file src="output\$configuration$\**\MicroFlow.dll" target="tools" />
+    <file src="src\**\*.cs" target="src" />
   </files>
 </package>

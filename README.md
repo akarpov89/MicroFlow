@@ -17,48 +17,48 @@ to the next operation node but also to the _fault handler_ node and _cancellatio
 
 The user-defined activities should inherit from one of the following base classes
 
-##### 1. Activity&lt;TResult>&gt;
+##### Activity&lt;TResult>&gt;
 The most generic activity returning the result of type `TResult`.
 An implementation must override the method
 ```cs
 public abstract Task<Result> Execute();
 ```
 
-##### 2. Activity
+##### Activity
 The most generic activity without returning value. An implementation must override the method
 ```cs
 protected abstract Task ExecuteCore();
 ``` 
 
-##### 3. SyncActivity&lt;TResult>&gt;
+##### SyncActivity&lt;TResult>&gt;
 The base class of the synchronous activities returning the value of type `TResult`.
 An implemenation must override the method:
 ```cs
 protected abstract TResult ExecuteActivity();
 ```
 
-##### 4. SyncActivity
+##### SyncActivity
 The base class of the synchronous activities without returning value.
 An implemenation must override the method:
 ```cs
 protected abstract void ExecuteActivity();
 ```
 
-##### 5. BackgroundActivity&lt;TResult>&gt;
+##### BackgroundActivity&lt;TResult>&gt;
 Provides the way to execute a function on a separate thread.
 An implemenation must override the method:
 ```cs
 protected abstract TResult ExecuteCore(CancellationToken token);
 ```
 
-##### 6. BackgroundActivity
+##### BackgroundActivity
 Provides the way to execute an action on a separate thread. 
 An implemenation must override the method:
 ```cs
 protected abstract void ExecuteCore(CancellationToken token);
 ```
 
-##### 7. IFaultHandlerActivity
+##### IFaultHandlerActivity
 The interface of all fault handlers. Every fault handler must provide the following property:
 ```cs
 Exception Exception { get; set; }
@@ -68,7 +68,7 @@ Exception Exception { get; set; }
 
 The `FlowBuilder` class provides the way to create nodes of the flow.
 
-##### 1. ActivityNode&lt;TActivity&gt;
+##### ActivityNode&lt;TActivity&gt;
 ```cs
 var node = builder.Activity<SomeActivity>("Optional node name");
 
@@ -77,7 +77,7 @@ node.ConnectTo(anotherNode)
     .ConnnectCancellationTo(cancellationHandler);
 ```
 
-##### 2. ConditionNode
+##### ConditionNode
 ```cs
 var node = builder.Condition("Optional node name");
 node.WithCondition(() => someBooleanExpression);
@@ -86,7 +86,7 @@ node.ConnectFalseTo(falseBranchNode)
     .ConnectTrueTo(trueBranchNode);
 ```
 
-##### 3. SwitchNode
+##### SwitchNode
 ```cs
 var node = builder.SwitchOf<int>("Optional node name");
 node.WithChoice(() => someIntExpression);
@@ -97,7 +97,7 @@ node.ConnectCase(0).To(caseHandler1)
     .ConnectDefault(caseHandler4).
 ```
 
-##### 4. ForkJoinNode
+##### ForkJoinNode
 ```cs
 var node = builder.ForkJoin("Optional node name");
 
@@ -106,7 +106,7 @@ var fork2 = node.Fork<SomeAnotherForkActivity>("Optional fork name");
 var fork3 = node.Fork<SomeActivity>("Optional fork name");
 ```
 
-##### 5. BlockNode
+##### BlockNode
 ```cs
 var node = builder.Block("Optional node name", (block, blockBuilder) =>
 {
@@ -117,7 +117,229 @@ var node = builder.Block("Optional node name", (block, blockBuilder) =>
 });
 ```
 
-### Example
+##### Default fault handler
+
+Every activity node should be connected with some specific or default fault handler
+```cs
+var globalFaultHandler = builder.FaultHandler<MyFaultHandler>("Global fault handler");
+builder.WithDefaultFaultHandler(globalFaultHandler); 
+```
+
+##### Default cancellation handler
+```cs
+var globalCancellationHandler = builder.Activity<MyCancellationHandler>("Global cancellation handler");
+builder.WithDefaultCancellationHandler(globalCancellationHandler);
+```
+
+### Data flow
+
+As flow executes data transfers from one activity to another.
+The MicroFlow has two mechanisms to define the data flow: _bindings_ and _variables_.
+
+In the examples below we will use the following activities:
+
+```cs
+public class ReadIntActivity : SyncActivity<int>
+{
+    protected override int ExecuteActivity() => int.Parse(Console.ReadLine());
+}
+
+public class SumActivity : SyncActivity<int>
+{
+    [Required] public int FirstNumber { get; set; }
+    [Required] public int SecondNumber { get; set; }
+    
+    protected override int ExecuteActivity() => FirstNumber + SecondNumber;
+}
+``` 
+##### Binding to activity result
+
+In this example we bind properties `FirstNumber` and `SecondNumber` to the results
+of `readFirstNumber` and `readSecondNumber`:
+```cs
+var readFirstNumber = builder.Activity<ReadIntActivity>();
+var readSecondNumber = builder.Activity<ReadIntActivity>();
+
+var sumTwoNumbers = builder.Activity<SumActivity>();
+
+sumTwoNumbers.Bind(a => a.FirstNumber).ToResultOf(readFirstNumber);
+sumTwoNumbers.Bind(a => a.SecondNumber).ToResultOf(readSecondNumber);
+```
+##### Binding to value
+
+In this example we bind `FirstNumber` to the value `42` and `SecondNumber` to `5`:
+```cs
+var sumTwoNumbers = builder.Activity<SumActivity>();
+
+sumTwoNumbers.Bind(a => a.FirstNumber).To(42);
+sumTwoNumbers.Bind(a => a.SecondNumber).To(5);
+```
+
+##### Binding to expression
+
+In this example we bind `FirstNumber` to expression using the result of the `readFirstNumber`
+and `SecondNumber` to function call `Factorial(5)` expression:
+
+```cs
+var readFirstNumber = builder.Activity<ReadIntActivity>();
+
+var firstNumber = Result<int>.Of(readFirstNumber); // Create result thunk
+
+var sumTwoNumbers = builder.Activity<SumActivity>();
+
+sumTwoNumbers.Bind(a => a.FirstNumber).To(() => firstNumber.Get() + 1);
+sumTwoNumbers.Bind(a => a.SecondNumber).To(() => Factorial(5)); 
+```
+
+##### Using flow variables
+
+The MicroFlow allows to create and use variables scoped to the whole flow or to some specific block:
+
+```cs
+var globalVariable = builder.Variable<int>();
+
+var block = builder.Block("my block", (thisBlock, blockBuilder) =>
+{
+    var localVariable = thisBlock.Variable<string>("some initial variable value");
+});
+```
+It's possible to change the variable value after completion of some activity:
+
+* Assign activity result:
+```cs
+ var myVar = builder.Variable<int>();
+ 
+ var readFirstNumber = builder.Activity<ReadIntActivity>();
+
+ myVar.BindToResultOf(readFirstNumber);
+```
+* Assign value:
+```cs
+ var myVar = builder.Variable<bool>();
+ 
+ var readFirstNumber = builder.Activity<ReadIntActivity>();
+
+ myVar.AfterCompletionOf(readFirstNumber).Assign(true);
+```
+
+* Update value:
+```cs
+ var myVar = builder.Variable<int>(42);
+ 
+ var readFirstNumber = builder.Activity<ReadIntActivity>();
+
+ myVar.AfterCompletionOf(readFirstNumber).Update((oldValue, result) => oldValue + result);
+```
+
+Later the current value of a variable can retrieved via property `CurrentValue`:
+```cs
+var myVar = builder.Variable<int>();
+...
+var sumTwoNumbers = builder.Activity<SumActivity>();
+
+sumTwoNumbers.Bind(a => a.FirstNumber).To(() => myVar.CurrentValue);
+...
+```
+
+### Creating the flow
+
+Every flow is a subclass of the `Flow` abstract class. 
+The `Flow` base class provides the way to validate and run the
+the constructed flow via methods
+```cs
+public ValidationResult Validate();
+public Task Run();
+```
+
+In order to create new flow definition it's required to describe the flow structure 
+and give the flow some name:
+
+```cs
+public class MyFlow : Flow
+{
+    public override string Name => "My brand new flow";
+    
+    protected override void Build(FlowBuilder builder)
+    {
+        // Create and connect nodes
+    }
+}
+```
+
+The `Flow` сlass also has several configuration extension points:
+* `ConfigureServices` method allows to register services required for activities (dependency injection mechanism);
+* `ConfigureValidation` method allows to add custom flow validators;
+* `CreateFlowExecutionLogger` method allows to setup execution logging.
+
+##### Services registration
+
+Configuring services is possible via overriding the method `ConfigureServices`
+```cs
+protected virtual void ConfigureServices(IServiceCollection services);
+```
+
+Let's say our `ReadIntActivity` uses `IReader` service:
+```cs
+public interface IReader
+{
+    string Read();
+}
+
+public class ReadIntActivity : SyncActivity<int>
+{
+    private readonly IReader _reader;
+    
+    public ReadIntActivity(IReader reader)
+    {
+        _reader = reader;
+    }
+    
+    protected override int ExecuteActivity() => int.Parse(_reader.Read());
+}
+```
+
+`ConfigureServices` method allows to register service implementation
+passing to the `ReadIntActivity` constructor whenever the activity is created.
+
+`IServiceCollection` has several helper methods:
+* `AddSingleton<TService>(object instance)` registers the specified instance as a service implementation.
+* `AddSingleton<TService, TImplementation>()` registers the type of the service implementation. 
+The single instance of the `TImplementation` will be used throughout the whole flow;
+* `AddTransient<TService, TImplementation>()` registers the type of the service implemenation.
+The new instance of the `TImplementation` will be created each time it's needed to pass the
+service to the activity constructor.
+
+**NOTE** Current implementation allows to register only service implementation types having a default constructor.
+
+##### Logging
+
+While no logging is performed by default it's possible to specify the flow execution logger 
+by overriding the method:
+```cs
+protected virtual ILogger CreateFlowExecutionLogger();
+```
+
+The `ILogger` interface declares the verbosity level property and several overloads to 
+log messages and exceptions.
+
+The MicroFlow provides two simple implementations:
+* `NullLogger` does nothing;
+* `ConsoleLogger` prints messages to the console.
+
+### Generating the graphical flow
+
+The MicroFlow comes with the tool called _MicroFlow.Graph_ that allows to generate *.dgml files.
+DGML is an XML-based file format for directed graphs supported by the Microsoft Visual Studio 2010 and later.
+
+MicroFlow.Graph.exe is a console program with two required arguments:
+* path to or name of the assembly containing the flow definition class;
+* flow class name.
+
+Example: `MicroFlow.Graph MicroFlow.Test.dll Flow1`
+
+The generated sample flow is presented below.
+
+### Sample Flow
 
 Let's create the simple flow: 
 read two numbers and if first number greater than a second output "first > second" 
