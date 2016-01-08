@@ -2,16 +2,27 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/yqymhi8dqekg778u?svg=true)](https://ci.appveyor.com/project/akarpov89/microflow)
 
+### Getting Started
+
+* [What is MicroFlow?](#what-is-microflow)
+* [Activities](#activities)
+* [Nodes](#nodes)
+* [Data flow](#data-flow)
+* [Creating the flow](#creating-the-flow)
+* [Graph generator](#graph-generator)
+* [Sample](#sample)
+
+### What is MicroFlow?
+
 MicroFlow is a lightweight workflow engine. It allows to build workflows as flowcharts.
-Every flow is constructed from a limited number of connected nodes. There are several node types:
+Every flow is constructed from a limited number of connected nodes. 
+
+There are several node types:
 * **activity** node represents user-defined action;
 * **condition** node represents decision (like `if-else` statement);
 * **switch** node represents multiway branch (like `switch` statement);
 * **fork-join** node represents concurrent activities;
 * **block** node groups several nodes (like blocks in programming languages).
- 
-Because user-defined action may fail or be cancelled activity nodes can be connected not only 
-to the next operation node but also to the _fault handler_ node and _cancellation handler_ node.
 
 ### Activities
 
@@ -326,7 +337,7 @@ The MicroFlow provides two simple implementations:
 * `NullLogger` does nothing;
 * `ConsoleLogger` prints messages to the console.
 
-### Generating the graphical flow
+### Graph generator
 
 The MicroFlow comes with the tool called _MicroFlow.Graph_ that allows to generate *.dgml files.
 DGML is an XML-based file format for directed graphs supported by the Microsoft Visual Studio 2010 and later.
@@ -339,7 +350,7 @@ Example: `MicroFlow.Graph MicroFlow.Test.dll Flow1`
 
 The generated sample flow is presented below.
 
-### Sample Flow
+### Sample
 
 Let's create the simple flow: 
 read two numbers and if first number greater than a second output "first > second" 
@@ -507,5 +518,5 @@ public static void Main(string[] args)
 
 ### Special thanks
 
-![ReSharper](http://www.jetbrains.com/img/logos/logo_resharper_small.gif)  
+<img src="https://pbs.twimg.com/profile_images/674917637646716928/lni0by_I.png" width="128px" align="left" />  
 [ReSharper](http://www.jetbrains.com/resharper/) - the most advanced productivity add-in for Visual Studio!
