@@ -9,7 +9,7 @@
 * [Activities](#activities)
 * [Nodes](#nodes)
 * [Data flow](#data-flow)
-* [Creating the flow](#creating-the-flow)
+* [Flow creation](#flow-creation)
 * [Graph generator](#graph-generator)
 * [Sample](#sample)
 * [License](https://raw.githubusercontent.com/akarpov89/MicroFlow/master/License.txt)
@@ -261,7 +261,7 @@ sumTwoNumbers.Bind(a => a.FirstNumber).To(() => myVar.CurrentValue);
 ...
 ```
 
-### Creating the flow
+### Flow creation
 
 Every flow is a subclass of the `Flow` abstract class. 
 The `Flow` base class provides the way to validate and run the
