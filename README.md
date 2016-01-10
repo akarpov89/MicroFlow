@@ -24,7 +24,7 @@ Features:
 * Data flow friendly: easy to pass data from one activity to another
 * Integrated dependency injection
 * Flow validation
-* Supports visualization
+* Visualization support
 
 Available node types:
 * **activity** node represents user-defined action;
@@ -414,7 +414,10 @@ public class WriteMessageActivity : SyncActivity
     [Required]
     public string Message { get; set; }
 
-    protected override void ExecuteActivity() => _writer.Write(Message);
+    protected override void ExecuteActivity() 
+    {
+        _writer.Write(Message);
+    }
 }
 ```
 
@@ -426,12 +429,18 @@ public class MyFaultHandler : SyncActivity, IFaultHandlerActivity
 {
     public Exception Exception { get; set; }
     
-    protected override void ExecuteActivity() => Console.WriteLine(Exception);
+    protected override void ExecuteActivity()
+    {
+        Console.WriteLine(Exception);
+    }
 }
 
 public class MyCancellationHandler : SyncActivity
 {
-    protected override void ExecuteActivity() => Console.WriteLine("Cancelled");
+    protected override void ExecuteActivity()
+    {
+        Console.WriteLine("Cancelled");
+    }
 }
 ```
 
@@ -445,7 +454,10 @@ public class ConsoleReader : IReader
 
 public class ConsoleWriter : IWriter
 {
-    public string Write(string message) => Console.WriteLine(message);
+    public string Write(string message)
+    {
+        Console.WriteLine(message);
+    }
 }
 ```
 
