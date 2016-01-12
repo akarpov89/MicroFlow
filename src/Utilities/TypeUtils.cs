@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+#if !PORTABLE
 using System.Reflection.Emit;
+#endif
 using JetBrains.Annotations;
 
 namespace MicroFlow
@@ -17,6 +19,9 @@ namespace MicroFlow
         [NotNull]
         public static Func<object> CreateDefaultConstructorFactoryFor([NotNull] Type type)
         {
+#if PORTABLE
+            return () => Activator.CreateInstance(type);
+#else            
             type.IsAbstract.AssertFalse("The type '" + type + "' is abstract");
             type.IsGenericTypeDefinition.AssertFalse("The type '" + type + "' is unbound generic type");
 
@@ -30,6 +35,7 @@ namespace MicroFlow
             il.Emit(OpCodes.Ret);
 
             return (Func<object>) dynamicMethod.CreateDelegate(typeof (Func<object>));
+#endif
         }
 
         public static IEnumerable<string> GetRequiredProperties([NotNull] this Type type)
@@ -38,6 +44,15 @@ namespace MicroFlow
 
             var requiredAttributeType = typeof (RequiredAttribute);
 
+#if PORTABLE
+            foreach (var property in type.GetTypeInfo().DeclaredProperties)
+            {
+                if (property.IsDefined(requiredAttributeType))
+                {
+                    yield return property.Name;
+                }
+            }
+#else
             foreach (var property in type.GetProperties())
             {
                 if (Attribute.IsDefined(property, requiredAttributeType))
@@ -45,6 +60,7 @@ namespace MicroFlow
                     yield return property.Name;
                 }
             }
+#endif
         }
     }
 }

@@ -16,8 +16,13 @@
   <files>
     <file src="output\$configuration$\**\MicroFlow.dll" target="lib\net40\" />
     <file src="output\$configuration$\**\MicroFlow.pdb" target="lib\net40\" />
+
+    <file src="output\portable\$configuration$\**\MicroFlow.dll" target="lib\portable-net45+win8+wpa81+wp8\" />
+    <file src="output\portable\$configuration$\**\MicroFlow.pdb" target="lib\portable-net45+win8+wpa81+wp8\" />
+
     <file src="output\$configuration$\**\MicroFlow.Graph.exe" target="tools" />
     <file src="output\$configuration$\**\MicroFlow.dll" target="tools" />
+
     <file src="src\**\*.cs" target="src" />
   </files>
 </package>

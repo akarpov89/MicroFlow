@@ -17,7 +17,7 @@ namespace MicroFlow
         public override FlowNodeKind Kind => FlowNodeKind.ForkJoin;
 
         [NotNull]
-        public ReadOnlyCollection<IActivityDescriptor> Forks => _forks.AsReadOnly();
+        public ReadOnlyCollection<IActivityDescriptor> Forks => new ReadOnlyCollection<IActivityDescriptor>(_forks);
 
         public override TResult Accept<TResult>(INodeVisitor<TResult> visitor)
         {
