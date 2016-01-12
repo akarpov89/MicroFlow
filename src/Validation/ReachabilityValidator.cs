@@ -6,14 +6,14 @@ namespace MicroFlow
     {
         private readonly List<IFlowNode> _reachableNodes = new List<IFlowNode>();
 
-        protected override void PerformGlobalValidation(FlowBuilder flowBuilder)
+        protected override void PerformGlobalValidation(FlowDescription flowDescription)
         {
-            foreach (IFlowNode node in flowBuilder.Nodes)
+            foreach (IFlowNode node in flowDescription.Nodes)
             {
                 if (!_reachableNodes.Contains(node) &&
-                    node != flowBuilder.InitialNode &&
-                    node != flowBuilder.DefaultFaultHandler &&
-                    node != flowBuilder.DefaultCancellationHandler)
+                    node != flowDescription.InitialNode &&
+                    node != flowDescription.DefaultFaultHandler &&
+                    node != flowDescription.DefaultCancellationHandler)
                 {
                     Result.AddError(node, "Node isn't reachable from any other node");
                 }

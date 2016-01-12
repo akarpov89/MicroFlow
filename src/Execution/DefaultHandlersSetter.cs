@@ -6,20 +6,20 @@ namespace MicroFlow
     {
         private readonly IActivityNode _cancellationHandler;
         private readonly IFaultHandlerNode _faultHandler;
-        private readonly FlowBuilder _flowBuilder;
+        private readonly FlowDescription _flowDescription;
 
-        public DefaultHandlersSetter([NotNull] FlowBuilder flowBuilder)
+        public DefaultHandlersSetter([NotNull] FlowDescription flowDescription)
         {
-            _flowBuilder = flowBuilder.NotNull();
-            _faultHandler = flowBuilder.DefaultFaultHandler;
-            _cancellationHandler = flowBuilder.DefaultCancellationHandler;
+            _flowDescription = flowDescription.NotNull();
+            _faultHandler = flowDescription.DefaultFaultHandler;
+            _cancellationHandler = flowDescription.DefaultCancellationHandler;
         }
 
         public void Execute()
         {
             if (_faultHandler != null || _cancellationHandler != null)
             {
-                foreach (IFlowNode node in _flowBuilder.Nodes)
+                foreach (IFlowNode node in _flowDescription.Nodes)
                 {
                     node.Accept(this);
                 }

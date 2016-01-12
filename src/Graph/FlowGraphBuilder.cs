@@ -29,11 +29,11 @@ namespace MicroFlow.Graph
 
         public XElement Result { get; }
 
-        public XElement GenerateDgml(FlowBuilder flowBuilder)
+        public XElement GenerateDgml(FlowDescription flowDescription)
         {
-            if (flowBuilder == null) throw new ArgumentNullException(nameof(flowBuilder));
+            if (flowDescription == null) throw new ArgumentNullException(nameof(flowDescription));
 
-            foreach (var node in flowBuilder.Nodes)
+            foreach (var node in flowDescription.Nodes)
             {
                 node.Accept(this);
             }

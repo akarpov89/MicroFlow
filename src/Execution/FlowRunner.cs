@@ -188,12 +188,12 @@ namespace MicroFlow
             return pointsToContinuation.Unwrap();
         }
 
-        public Task Run([NotNull] FlowBuilder flowBuilder)
+        public Task Run([NotNull] FlowDescription flowDescription)
         {
-            flowBuilder.AssertNotNull("flowBuilder != null");
-            flowBuilder.InitialNode.AssertNotNull("Initial node isn't set");
+            flowDescription.AssertNotNull("flowDescription != null");
+            flowDescription.InitialNode.AssertNotNull("Initial node isn't set");
 
-            return flowBuilder.InitialNode.Accept(this);
+            return flowDescription.InitialNode.Accept(this);
         }
 
         [NotNull]

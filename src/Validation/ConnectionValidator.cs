@@ -5,9 +5,9 @@ namespace MicroFlow
 {
     public sealed class ConnectionValidator : FlowValidator
     {
-        protected override void PerformGlobalValidation(FlowBuilder flowBuilder)
+        protected override void PerformGlobalValidation(FlowDescription flowDescription)
         {
-            if (flowBuilder.InitialNode == null)
+            if (flowDescription.InitialNode == null)
             {
                 Result.AddError("Initial node isn't set");
             }

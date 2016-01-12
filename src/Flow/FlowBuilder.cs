@@ -6,23 +6,16 @@ namespace MicroFlow
 {
     public class FlowBuilder
     {
+        [CanBeNull] private IFlowNode _initialNode;
+        [CanBeNull] private IFaultHandlerNode _defaultFaultHandler;
+        [CanBeNull] private IActivityNode _defaultCancellationHandler;
+
         [NotNull] private readonly Stack<BlockNode> _blockStack = new Stack<BlockNode>();
 
         [NotNull] private readonly List<IVariable> _globalVariables = new List<IVariable>();
-
         [NotNull] private readonly List<IFlowNode> _nodes = new List<IFlowNode>();
 
-        [CanBeNull]
-        public IFaultHandlerNode DefaultFaultHandler { get; private set; }
-
-        [CanBeNull]
-        public IActivityNode DefaultCancellationHandler { get; private set; }
-
-        [CanBeNull]
-        public IFlowNode InitialNode { get; private set; }
-
-        [NotNull]
-        public ReadOnlyCollection<IFlowNode> Nodes => new ReadOnlyCollection<IFlowNode>(_nodes);
+        private bool _isFreezed;
 
         [NotNull]
         public ActivityNode<TActivity> Activity<TActivity>()
@@ -126,10 +119,11 @@ namespace MicroFlow
         public FlowBuilder WithInitialNode([NotNull] IFlowNode node)
         {
             node.AssertNotNull("node != null");
-            InitialNode.AssertIsNull("Initial node is already specified");
+            _initialNode.AssertIsNull("Initial node is already specified");
             node.AssertIsItemOf(_nodes, "Node must be part of the flow");
+            _isFreezed.AssertFalse("Builder is freezed");
 
-            InitialNode = node;
+            _initialNode = node;
             return this;
         }
 
@@ -137,10 +131,11 @@ namespace MicroFlow
         public FlowBuilder WithDefaultFaultHandler([NotNull] IFaultHandlerNode handler)
         {
             handler.AssertNotNull("handler != null");
-            DefaultFaultHandler.AssertIsNull("Default fault handler is already set");
+            _defaultFaultHandler.AssertIsNull("Default fault handler is already set");
             handler.AssertIsItemOf(_nodes, "Handler must be part of the flow");
+            _isFreezed.AssertFalse("Builder is freezed");
 
-            DefaultFaultHandler = handler;
+            _defaultFaultHandler = handler;
             return this;
         }
 
@@ -150,17 +145,30 @@ namespace MicroFlow
             where TCancellationHandler : class, IActivity
         {
             handler.AssertNotNull("handler != null");
-            DefaultCancellationHandler.AssertIsNull("Default cancellation handler is already set");
+            _defaultCancellationHandler.AssertIsNull("Default cancellation handler is already set");
             handler.AssertIsItemOf(_nodes, "Handler must be part of the flow");
+            _isFreezed.AssertFalse("Builder is freezed");
 
-            DefaultCancellationHandler = handler;
+            _defaultCancellationHandler = handler;
             return this;
+        }
+
+        [NotNull]
+        public FlowDescription CreateFlow()
+        {
+            _isFreezed = true;
+
+            return new FlowDescription(
+                _initialNode,
+                _defaultFaultHandler, _defaultCancellationHandler,
+                new ReadOnlyCollection<IFlowNode>(_nodes), 
+                new ReadOnlyCollection<IVariable>(_globalVariables));
         }
 
         public void Clear()
         {
-            DefaultCancellationHandler = null;
-            DefaultFaultHandler = null;
+            _defaultCancellationHandler = null;
+            _defaultFaultHandler = null;
 
             foreach (IFlowNode node in _nodes)
             {
@@ -179,6 +187,8 @@ namespace MicroFlow
 
         private TNode AddNode<TNode>(TNode node) where TNode : IFlowNode
         {
+            _isFreezed.AssertFalse("Builder is freezed");
+
             _nodes.Add(node);
 
             if (_blockStack.Count > 0)

@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\Activity.cs" />
+    <Compile Include="Flow\FlowDescription.cs" />
     <Compile Include="Validation\RequiredAttribute.cs" />
     <Compile Include="Binding\AfterCompletionUpdater.cs" />
     <Compile Include="Binding\ExpressionBinding.cs" />

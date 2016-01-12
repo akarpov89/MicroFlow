@@ -18,7 +18,7 @@ namespace MicroFlow.Test
             var validator = new ReachabilityValidator();
 
             // Act
-            validator.Validate(b);
+            validator.Validate(b.CreateFlow());
             var result = validator.Result;
 
             // Assert
@@ -43,7 +43,7 @@ namespace MicroFlow.Test
             var validator = new ReachabilityValidator();
 
             // Act
-            validator.Validate(b);
+            validator.Validate(b.CreateFlow());
             var result = validator.Result;
 
             // Assert
@@ -73,7 +73,7 @@ namespace MicroFlow.Test
             var validator = new ReachabilityValidator();
 
             // Act
-            validator.Validate(b);
+            validator.Validate(b.CreateFlow());
             var result = validator.Result;
 
             // Assert
@@ -98,7 +98,7 @@ namespace MicroFlow.Test
             var validator = new ReachabilityValidator();
 
             // Act
-            validator.Validate(b);
+            validator.Validate(b.CreateFlow());
             var result = validator.Result;
 
             // Assert
@@ -126,7 +126,7 @@ namespace MicroFlow.Test
             var validator = new ReachabilityValidator();
 
             // Act
-            validator.Validate(b);
+            validator.Validate(b.CreateFlow());
             var result = validator.Result;
 
             // Assert

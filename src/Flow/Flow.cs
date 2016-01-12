@@ -13,11 +13,12 @@ namespace MicroFlow
         {
             var flowBuilder = new FlowBuilder();
             Build(flowBuilder);
+            var flowDescription = flowBuilder.CreateFlow();
 
             var validators = GetStandardValidators();
             ConfigureValidation(validators);
 
-            var validationResult = ValidateFlow(validators, flowBuilder);
+            var validationResult = ValidateFlow(validators, flowDescription);
             if (validationResult.HasErrors)
             {
                 throw new FlowValidationException("Flow is not valid")
@@ -26,7 +27,7 @@ namespace MicroFlow
                 };
             }
 
-            new DefaultHandlersSetter(flowBuilder).Execute();
+            new DefaultHandlersSetter(flowDescription).Execute();
 
             var runner = new FlowRunner();
 
@@ -40,11 +41,11 @@ namespace MicroFlow
 
             try
             {
-                Debug.Assert(flowBuilder.InitialNode != null);
+                Debug.Assert(flowDescription.InitialNode != null);
 
                 log.Info("Starting the flow '{0}'", Name);
 
-                Task task = runner.Run(flowBuilder);
+                Task task = runner.Run(flowDescription);
 
                 Debug.Assert(task != null);
 
@@ -84,7 +85,7 @@ namespace MicroFlow
                 var validators = GetStandardValidators();
                 ConfigureValidation(validators);
 
-                return ValidateFlow(validators, flowBuilder);
+                return ValidateFlow(validators, flowBuilder.CreateFlow());
             }
             finally
             {
@@ -110,13 +111,13 @@ namespace MicroFlow
 
         private static ValidationResult ValidateFlow(
             [NotNull] ValidatorCollection validators,
-            [NotNull] FlowBuilder flowBuilder)
+            [NotNull] FlowDescription flowDescription)
         {
             var validationResult = new ValidationResult();
 
             foreach (FlowValidator validator in validators)
             {
-                if (!validator.Validate(flowBuilder))
+                if (!validator.Validate(flowDescription))
                 {
                     validationResult.TakeErrorsFrom(validator.Result);
                 }

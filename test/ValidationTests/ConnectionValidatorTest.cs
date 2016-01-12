@@ -25,7 +25,7 @@ namespace MicroFlow.Test
             var validator = new ConnectionValidator();
 
             // Act
-            validator.Validate(b);
+            validator.Validate(b.CreateFlow());
 
             // Assert
             Assert.That(validator.Result.GetErrorsOf(node).Count(), Is.EqualTo(errorsCount));

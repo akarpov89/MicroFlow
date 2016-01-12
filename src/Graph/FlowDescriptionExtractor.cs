@@ -5,7 +5,7 @@ namespace MicroFlow.Graph
 {
     public static class FlowDescriptionExtractor
     {
-        public static FlowBuilder ExtractFrom(Type type)
+        public static FlowDescription ExtractFrom(Type type)
         {
             if (!typeof (Flow).IsAssignableFrom(type))
             {
@@ -20,7 +20,7 @@ namespace MicroFlow.Graph
 
             buildMethod.Invoke(flow, new object[] {flowBuilder});
 
-            return flowBuilder;
+            return flowBuilder.CreateFlow();
         }
     }
 }

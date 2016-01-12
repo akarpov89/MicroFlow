@@ -5,29 +5,29 @@ namespace MicroFlow
 {
     public abstract class FlowValidator : NodeVisitor
     {
-        protected FlowBuilder Flow { get; private set; }
+        protected FlowDescription Flow { get; private set; }
 
         [NotNull]
         public ValidationResult Result { get; } = new ValidationResult();
 
-        public bool Validate([NotNull] FlowBuilder flowBuilder)
+        public bool Validate([NotNull] FlowDescription flowDescription)
         {
-            Flow = flowBuilder.NotNull();
+            Flow = flowDescription.NotNull();
             Result.ClearErrors();
 
-            foreach (IFlowNode node in flowBuilder.Nodes)
+            foreach (IFlowNode node in flowDescription.Nodes)
             {
                 node.Accept(this);
             }
 
-            PerformGlobalValidation(flowBuilder);
+            PerformGlobalValidation(flowDescription);
 
             Flow = null;
 
             return !Result.HasErrors;
         }
 
-        protected virtual void PerformGlobalValidation([NotNull] FlowBuilder flowBuilder)
+        protected virtual void PerformGlobalValidation([NotNull] FlowDescription flowDescription)
         {
         }
     }

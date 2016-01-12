@@ -17,7 +17,7 @@ namespace MicroFlow.Test
             var validator = new ActivityInitializationValidator();
 
             // Act
-            validator.Validate(b);
+            validator.Validate(b.CreateFlow());
 
             // Assert
             Assert.That(validator.Result.GetErrorsOf(node), Is.Not.Empty);
@@ -33,7 +33,7 @@ namespace MicroFlow.Test
             var validator = new ActivityInitializationValidator();
 
             // Act
-            validator.Validate(b);
+            validator.Validate(b.CreateFlow());
 
             // Assert
             Assert.That(validator.Result.GetErrorsOf(node), Is.Not.Empty);
@@ -50,7 +50,7 @@ namespace MicroFlow.Test
             var validator = new ActivityInitializationValidator();
 
             // Act
-            validator.Validate(b);
+            validator.Validate(b.CreateFlow());
 
             // Assert
             Assert.That(validator.Result.GetErrorsOf(node), Is.Empty);
