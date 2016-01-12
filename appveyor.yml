@@ -10,5 +10,5 @@ build:
 
 test:
   assemblies:
-    - **\output\$(configuration)\MicroFlow.Test.dll
-    - **\output\portable\$(configuration)\MicroFlow.Test.dll
+    - '**\output\$(configuration)\MicroFlow.Test.dll'
+    - '**\output\portable\$(configuration)\MicroFlow.Test.dll'
