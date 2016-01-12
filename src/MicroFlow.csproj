@@ -40,7 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\Activity.cs" />
-    <Compile Include="Activities\RequiredAttribute.cs" />
+    <Compile Include="Validation\RequiredAttribute.cs" />
     <Compile Include="Binding\AfterCompletionUpdater.cs" />
     <Compile Include="Binding\ExpressionBinding.cs" />
     <Compile Include="Binding\FaultBinding.cs" />

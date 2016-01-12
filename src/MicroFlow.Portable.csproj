@@ -40,7 +40,7 @@
     <Compile Include="Activities\BackgroundActivity.cs" />
     <Compile Include="Activities\IActivity.cs" />
     <Compile Include="Activities\IFaultHandlerActivity.cs" />
-    <Compile Include="Activities\RequiredAttribute.cs" />
+    <Compile Include="Validation\RequiredAttribute.cs" />
     <Compile Include="Activities\SyncActivity.cs" />
     <Compile Include="Binding\ActivityBinder.cs" />
     <Compile Include="Binding\AfterCompletionUpdater.cs" />
