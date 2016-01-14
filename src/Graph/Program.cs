@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -16,7 +17,7 @@ namespace MicroFlow.Graph
 
             string path = args[0];
             string className = args[1];
-            string output = className + ".dgml";
+            string output = Path.Combine(Path.GetDirectoryName(path).NotNull(), className + ".dgml");
 
             try
             {

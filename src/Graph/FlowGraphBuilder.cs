@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using JetBrains.Annotations;
 
 namespace MicroFlow.Graph
 {
@@ -27,9 +28,11 @@ namespace MicroFlow.Graph
             AddCategories();
         }
 
+        [NotNull]
         public XElement Result { get; }
 
-        public XElement GenerateDgml(FlowDescription flowDescription)
+        [NotNull]
+        public XElement GenerateDgml([NotNull] FlowDescription flowDescription)
         {
             if (flowDescription == null) throw new ArgumentNullException(nameof(flowDescription));
 
@@ -122,7 +125,10 @@ namespace MicroFlow.Graph
             _nodes.Add(node);
         }
 
-        private void AddLink(IFlowNode from, IFlowNode to, string category = null, string label = null)
+        private void AddLink(
+            [NotNull] IFlowNode from, 
+            [CanBeNull] IFlowNode to, 
+            [CanBeNull] string category = null, [CanBeNull] string label = null)
         {
             AddLink(from.Id, to?.Id, category, label);
         }

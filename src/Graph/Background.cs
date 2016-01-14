@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace MicroFlow.Graph
 {
     public static class Background
     {
-        public static string OfCategory(string category)
+        [NotNull]
+        public static string OfCategory([NotNull] string category)
         {
             string color;
             if (!Colors.TryGetValue(category, out color))

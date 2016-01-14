@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Reflection;
+using JetBrains.Annotations;
 
 namespace MicroFlow.Graph
 {
     public static class FlowDescriptionExtractor
     {
-        public static FlowDescription ExtractFrom(Type type)
+        [NotNull]
+        public static FlowDescription ExtractFrom([NotNull] Type type)
         {
             if (!typeof (Flow).IsAssignableFrom(type))
             {

@@ -1,4 +1,5 @@
 using System;
+using JetBrains.Annotations;
 
 namespace MicroFlow.Graph
 {
@@ -25,7 +26,8 @@ namespace MicroFlow.Graph
 
     public static class CategoryHelper
     {
-        public static string ToCategory(this IFlowNode node)
+        [NotNull]
+        public static string ToCategory([NotNull] this IFlowNode node)
         {
             if (node is IFaultHandlerNode) return Categories.FaultHandlerNode;
 
