@@ -323,6 +323,8 @@ passing to the `ReadIntActivity` constructor whenever the activity is created.
 
 `IServiceCollection` has several helper methods:
 * `AddSingleton<TService>(object instance)` registers the specified instance as a service implementation.
+* `AddDisposableSingleton<TService>(IDisposable instance)` registers the specified instance as a service implementation;
+After finishing the flow execution the instance will be disposed.
 * `AddSingleton<TService, TImplementation>()` registers the type of the service implementation. 
 The single instance of the `TImplementation` will be used throughout the whole flow;
 * `AddTransient<TService, TImplementation>()` registers the type of the service implemenation.

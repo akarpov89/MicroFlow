@@ -20,7 +20,8 @@ namespace MicroFlow
             {
                 foreach (ServiceDescriptor serviceDescriptor in _services)
                 {
-                    DisposeService(serviceDescriptor);
+                    if (serviceDescriptor.ShouldBeDisposed)
+                        DisposeService(serviceDescriptor.ImplementationInstance);
                 }
 
                 _services.Clear();

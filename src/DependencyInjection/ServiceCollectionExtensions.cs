@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using JetBrains.Annotations;
 
 namespace MicroFlow
 {
@@ -24,6 +25,13 @@ namespace MicroFlow
             [NotNull] this IServiceCollection collection, [NotNull] object instance)
         {
             collection.Add(ServiceDescriptor.Singleton<TService>(instance));
+            return collection;
+        }
+
+        public static IServiceCollection AddDisposableSingleton<TService>(
+            [NotNull] this IServiceCollection collection, [NotNull] IDisposable instance)
+        {
+            collection.Add(ServiceDescriptor.DisposableSingleton<TService>(instance));
             return collection;
         }
 

@@ -9,6 +9,7 @@ namespace MicroFlow
         public Type ServiceType { get; private set; }
         public Func<object> Factory { get; private set; }
         public object ImplementationInstance { get; private set; }
+        public bool ShouldBeDisposed { get; private set; }
 
         public static ServiceDescriptor Singleton<TService, TImplementation>()
             where TImplementation : class, TService, new()
@@ -17,7 +18,8 @@ namespace MicroFlow
             {
                 ServiceType = typeof (TService),
                 Factory = () => new TImplementation(),
-                Lifetime = ServiceLifetime.Singleton
+                Lifetime = ServiceLifetime.Singleton,
+                ShouldBeDisposed = typeof (TImplementation).IsDisposableType()
             };
         }
 
@@ -30,7 +32,8 @@ namespace MicroFlow
             {
                 ServiceType = typeof (TService),
                 ImplementationInstance = instance,
-                Lifetime = ServiceLifetime.Singleton
+                Lifetime = ServiceLifetime.Singleton,
+                ShouldBeDisposed = false
             };
         }
 
@@ -43,7 +46,22 @@ namespace MicroFlow
             {
                 ServiceType = typeof(TService),
                 ImplementationInstance = instance,
-                Lifetime = ServiceLifetime.Singleton
+                Lifetime = ServiceLifetime.Singleton,
+                ShouldBeDisposed = false
+            };
+        }
+
+        public static ServiceDescriptor DisposableSingleton<TService>([NotNull] IDisposable instance)
+        {
+            instance.AssertNotNull("instance != null");
+            (instance is TService).AssertTrue("Instance doesn't impelement service " + typeof(TService));
+
+            return new ServiceDescriptor
+            {
+                ServiceType = typeof(TService),
+                ImplementationInstance = instance,
+                Lifetime = ServiceLifetime.Singleton,
+                ShouldBeDisposed = true
             };
         }
 
@@ -54,7 +72,8 @@ namespace MicroFlow
             {
                 ServiceType = typeof (TService),
                 Factory = () => new TImplementation(),
-                Lifetime = ServiceLifetime.Transient
+                Lifetime = ServiceLifetime.Transient,
+                ShouldBeDisposed = typeof (TImplementation).IsDisposableType()
             };
         }
 

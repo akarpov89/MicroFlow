@@ -10,6 +10,21 @@ namespace MicroFlow
 {
     public static class TypeUtils
     {
+        public static bool IsDisposableType([NotNull] this Type type)
+        {
+            type.AssertNotNull("type != null");
+#if PORTABLE
+            return typeof (IDisposable).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
+#else
+            return typeof (IDisposable).IsAssignableFrom(type);
+#endif
+        }
+
+        public static bool IsDisposableType<T>()
+        {
+            return IsDisposableType(typeof(T));
+        }
+
         [NotNull]
         public static Func<object> CreateDefaultConstructorFactoryOf<T>()
         {
@@ -21,7 +36,7 @@ namespace MicroFlow
         {
 #if PORTABLE
             return () => Activator.CreateInstance(type);
-#else            
+#else
             type.IsAbstract.AssertFalse("The type '" + type + "' is abstract");
             type.IsGenericTypeDefinition.AssertFalse("The type '" + type + "' is unbound generic type");
 
