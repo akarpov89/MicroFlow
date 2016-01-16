@@ -348,6 +348,30 @@ The MicroFlow provides two simple implementations:
 * `NullLogger` does nothing;
 * `ConsoleLogger` prints messages to the console.
 
+##### Validation
+
+MicroFlow supports flow validation. Currently by default the following checks are performed:
+* Initial node availability;
+* Loops absence (node shouldn't point to itself);
+* Condition expression presense in condition nodes;
+* Choice expression presence in switch nodes;
+* Nodes reachability;
+* Fault and cancellation handlers availability for activities;
+* Selfcontainedness of blocks;
+* Acyclicity of blocks;
+* Required bindings availablity.
+
+Any `Flow` implementation can add custom validators by overriding the `ConfigureValidation` method:
+```cs
+protected virtual void ConfigureValidation([NotNull] IValidatorCollection validators)
+```
+All validators inherit from the `FlowValidator` abstract class.
+`FlowValidator` provides the implementation of visiting every node in the flow and then
+performing global validation. Global validation assumes that during the visiting phase validator accumulates 
+some information that should be checked later - on the global validation phase. 
+`FlowValidator` implementation must override `VisitXxx` methods for each kind of node.
+Global validation is fully optional and can be implemented by overriding the `PerformGlobalValidation` method.
+
 ### Graph generator
 
 The MicroFlow comes with the tool called _MicroFlow.Graph_ that allows to generate *.dgml files.
