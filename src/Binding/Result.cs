@@ -4,7 +4,12 @@ using JetBrains.Annotations;
 
 namespace MicroFlow
 {
-    public sealed class Result<T>
+    public interface IResult
+    {
+        Guid SourceId { get; }
+    }
+
+    public sealed class Result<T> : IResult
     {
         private object _currentValue;
 

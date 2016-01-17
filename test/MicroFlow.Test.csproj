@@ -71,6 +71,7 @@
     <Compile Include="ValidationTests\BlockAcyclityCheckerTest.cs" />
     <Compile Include="ValidationTests\BlockSelfContainednessValidatorTest.cs" />
     <Compile Include="ValidationTests\ConnectionValidatorTest.cs" />
+    <Compile Include="ValidationTests\ExpressionAnalyzerTest.cs" />
     <Compile Include="ValidationTests\ReachabilityValidatorTest.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,15 @@ namespace MicroFlow
 {
     public static class TypeUtils
     {
+        public static bool Is<T>(this Type type)
+        {
+#if PORTABLE
+            return typeof (T).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
+#else
+            return typeof (T).IsAssignableFrom(type);
+#endif
+        }
+
         public static bool IsDisposableType([NotNull] this Type type)
         {
             type.AssertNotNull("type != null");
