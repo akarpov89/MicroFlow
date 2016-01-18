@@ -372,6 +372,12 @@ some information that should be checked later - on the global validation phase.
 `FlowValidator` implementation must override `VisitXxx` methods for each kind of node.
 Global validation is fully optional and can be implemented by overriding the `PerformGlobalValidation` method.
 
+Future plans:
+* Binding expressions validation;
+* Variables scope validation;
+* Forks data usage validaton
+etc.
+
 ### Graph generator
 
 The MicroFlow comes with the tool called _MicroFlow.Graph_ that allows to generate *.dgml files.
