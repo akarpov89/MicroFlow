@@ -65,18 +65,24 @@ protected abstract void ExecuteActivity();
 ```
 
 ##### BackgroundActivity&lt;TResult&gt;
-Provides the way to execute a function on a separate thread.
+Provides the way to execute a function as a separate background task.
 An implemenation must override the method:
 ```cs
-protected abstract TResult ExecuteCore(CancellationToken token);
+protected abstract TResult ExecuteCore();
 ```
+`BackgroundActivity<TResult>` exposes the following properties:
+* `CancellationToken CancellationToken { get; set; }` - allows the work to be cancelled;
+* `TaskScheduler Scheduler { get; set; }` - schedules the worker task;
+* `bool IsLongRunning { get; set; }` - allows to hint `TaskScheduler` that task will be a long-running operation.  
 
 ##### BackgroundActivity
-Provides the way to execute an action on a separate thread. 
+Provides the way to execute a function as a separate background task. 
 An implemenation must override the method:
 ```cs
-protected abstract void ExecuteCore(CancellationToken token);
+protected abstract void ExecuteCore();
 ```
+
+`BackgroundActivity` exposes the same properties as `BackgroundActivity<TResult>`.
 
 ##### IFaultHandlerActivity
 The interface of all fault handlers. Every fault handler must provide the following property:
