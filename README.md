@@ -40,12 +40,14 @@ The user-defined activities should inherit from one of the following base classe
 ##### Activity&lt;TResult&gt;
 The most generic activity returning the result of type `TResult`.
 An implementation must override the method
+
 ```cs
 public abstract Task<Result> Execute();
 ```
 
 ##### Activity
 The most generic activity without returning value. An implementation must override the method
+
 ```cs
 protected abstract Task ExecuteCore();
 ``` 
@@ -53,6 +55,7 @@ protected abstract Task ExecuteCore();
 ##### SyncActivity&lt;TResult&gt;
 The base class of the synchronous activities returning the value of type `TResult`.
 An implemenation must override the method:
+
 ```cs
 protected abstract TResult ExecuteActivity();
 ```
@@ -60,6 +63,7 @@ protected abstract TResult ExecuteActivity();
 ##### SyncActivity
 The base class of the synchronous activities without returning value.
 An implemenation must override the method:
+
 ```cs
 protected abstract void ExecuteActivity();
 ```
@@ -67,9 +71,11 @@ protected abstract void ExecuteActivity();
 ##### BackgroundActivity&lt;TResult&gt;
 Provides the way to execute a function as a separate background task.
 An implemenation must override the method:
+
 ```cs
 protected abstract TResult ExecuteCore();
 ```
+
 `BackgroundActivity<TResult>` exposes the following properties:
 * `CancellationToken CancellationToken { get; set; }` - allows the work to be cancelled;
 * `TaskScheduler Scheduler { get; set; }` - schedules the worker task;
@@ -78,6 +84,7 @@ protected abstract TResult ExecuteCore();
 ##### BackgroundActivity
 Provides the way to execute a function as a separate background task. 
 An implemenation must override the method:
+
 ```cs
 protected abstract void ExecuteCore();
 ```
@@ -86,6 +93,7 @@ protected abstract void ExecuteCore();
 
 ##### IFaultHandlerActivity
 The interface of all fault handlers. Every fault handler must provide the following property:
+
 ```cs
 Exception Exception { get; set; }
 ```
@@ -95,6 +103,7 @@ Exception Exception { get; set; }
 The `FlowBuilder` class provides the way to create nodes of the flow.
 
 ##### ActivityNode&lt;TActivity&gt;
+
 ```cs
 var node = builder.Activity<SomeActivity>("Optional node name");
 
@@ -104,6 +113,7 @@ node.ConnectTo(anotherNode)
 ```
 
 ##### ConditionNode
+
 ```cs
 var node = builder.Condition("Optional node name");
 node.WithCondition(() => someBooleanExpression);
@@ -113,6 +123,7 @@ node.ConnectFalseTo(falseBranchNode)
 ```
 
 ##### SwitchNode
+
 ```cs
 var node = builder.SwitchOf<int>("Optional node name");
 node.WithChoice(() => someIntExpression);
@@ -124,6 +135,7 @@ node.ConnectCase(0).To(caseHandler1)
 ```
 
 ##### ForkJoinNode
+
 ```cs
 var node = builder.ForkJoin("Optional node name");
 
@@ -133,6 +145,7 @@ var fork3 = node.Fork<SomeActivity>("Optional fork name");
 ```
 
 ##### BlockNode
+
 ```cs
 var node = builder.Block("Optional node name", (block, blockBuilder) =>
 {
@@ -146,12 +159,14 @@ var node = builder.Block("Optional node name", (block, blockBuilder) =>
 ##### Default fault handler
 
 Every activity node should be connected with some specific or default fault handler
+
 ```cs
 var globalFaultHandler = builder.FaultHandler<MyFaultHandler>("Global fault handler");
 builder.WithDefaultFaultHandler(globalFaultHandler); 
 ```
 
 ##### Default cancellation handler
+
 ```cs
 var globalCancellationHandler = builder.Activity<MyCancellationHandler>("Global cancellation handler");
 builder.WithDefaultCancellationHandler(globalCancellationHandler);
@@ -178,10 +193,12 @@ public class SumActivity : SyncActivity<int>
     protected override int ExecuteActivity() => FirstNumber + SecondNumber;
 }
 ``` 
+
 ##### Binding to activity result
 
 In this example we bind properties `FirstNumber` and `SecondNumber` to the results
 of `readFirstNumber` and `readSecondNumber`:
+
 ```cs
 var readFirstNumber = builder.Activity<ReadIntActivity>();
 var readSecondNumber = builder.Activity<ReadIntActivity>();
@@ -191,9 +208,11 @@ var sumTwoNumbers = builder.Activity<SumActivity>();
 sumTwoNumbers.Bind(a => a.FirstNumber).ToResultOf(readFirstNumber);
 sumTwoNumbers.Bind(a => a.SecondNumber).ToResultOf(readSecondNumber);
 ```
+
 ##### Binding to value
 
 In this example we bind `FirstNumber` to the value `42` and `SecondNumber` to `5`:
+
 ```cs
 var sumTwoNumbers = builder.Activity<SumActivity>();
 
@@ -229,9 +248,11 @@ var block = builder.Block("my block", (thisBlock, blockBuilder) =>
     var localVariable = thisBlock.Variable<string>("some initial variable value");
 });
 ```
+
 It's possible to change the variable value after completion of some activity:
 
 * Assign activity result:
+
 ```cs
  var myVar = builder.Variable<int>();
  
@@ -239,7 +260,9 @@ It's possible to change the variable value after completion of some activity:
 
  myVar.BindToResultOf(readFirstNumber);
 ```
+
 * Assign value:
+
 ```cs
  var myVar = builder.Variable<bool>();
  
@@ -249,6 +272,7 @@ It's possible to change the variable value after completion of some activity:
 ```
 
 * Update value:
+
 ```cs
  var myVar = builder.Variable<int>(42);
  
@@ -258,6 +282,7 @@ It's possible to change the variable value after completion of some activity:
 ```
 
 Later the current value of a variable can retrieved via property `CurrentValue`:
+
 ```cs
 var myVar = builder.Variable<int>();
 ...
@@ -272,6 +297,7 @@ sumTwoNumbers.Bind(a => a.FirstNumber).To(() => myVar.CurrentValue);
 Every flow is a subclass of the `Flow` abstract class. 
 The `Flow` base class provides the way to validate and run the
 the constructed flow:
+
 ```cs
 public ValidationResult Validate();
 public Task Run();
@@ -300,11 +326,13 @@ The `Flow` сlass also has several configuration extension points:
 ##### Services registration
 
 Configuring services is possible via overriding the method `ConfigureServices`
+
 ```cs
 protected virtual void ConfigureServices(IServiceCollection services);
 ```
 
 Let's say our `ReadIntActivity` uses `IReader` service:
+
 ```cs
 public interface IReader
 {
@@ -343,6 +371,7 @@ service to the activity constructor.
 
 While no logging is performed by default it's possible to specify the flow execution logger 
 by overriding the method:
+
 ```cs
 protected virtual ILogger CreateFlowExecutionLogger();
 ```
@@ -368,9 +397,11 @@ MicroFlow supports flow validation. Currently by default the following checks ar
 * Required bindings availablity.
 
 Any `Flow` implementation can add custom validators by overriding the `ConfigureValidation` method:
+
 ```cs
 protected virtual void ConfigureValidation([NotNull] IValidatorCollection validators)
 ```
+
 All validators inherit from the `FlowValidator` abstract class.
 `FlowValidator` provides the implementation of visiting every node in the flow and then
 performing global validation. Global validation assumes that during the visiting phase validator accumulates 
@@ -405,6 +436,7 @@ otherwise output "first <= second". The graphical scheme of the flow is presente
 ![ExampleFlow1](https://raw.github.com/akarpov89/MicroFlow/master/content/flow1.png)
 
 At first let's create activity for reading numbers. It will use the following `IReader` interface.
+
 ```cs
 public interface IReader
 {
@@ -414,6 +446,7 @@ public interface IReader
 
 Because reading activity is synchronous and returns an integer 
 it will inherit from the `SyncActivity<int>` class.
+
 ```cs
 public class ReadIntActivity : SyncActivity<int>
 {
@@ -429,6 +462,7 @@ public class ReadIntActivity : SyncActivity<int>
 ```
 
 Now let's create output activity. It will use the following `IWriter` interface:
+
 ```cs
 public interface IWriter
 {
@@ -439,6 +473,7 @@ public interface IWriter
 Because output activity is synchronous and doesn't return any value
 it will inherit from the `SyncActivity` class. Also output activity requires a message to print out.
 This can be experessed by declaring the property marked with `[Required]` attribute.
+
 ```cs
 public class WriteMessageActivity : SyncActivity
 {
@@ -484,6 +519,7 @@ public class MyCancellationHandler : SyncActivity
 
 Before creating the flow itself we should provide the implementations of the `IReader` and `IWriter`
 services:
+
 ```cs
 public class ConsoleReader : IReader
 {
@@ -501,6 +537,7 @@ public class ConsoleWriter : IWriter
 
 Now we are ready to define the flow. All flows inherit from the `Flow` class. 
 This base class allows to build the flow structure, configure the dependency injection and run the flow.
+
 ```cs
 public class Flow1 : Flow
 {
@@ -566,6 +603,7 @@ public class Flow1 : Flow
 ```
 
 That's it. Now we can create the instance of the flow and run it:
+
 ```cs
 public static void Main(string[] args)
 {
