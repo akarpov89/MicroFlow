@@ -29,12 +29,6 @@ namespace MicroFlow
         {
             base.RemoveConnections();
             _nodes.Clear();
-
-            foreach (IVariable variable in _localVariables)
-            {
-                variable.RemoveBindings();
-            }
-
             _localVariables.Clear();
         }
 

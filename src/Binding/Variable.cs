@@ -3,11 +3,8 @@ using JetBrains.Annotations;
 
 namespace MicroFlow
 {
-    public delegate T Updater<T>(T currentValue, T value);
-
     public interface IVariable
     {
-        void RemoveBindings();
     }
 
     public sealed class Variable<T> : IVariable
@@ -19,42 +16,19 @@ namespace MicroFlow
 
         public T CurrentValue { get; private set; }
 
-        public void RemoveBindings()
-        {
-            OnRemoveBindings?.Invoke();
-        }
-
-        private event Action OnRemoveBindings;
-
         internal void Assign(T value)
         {
             CurrentValue = value;
         }
 
-        public void BindToResultOf<TActivity>(ActivityNode<TActivity> node)
-            where TActivity : class, IActivity<T>
+        internal void Update([NotNull] Func<T, T> updateFunc)
         {
-            AfterCompletionOf(node).AssignActivityResult();
+            CurrentValue = updateFunc(CurrentValue);
         }
 
-        public AfterCompletionUpdater<T> AfterCompletionOf<TActivity>([NotNull] ActivityNode<TActivity> node)
-            where TActivity : class, IActivity<T>
+        internal void Update<TOther>([NotNull] Func<T, TOther, T> updateFunc, TOther otherValue)
         {
-            node.AssertNotNull("node != null");
-
-            var updater = new AfterCompletionUpdater<T>(this, Result<T>.Of(node));
-            OnRemoveBindings += () => updater.RemoveBinding();
-            return updater;
-        }
-
-        public AfterCompletionUpdater<T> AfterCompletionOf<TActivity>([NotNull] ActivityDescriptor<TActivity> descriptor)
-            where TActivity : class, IActivity<T>
-        {
-            descriptor.AssertNotNull("descriptor != null");
-
-            var updater = new AfterCompletionUpdater<T>(this, Result<T>.Of(descriptor));
-            OnRemoveBindings += () => updater.RemoveBinding();
-            return updater;
+            CurrentValue = updateFunc(CurrentValue, otherValue);
         }
     }
 }

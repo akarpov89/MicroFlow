@@ -261,24 +261,34 @@ It's possible to change the variable value after completion of some activity:
  myVar.BindToResultOf(readFirstNumber);
 ```
 
-* Assign value:
+* Assign some constant value:
 
 ```cs
  var myVar = builder.Variable<bool>();
  
  var readFirstNumber = builder.Activity<ReadIntActivity>();
 
- myVar.AfterCompletionOf(readFirstNumber).Assign(true);
+readFirstNumber.OnCompletionAssign(myVar, true);
 ```
 
-* Update value:
+* Update value without using activity result:
 
 ```cs
  var myVar = builder.Variable<int>(42);
  
  var readFirstNumber = builder.Activity<ReadIntActivity>();
+ 
+ readFirstNumber.OnCompletionUpdate(myVar, oldValue => oldValue + 1);
+```
 
- myVar.AfterCompletionOf(readFirstNumber).Update((oldValue, result) => oldValue + result);
+* Update value using activity result:
+
+```cs
+ var myVar = builder.Variable<int>(42);
+ 
+ var readFirstNumber = builder.Activity<ReadIntActivity>();
+ 
+ readFirstNumber.OnCompletionUpdate(myVar, (int oldValue, int result) => oldValue + result);
 ```
 
 Later the current value of a variable can retrieved via property `CurrentValue`:

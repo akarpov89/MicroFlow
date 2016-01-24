@@ -176,12 +176,6 @@ namespace MicroFlow
             }
 
             _nodes.Clear();
-
-            foreach (IVariable variable in _globalVariables)
-            {
-                variable.RemoveBindings();
-            }
-
             _globalVariables.Clear();
         }
 
