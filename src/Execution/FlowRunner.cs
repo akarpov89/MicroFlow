@@ -63,6 +63,15 @@ namespace MicroFlow
 
                 Task<object> task = activity.Execute();
 
+                if (task.IsCompleted)
+                {
+                    activityNode.OnActivityCompleted(task);
+
+                    activityWrapper.Dispose();
+                    
+                    return ExecuteNextNode(activityNode, task);
+                }
+
                 Task<Task> continuation = task.ContinueWith(t =>
                 {
                     activityNode.OnActivityCompleted(task);
