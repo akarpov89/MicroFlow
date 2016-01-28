@@ -1,4 +1,6 @@
-﻿using System.Resources;
+﻿#if PORTABLE
+using System.Resources;
+#endif
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;

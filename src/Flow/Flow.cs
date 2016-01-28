@@ -133,7 +133,8 @@ namespace MicroFlow
             {
                 new ConnectionValidator(),
                 new ReachabilityValidator(),
-                new ActivityInitializationValidator()
+                new ActivityInitializationValidator(),
+                new ActivityTypeValidator()
             };
         }
     }

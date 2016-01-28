@@ -14,13 +14,8 @@ namespace MicroFlow
             CheckActivityBindings(activityNode.Descriptor);
         }
 
-        protected override void VisitSwitch<TChoice>(SwitchNode<TChoice> switchNode)
-        {
-        }
-
-        protected override void VisitCondition(ConditionNode conditionNode)
-        {
-        }
+        protected override void VisitSwitch<TChoice>(SwitchNode<TChoice> switchNode) {}
+        protected override void VisitCondition(ConditionNode conditionNode) {}
 
         protected override void VisitForkJoin(ForkJoinNode forkJoinNode)
         {
@@ -30,9 +25,7 @@ namespace MicroFlow
             }
         }
 
-        protected override void VisitBlock(BlockNode blockNode)
-        {
-        }
+        protected override void VisitBlock(BlockNode blockNode) {}
 
         private void CheckActivityBindings(IActivityDescriptor descriptor)
         {

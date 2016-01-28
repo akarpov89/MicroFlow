@@ -68,6 +68,7 @@
     <Compile Include="Services\IWriter.cs" />
     <Compile Include="Services\ArrayReader.cs" />
     <Compile Include="ValidationTests\ActivityInitializationValidatorTest.cs" />
+    <Compile Include="ValidationTests\ActivityTypeValidatorTest.cs" />
     <Compile Include="ValidationTests\BlockAcyclityCheckerTest.cs" />
     <Compile Include="ValidationTests\BlockSelfContainednessValidatorTest.cs" />
     <Compile Include="ValidationTests\ConnectionValidatorTest.cs" />
