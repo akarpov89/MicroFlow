@@ -36,6 +36,9 @@ namespace MicroFlow
         {
             if (!_isDisposed)
             {
+                var disposable = _instance as IDisposable;
+                disposable?.Dispose();
+
                 if (_services != null && _services.Length > 0)
                 {
                     foreach (object service in _services)
@@ -43,9 +46,6 @@ namespace MicroFlow
                         _serviceProvider.ReleaseService(service);
                     }
                 }
-
-                var disposable = _instance as IDisposable;
-                disposable?.Dispose();
 
                 _isDisposed = true;
             }
