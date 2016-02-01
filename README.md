@@ -375,7 +375,7 @@ The single instance of the `TImplementation` will be used throughout the whole f
 The new instance of the `TImplementation` will be created each time it's needed to pass the
 service to the activity constructor.
 
-> Current implementation allows to register only service implementation types having a default constructor.
+> **Note:** Current implementation allows to register only service implementation types having a default constructor.
 
 ##### Logging
 
@@ -439,7 +439,7 @@ Example: `MicroFlow.Graph MicroFlow.Test.dll Flow1`
 
 The generated sample flow is presented below.
 
-> Graph generation is available only if the flow has a default constructor
+> **Note:** Graph generation is available only if the flow has a default constructor
 
 ### Sample
 
