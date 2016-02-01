@@ -16,6 +16,7 @@
     <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <OutputPath>..\output\portable\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>portable\obj\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,6 +41,8 @@
     <Compile Include="Activities\BackgroundActivity.cs" />
     <Compile Include="Activities\IActivity.cs" />
     <Compile Include="Activities\IFaultHandlerActivity.cs" />
+    <Compile Include="FlowNodes\IfThenElseExtension.cs" />
+    <Compile Include="Flow\BuilderExtensions.cs" />
     <Compile Include="Flow\FlowDescription.cs" />
     <Compile Include="Validation\ActivityTypeValidator.cs" />
     <Compile Include="Validation\ExpressionAnalyzer.cs" />
