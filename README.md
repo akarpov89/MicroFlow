@@ -122,6 +122,17 @@ node.ConnectFalseTo(falseBranchNode)
     .ConnectTrueTo(trueBranchNode);
 ```
 
+There is also alternative syntax that allows to create `if-then-else` constructs:
+
+```cs
+var node = builder
+    .If("Condition description", () => someBooleanExpression1).Then(node1)
+    .ElseIf("Another condition description", () => someBooleanExpression2).Then(node2)
+    .Else(node3);    
+```
+
+Notice that in this case `node` is initial `ConditionNode` (the one with condition description "Condition description").
+
 ##### SwitchNode
 
 ```cs
