@@ -122,7 +122,7 @@ node.ConnectFalseTo(falseBranchNode)
     .ConnectTrueTo(trueBranchNode);
 ```
 
-There is also alternative syntax that allows to create `if-then-else` constructs:
+There is also an alternative syntax that allows to create `if-then-else` constructs:
 
 ```cs
 var node = builder
