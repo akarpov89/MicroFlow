@@ -12,7 +12,8 @@
     <description>Lightweight workflow engine.
     
 Supported platforms:
-  - .NET Core (DNX Core 5+, Universal Windows Apps 10+)
+  - .NET 4.0+
+  - .NET Core (DNX Core 5+, Universal Windows Apps 10+)  
   - Windows 8
   - Windows Phone 8 (Silverlight)
   - Universal (Windows Phone 8.1+, Windows 8.1+)
