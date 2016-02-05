@@ -10,6 +10,7 @@
 * [Nodes](#nodes)
 * [Data flow](#data-flow)
 * [Flow creation](#flow-creation)
+* [Fault handling](#fault-handling)
 * [Graph generator](#graph-generator)
 * [Sample](#sample)
 * [License](https://raw.githubusercontent.com/akarpov89/MicroFlow/master/License.txt)
@@ -436,6 +437,46 @@ Future plans:
 * Variables scope validation;
 * Forks data usage validaton
 etc.
+
+### Fault handling
+
+As it was mentioned earlier if activity ends up with an exception
+then fault handler activity takes control.
+But there are cases when an exception occures before activity execution. For instance:
+
+* Exception in activity constructor;
+* Exception in service constructor;
+* Exception during condition expression evaluation;
+
+and so on.
+
+Such situations differ from cases when activity results faulted `Task` and therefore
+require special handling.
+
+The `Flow.Run()` method returns a `Task`. 
+If the flow completes normally then returned `Task` ends up with the `RanToCompletion` status.
+But when an unexpected exception is encountered `Task` completes as `Faulted`.
+
+Thus to avoid unobserved exceptions one should attach a continuation to the `Task` returned from
+the `Run` method:
+
+```cs
+var flow = new MyFlow();
+
+var flowTask = flow.Run();
+
+flowTask.ContinueWith(t =>
+{
+    if (t.IsFaulted)
+    {
+        // Handle exception
+    }
+    else if (t.Status == TaskStatus.RanToCompletion)
+    {
+        // Flow is completed normally
+    }
+});
+```
 
 ### Graph generator
 

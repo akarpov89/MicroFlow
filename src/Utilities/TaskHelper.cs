@@ -126,6 +126,22 @@ namespace MicroFlow
         }
 
         [NotNull]
+        public static Task<TResult> FromException<TResult>([NotNull] AggregateException exception)
+        {
+            var tcs = new TaskCompletionSource<TResult>();
+            tcs.SetException(exception.InnerExceptions);
+            return tcs.Task;
+        }
+
+        [NotNull]
+        public static Task FromException([NotNull] AggregateException exception)
+        {
+            var tcs = new TaskCompletionSource<VoidTaskResult>();
+            tcs.SetException(exception.InnerExceptions);
+            return tcs.Task;
+        }
+
+        [NotNull]
         public static Task<T[]> WhenAll<T>(this Task<T>[] tasks)
         {
 #if PORTABLE

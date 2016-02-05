@@ -57,19 +57,38 @@ namespace MicroFlow
 
                     if (t.IsFaulted)
                     {
+                        Debug.Assert(t.Exception != null);
+
                         log.Exception("Unhandled exception", t.Exception);
+                        log.Info("Flow '{0}' is terminated due to an unhandled exception", Name);
+
+                        return TaskHelper.FromException(t.Exception);
                     }
 
-                    log.Info("Flow '{0}' is finished", Name);
-                }, TaskContinuationOptions.ExecuteSynchronously);
+                    if (t.IsCanceled)
+                    {
+                        log.Info("Flow '{0}' is cancelled", Name);
+
+                        return TaskHelper.CancelledTask;
+                    }
+
+                    log.Info("Flow '{0}' is completed", Name);
+
+                    return TaskHelper.CompletedTask;
+
+                }, TaskContinuationOptions.ExecuteSynchronously).Unwrap();
 
                 return continuation;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 runner.Dispose();
                 flowBuilder.Clear();
-                throw;
+
+                log.Exception("Unhandled exception", ex);
+                log.Info("Flow '{0}' is terminated due to an unhandled exception", Name);
+
+                return TaskHelper.FromException(ex);
             }
         }
 
