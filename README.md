@@ -177,11 +177,25 @@ var globalFaultHandler = builder.FaultHandler<MyFaultHandler>("Global fault hand
 builder.WithDefaultFaultHandler(globalFaultHandler); 
 ```
 
+Or alternatively:
+
+```cs
+builder.WithDefaultFaultHandler<MyFaultHandler>("Global fault handler"); 
+```
+
 ##### Default cancellation handler
+
+Every activity node should be connected with some specific or default cancellation handler
 
 ```cs
 var globalCancellationHandler = builder.Activity<MyCancellationHandler>("Global cancellation handler");
 builder.WithDefaultCancellationHandler(globalCancellationHandler);
+```
+
+Or alternatively:
+
+```cs
+builder.WithDefaultCancellationHandler<MyCancellationHandler>("Global cancellation handler");
 ```
 
 ### Data flow
@@ -635,17 +649,13 @@ public class Flow1 : Flow
         
         // Bind the output message to the expression.
         outputWhenFalse.Bind(x => x.Message).To(() => $"{first.Get()} <= {second.Get()}");
-            
-        // Create fault & cancellation handler nodes.
-        var faultHandler = builder.FaultHandler<MyFaultHandler>("Global fault handler");
-        var cancellationHandler = builder.Activity<MyCancellationHandler>("Global cancellation handler");
 
         // Set initial node of the flow.
         builder.WithInitialNode(inputFirst);
         
         // Set default fault and cancellation handlers.
-        builder.WithDefaultFaultHandler(faultHandler);
-        builder.WithDefaultCancellationHandler(cancellationHandler);
+        builder.WithDefaultFaultHandler<MyFaultHandler>();
+        builder.WithDefaultCancellationHandler<MyCancellationHandler>();
 
         //
         // Connect nodes.
