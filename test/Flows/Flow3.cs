@@ -9,11 +9,8 @@
 
         protected override void Build(FlowBuilder builder)
         {
-            var faultHandler = builder.FaultHandler<MyFaultHandler>();
-            var cancellationHandler = builder.Activity<MyCancellationHandler>();
-
-            builder.WithDefaultFaultHandler(faultHandler);
-            builder.WithDefaultCancellationHandler(cancellationHandler);
+            builder.WithDefaultFaultHandler<MyFaultHandler>();
+            builder.WithDefaultCancellationHandler<MyCancellationHandler>();
 
             var myVar = builder.Variable<int>();
 

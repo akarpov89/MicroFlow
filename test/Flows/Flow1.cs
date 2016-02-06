@@ -9,11 +9,8 @@
 
         protected override void Build(FlowBuilder builder)
         {
-            var faultHandler = builder.FaultHandler<MyFaultHandler>("Global fault handler");
-            var cancellationHandler = builder.Activity<MyCancellationHandler>("Global cancellation handler");
-
-            builder.WithDefaultFaultHandler(faultHandler);
-            builder.WithDefaultCancellationHandler(cancellationHandler);
+            builder.WithDefaultFaultHandler<MyFaultHandler>();
+            builder.WithDefaultCancellationHandler<MyCancellationHandler>();
 
             var inputFirst = builder.Activity<ReadIntActivity>("Read first number");
             var inputSecond = builder.Activity<ReadIntActivity>("Read second number");
