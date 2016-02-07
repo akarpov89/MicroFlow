@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>MicroFlow by akarpov89</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">MicroFlow</h1>
+      <h2 class="project-tagline">Lightweight workflow engine</h2>
+      <a href="https://github.com/akarpov89/MicroFlow" class="btn">View on GitHub</a>
+      <a href="https://github.com/akarpov89/MicroFlow/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/akarpov89/MicroFlow/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="microflow" class="anchor" href="#microflow" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>MicroFlow</h1>
+
+<h3>
+<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Getting Started</h3>
+
+<ul>
+<li><a href="#what-is-microflow">What is MicroFlow?</a></li>
+<li><a href="https://www.nuget.org/packages/MicroFlow/">NuGet Package</a></li>
+<li><a href="#activities">Activities</a></li>
+<li><a href="#nodes">Nodes</a></li>
+<li><a href="#data-flow">Data flow</a></li>
+<li><a href="#flow-creation">Flow creation</a></li>
+<li><a href="#fault-handling">Fault handling</a></li>
+<li><a href="#graph-generator">Graph generator</a></li>
+<li><a href="#sample">Sample</a></li>
+</ul>
+
+<h3>
+<a id="what-is-microflow" class="anchor" href="#what-is-microflow" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What is MicroFlow?</h3>
+
+<p>MicroFlow is a lightweight workflow engine. It allows to build workflows as flowcharts.
+Every flow is constructed from a limited number of connected nodes.</p>
+
+<p>Features:</p>
+
+<ul>
+<li>Code-centric, no XAML</li>
+<li>Data flow friendly: easy to pass data from one activity to another</li>
+<li>Integrated dependency injection</li>
+<li>Flow validation</li>
+<li>Visualization support</li>
+</ul>
+
+<p>Available node types:</p>
+
+<ul>
+<li>
+<strong>activity</strong> node represents user-defined action;</li>
+<li>
+<strong>condition</strong> node represents decision (like <code>if-else</code> statement);</li>
+<li>
+<strong>switch</strong> node represents multiway branch (like <code>switch</code> statement);</li>
+<li>
+<strong>fork-join</strong> node represents concurrent activities;</li>
+<li>
+<strong>block</strong> node groups several nodes (like blocks in programming languages).</li>
+</ul>
+
+<h3>
+<a id="activities" class="anchor" href="#activities" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Activities</h3>
+
+<p>The user-defined activities should inherit from one of the following base classes</p>
+
+<h5>
+<a id="activitytresult" class="anchor" href="#activitytresult" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Activity&lt;TResult&gt;</h5>
+
+<p>The most generic activity returning the result of type <code>TResult</code>.
+An implementation must override the method</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">abstract</span> Task&lt;Result&gt; Execute();</pre></div>
+
+<h5>
+<a id="activity" class="anchor" href="#activity" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Activity</h5>
+
+<p>The most generic activity without returning value. An implementation must override the method</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">protected</span> <span class="pl-k">abstract</span> Task ExecuteCore();</pre></div>
+
+<h5>
+<a id="syncactivitytresult" class="anchor" href="#syncactivitytresult" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SyncActivity&lt;TResult&gt;</h5>
+
+<p>The base class of the synchronous activities returning the value of type <code>TResult</code>.
+An implemenation must override the method:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">protected</span> <span class="pl-k">abstract</span> TResult ExecuteActivity();</pre></div>
+
+<h5>
+<a id="syncactivity" class="anchor" href="#syncactivity" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SyncActivity</h5>
+
+<p>The base class of the synchronous activities without returning value.
+An implemenation must override the method:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">protected</span> <span class="pl-k">abstract</span> <span class="pl-k">void</span> ExecuteActivity();</pre></div>
+
+<h5>
+<a id="backgroundactivitytresult" class="anchor" href="#backgroundactivitytresult" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>BackgroundActivity&lt;TResult&gt;</h5>
+
+<p>Provides the way to execute a function as a separate background task.
+An implemenation must override the method:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">protected</span> <span class="pl-k">abstract</span> TResult ExecuteCore();</pre></div>
+
+<p><code>BackgroundActivity&lt;TResult&gt;</code> exposes the following properties:</p>
+
+<ul>
+<li>
+<code>CancellationToken CancellationToken { get; set; }</code> - allows the work to be cancelled;</li>
+<li>
+<code>TaskScheduler Scheduler { get; set; }</code> - schedules the worker task;</li>
+<li>
+<code>bool IsLongRunning { get; set; }</code> - allows to hint <code>TaskScheduler</code> that task will be a long-running operation.<br>
+</li>
+</ul>
+
+<h5>
+<a id="backgroundactivity" class="anchor" href="#backgroundactivity" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>BackgroundActivity</h5>
+
+<p>Provides the way to execute a function as a separate background task. 
+An implemenation must override the method:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">protected</span> <span class="pl-k">abstract</span> <span class="pl-k">void</span> ExecuteCore();</pre></div>
+
+<p><code>BackgroundActivity</code> exposes the same properties as <code>BackgroundActivity&lt;TResult&gt;</code>.</p>
+
+<h5>
+<a id="ifaulthandleractivity" class="anchor" href="#ifaulthandleractivity" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>IFaultHandlerActivity</h5>
+
+<p>The interface of all fault handlers. Every fault handler must provide the following property:</p>
+
+<div class="highlight highlight-source-cs"><pre>Exception Exception { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }</pre></div>
+
+<h3>
+<a id="nodes" class="anchor" href="#nodes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Nodes</h3>
+
+<p>The <code>FlowBuilder</code> class provides the way to create nodes of the flow.</p>
+
+<h5>
+<a id="activitynodetactivity" class="anchor" href="#activitynodetactivity" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ActivityNode&lt;TActivity&gt;</h5>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> node = builder.Activity&lt;SomeActivity&gt;(<span class="pl-s"><span class="pl-pds">"</span>Optional node name<span class="pl-pds">"</span></span>);
+
+node.ConnectTo(anotherNode)
+    .ConnectFaultTo(faultHandler)
+    .ConnnectCancellationTo(cancellationHandler);</pre></div>
+
+<h5>
+<a id="conditionnode" class="anchor" href="#conditionnode" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ConditionNode</h5>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> node = builder.Condition(<span class="pl-s"><span class="pl-pds">"</span>Optional node name<span class="pl-pds">"</span></span>);
+node.WithCondition(() =&gt; someBooleanExpression);
+
+node.ConnectFalseTo(falseBranchNode)
+    .ConnectTrueTo(trueBranchNode);</pre></div>
+
+<p>There is also an alternative syntax that allows to create <code>if-then-else</code> constructs:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> node = builder
+    .If(<span class="pl-s"><span class="pl-pds">"</span>Condition description<span class="pl-pds">"</span></span>, () =&gt; someBooleanExpression1).Then(node1)
+    .ElseIf(<span class="pl-s"><span class="pl-pds">"</span>Another condition description<span class="pl-pds">"</span></span>, () =&gt; someBooleanExpression2).Then(node2)
+    .Else(node3);    </pre></div>
+
+<p>Notice that in this case <code>node</code> is initial <code>ConditionNode</code> (the one with condition description "Condition description").</p>
+
+<h5>
+<a id="switchnode" class="anchor" href="#switchnode" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SwitchNode</h5>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> node = builder.SwitchOf&lt;<span class="pl-k">int</span>&gt;(<span class="pl-s"><span class="pl-pds">"</span>Optional node name<span class="pl-pds">"</span></span>);
+node.WithChoice(() =&gt; someIntExpression);
+
+node.ConnectCase(<span class="pl-c1">0</span>).To(caseHandler1)
+    .ConnectCase(<span class="pl-c1">1</span>).To(caseHandler2)
+    .ConnectCase(<span class="pl-c1">42</span>).To(caseHandler3)
+    .ConnectDefault(caseHandler4).</pre></div>
+
+<h5>
+<a id="forkjoinnode" class="anchor" href="#forkjoinnode" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ForkJoinNode</h5>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> node = builder.ForkJoin(<span class="pl-s"><span class="pl-pds">"</span>Optional node name<span class="pl-pds">"</span></span>);
+
+<span class="pl-k">var</span> fork1 = node.Fork&lt;SomeForkActivity&gt;(<span class="pl-s"><span class="pl-pds">"</span>Optional fork name<span class="pl-pds">"</span></span>);
+<span class="pl-k">var</span> fork2 = node.Fork&lt;SomeAnotherForkActivity&gt;(<span class="pl-s"><span class="pl-pds">"</span>Optional fork name<span class="pl-pds">"</span></span>);
+<span class="pl-k">var</span> fork3 = node.Fork&lt;SomeActivity&gt;(<span class="pl-s"><span class="pl-pds">"</span>Optional fork name<span class="pl-pds">"</span></span>);</pre></div>
+
+<h5>
+<a id="blocknode" class="anchor" href="#blocknode" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>BlockNode</h5>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> node = builder.Block(<span class="pl-s"><span class="pl-pds">"</span>Optional node name<span class="pl-pds">"</span></span>, (block, blockBuilder) =&gt;
+{
+    <span class="pl-k">var</span> activity1 = blockBuilder.Activity&lt;SomeActivity&gt;();
+    <span class="pl-k">var</span> activity2 = blockBuilder.Activity&lt;SomeAnotherActivity&gt;();
+
+    activity1.ConnectTo(activity2);
+});</pre></div>
+
+<h5>
+<a id="default-fault-handler" class="anchor" href="#default-fault-handler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Default fault handler</h5>
+
+<p>Every activity node should be connected with some specific or default fault handler</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> globalFaultHandler = builder.FaultHandler&lt;MyFaultHandler&gt;(<span class="pl-s"><span class="pl-pds">"</span>Global fault handler<span class="pl-pds">"</span></span>);
+builder.WithDefaultFaultHandler(globalFaultHandler); </pre></div>
+
+<p>Or alternatively:</p>
+
+<div class="highlight highlight-source-cs"><pre>builder.WithDefaultFaultHandler&lt;MyFaultHandler&gt;(<span class="pl-s"><span class="pl-pds">"</span>Global fault handler<span class="pl-pds">"</span></span>); </pre></div>
+
+<h5>
+<a id="default-cancellation-handler" class="anchor" href="#default-cancellation-handler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Default cancellation handler</h5>
+
+<p>Every activity node should be connected with some specific or default cancellation handler</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> globalCancellationHandler = builder.Activity&lt;MyCancellationHandler&gt;(<span class="pl-s"><span class="pl-pds">"</span>Global cancellation handler<span class="pl-pds">"</span></span>);
+builder.WithDefaultCancellationHandler(globalCancellationHandler);</pre></div>
+
+<p>Or alternatively:</p>
+
+<div class="highlight highlight-source-cs"><pre>builder.WithDefaultCancellationHandler&lt;MyCancellationHandler&gt;(<span class="pl-s"><span class="pl-pds">"</span>Global cancellation handler<span class="pl-pds">"</span></span>);</pre></div>
+
+<h3>
+<a id="data-flow" class="anchor" href="#data-flow" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Data flow</h3>
+
+<p>As flow executes data transfers from one activity to another.
+The MicroFlow has two mechanisms to define the data flow: <em>bindings</em> and <em>variables</em>.</p>
+
+<p>In the examples below we will use the following activities:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">ReadIntActivity</span> : <span class="pl-k">SyncActivity</span>&lt;<span class="pl-k">int</span>&gt;
+{
+    <span class="pl-k">protected</span> <span class="pl-k">override</span> <span class="pl-k">int</span> ExecuteActivity() =&gt; <span class="pl-k">int</span>.Parse(Console.ReadLine());
+}
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">SumActivity</span> : <span class="pl-k">SyncActivity</span>&lt;<span class="pl-k">int</span>&gt;
+{
+    [Required] <span class="pl-k">public</span> <span class="pl-k">int</span> <span class="pl-en">FirstNumber</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }
+    [Required] <span class="pl-k">public</span> <span class="pl-k">int</span> <span class="pl-en">SecondNumber</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }
+
+    <span class="pl-k">protected</span> <span class="pl-k">override</span> <span class="pl-k">int</span> <span class="pl-en">ExecuteActivity</span>() =&gt; FirstNumber + SecondNumber;
+}</pre></div>
+
+<h5>
+<a id="binding-to-activity-result" class="anchor" href="#binding-to-activity-result" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Binding to activity result</h5>
+
+<p>In this example we bind properties <code>FirstNumber</code> and <code>SecondNumber</code> to the results
+of <code>readFirstNumber</code> and <code>readSecondNumber</code>:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> readFirstNumber = builder.Activity&lt;ReadIntActivity&gt;();
+<span class="pl-k">var</span> readSecondNumber = builder.Activity&lt;ReadIntActivity&gt;();
+
+<span class="pl-k">var</span> sumTwoNumbers = builder.Activity&lt;SumActivity&gt;();
+
+sumTwoNumbers.Bind(a =&gt; a.FirstNumber).ToResultOf(readFirstNumber);
+sumTwoNumbers.Bind(a =&gt; a.SecondNumber).ToResultOf(readSecondNumber);</pre></div>
+
+<h5>
+<a id="binding-to-value" class="anchor" href="#binding-to-value" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Binding to value</h5>
+
+<p>In this example we bind <code>FirstNumber</code> to the value <code>42</code> and <code>SecondNumber</code> to <code>5</code>:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> sumTwoNumbers = builder.Activity&lt;SumActivity&gt;();
+
+sumTwoNumbers.Bind(a =&gt; a.FirstNumber).To(<span class="pl-c1">42</span>);
+sumTwoNumbers.Bind(a =&gt; a.SecondNumber).To(<span class="pl-c1">5</span>);</pre></div>
+
+<h5>
+<a id="binding-to-expression" class="anchor" href="#binding-to-expression" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Binding to expression</h5>
+
+<p>In this example we bind <code>FirstNumber</code> to expression using the result of the <code>readFirstNumber</code>
+and <code>SecondNumber</code> to function call <code>Factorial(5)</code> expression:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> readFirstNumber = builder.Activity&lt;ReadIntActivity&gt;();
+
+<span class="pl-k">var</span> firstNumber = Result&lt;<span class="pl-k">int</span>&gt;.Of(readFirstNumber); <span class="pl-c">// Create result thunk</span>
+
+<span class="pl-k">var</span> sumTwoNumbers = builder.Activity&lt;SumActivity&gt;();
+
+sumTwoNumbers.Bind(a =&gt; a.FirstNumber).To(() =&gt; firstNumber.Get() + <span class="pl-c1">1</span>);
+sumTwoNumbers.Bind(a =&gt; a.SecondNumber).To(() =&gt; Factorial(<span class="pl-c1">5</span>)); </pre></div>
+
+<h5>
+<a id="using-flow-variables" class="anchor" href="#using-flow-variables" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Using flow variables</h5>
+
+<p>The MicroFlow allows to create and use variables scoped to the whole flow or to some specific block:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> globalVariable = builder.Variable&lt;<span class="pl-k">int</span>&gt;();
+
+<span class="pl-k">var</span> block = builder.Block(<span class="pl-s"><span class="pl-pds">"</span>my block<span class="pl-pds">"</span></span>, (thisBlock, blockBuilder) =&gt;
+{
+    <span class="pl-k">var</span> localVariable = thisBlock.Variable&lt;<span class="pl-k">string</span>&gt;(<span class="pl-s"><span class="pl-pds">"</span>some initial variable value<span class="pl-pds">"</span></span>);
+});</pre></div>
+
+<p>It's possible to change the variable value after completion of some activity:</p>
+
+<ul>
+<li>Assign activity result:</li>
+</ul>
+
+<div class="highlight highlight-source-cs"><pre> <span class="pl-k">var</span> myVar = builder.Variable&lt;<span class="pl-k">int</span>&gt;();
+
+ <span class="pl-k">var</span> readFirstNumber = builder.Activity&lt;ReadIntActivity&gt;();
+
+ myVar.BindToResultOf(readFirstNumber);</pre></div>
+
+<ul>
+<li>Assign some constant value:</li>
+</ul>
+
+<div class="highlight highlight-source-cs"><pre> <span class="pl-k">var</span> myVar = builder.Variable&lt;<span class="pl-k">bool</span>&gt;();
+
+ <span class="pl-k">var</span> readFirstNumber = builder.Activity&lt;ReadIntActivity&gt;();
+
+readFirstNumber.OnCompletionAssign(myVar, <span class="pl-c1">true</span>);</pre></div>
+
+<ul>
+<li>Update value without using activity result:</li>
+</ul>
+
+<div class="highlight highlight-source-cs"><pre> <span class="pl-k">var</span> myVar = builder.Variable&lt;<span class="pl-k">int</span>&gt;(<span class="pl-c1">42</span>);
+
+ <span class="pl-k">var</span> readFirstNumber = builder.Activity&lt;ReadIntActivity&gt;();
+
+ readFirstNumber.OnCompletionUpdate(myVar, oldValue =&gt; oldValue + <span class="pl-c1">1</span>);</pre></div>
+
+<ul>
+<li>Update value using activity result:</li>
+</ul>
+
+<div class="highlight highlight-source-cs"><pre> <span class="pl-k">var</span> myVar = builder.Variable&lt;<span class="pl-k">int</span>&gt;(<span class="pl-c1">42</span>);
+
+ <span class="pl-k">var</span> readFirstNumber = builder.Activity&lt;ReadIntActivity&gt;();
+
+ readFirstNumber.OnCompletionUpdate(myVar, (<span class="pl-k">int</span> oldValue, <span class="pl-k">int</span> result) =&gt; oldValue + result);</pre></div>
+
+<p>Later the current value of a variable can retrieved via property <code>CurrentValue</code>:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> myVar = builder.Variable&lt;<span class="pl-k">int</span>&gt;();
+...
+<span class="pl-k">var</span> sumTwoNumbers = builder.Activity&lt;SumActivity&gt;();
+
+sumTwoNumbers.Bind(a =&gt; a.FirstNumber).To(() =&gt; myVar.CurrentValue);
+...</pre></div>
+
+<h3>
+<a id="flow-creation" class="anchor" href="#flow-creation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Flow creation</h3>
+
+<p>Every flow is a subclass of the <code>Flow</code> abstract class. 
+The <code>Flow</code> base class provides the way to validate and run the
+the constructed flow:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> ValidationResult Validate();
+<span class="pl-k">public</span> Task Run();</pre></div>
+
+<p>In order to create new flow definition it's required to describe the flow structure 
+and give the flow some name:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">MyFlow</span> : <span class="pl-k">Flow</span>
+{
+    <span class="pl-k">public</span> <span class="pl-k">override</span> <span class="pl-k">string</span> Name =&gt; <span class="pl-s"><span class="pl-pds">"</span>My brand new flow<span class="pl-pds">"</span></span>;
+
+    <span class="pl-k">protected</span> <span class="pl-k">override</span> <span class="pl-k">void</span> <span class="pl-en">Build</span>(<span class="pl-k">FlowBuilder</span> <span class="pl-smi">builder</span>)
+    {
+        <span class="pl-c">// Create and connect nodes</span>
+    }
+}</pre></div>
+
+<p>The <code>Flow</code> сlass also has several configuration extension points:</p>
+
+<ul>
+<li>
+<code>ConfigureServices</code> method allows to register services required for activities (dependency injection mechanism);</li>
+<li>
+<code>ConfigureValidation</code> method allows to add custom flow validators;</li>
+<li>
+<code>CreateFlowExecutionLogger</code> method allows to setup execution logging.</li>
+</ul>
+
+<h5>
+<a id="services-registration" class="anchor" href="#services-registration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Services registration</h5>
+
+<p>Configuring services is possible via overriding the method <code>ConfigureServices</code></p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">protected</span> <span class="pl-k">virtual</span> <span class="pl-k">void</span> ConfigureServices(IServiceCollection services);</pre></div>
+
+<p>Let's say our <code>ReadIntActivity</code> uses <code>IReader</code> service:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">interface</span> <span class="pl-en">IReader</span>
+{
+    <span class="pl-k">string</span> <span class="pl-en">Read</span>();
+}
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">ReadIntActivity</span> : <span class="pl-k">SyncActivity</span>&lt;<span class="pl-k">int</span>&gt;
+{
+    <span class="pl-k">private</span> <span class="pl-k">readonly</span> IReader _reader;
+
+    <span class="pl-k">public</span> <span class="pl-en">ReadIntActivity</span>(<span class="pl-k">IReader</span> <span class="pl-smi">reader</span>)
+    {
+        _reader = reader;
+    }
+
+    <span class="pl-k">protected</span> <span class="pl-k">override</span> <span class="pl-k">int</span> ExecuteActivity() =&gt; <span class="pl-k">int</span>.Parse(_reader.Read());
+}</pre></div>
+
+<p><code>ConfigureServices</code> method allows to register service implementation
+passing to the <code>ReadIntActivity</code> constructor whenever the activity is created.</p>
+
+<p><code>IServiceCollection</code> has several helper methods:</p>
+
+<ul>
+<li>
+<code>AddSingleton&lt;TService&gt;(object instance)</code> registers the specified instance as a service implementation.</li>
+<li>
+<code>AddDisposableSingleton&lt;TService&gt;(IDisposable instance)</code> registers the specified instance as a service implementation;
+After finishing the flow execution the instance will be disposed.</li>
+<li>
+<code>AddSingleton&lt;TService, TImplementation&gt;()</code> registers the type of the service implementation. 
+The single instance of the <code>TImplementation</code> will be used throughout the whole flow;</li>
+<li>
+<code>AddTransient&lt;TService, TImplementation&gt;()</code> registers the type of the service implemenation.
+The new instance of the <code>TImplementation</code> will be created each time it's needed to pass the
+service to the activity constructor.</li>
+</ul>
+
+<blockquote>
+<p><strong>Note:</strong> Current implementation allows to register only service implementation types having a default constructor.</p>
+</blockquote>
+
+<h5>
+<a id="logging" class="anchor" href="#logging" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Logging</h5>
+
+<p>While no logging is performed by default it's possible to specify the flow execution logger 
+by overriding the method:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">protected</span> <span class="pl-k">virtual</span> ILogger CreateFlowExecutionLogger();</pre></div>
+
+<p>The <code>ILogger</code> interface declares the verbosity level property and several overloads to 
+log messages and exceptions.</p>
+
+<p>The MicroFlow provides two simple implementations:</p>
+
+<ul>
+<li>
+<code>NullLogger</code> does nothing;</li>
+<li>
+<code>ConsoleLogger</code> prints messages to the console.</li>
+</ul>
+
+<h5>
+<a id="validation" class="anchor" href="#validation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Validation</h5>
+
+<p>MicroFlow supports flow validation. Currently by default the following checks are performed:</p>
+
+<ul>
+<li>Initial node availability;</li>
+<li>Loops absence (node shouldn't point to itself);</li>
+<li>Condition expression presense in condition nodes;</li>
+<li>Choice expression presence in switch nodes;</li>
+<li>Nodes reachability;</li>
+<li>Fault and cancellation handlers availability for activities;</li>
+<li>Selfcontainedness of blocks;</li>
+<li>Acyclicity of blocks;</li>
+<li>Required bindings availablity;</li>
+<li>Activity default constructor availability.</li>
+</ul>
+
+<p>Any <code>Flow</code> implementation can add custom validators by overriding the <code>ConfigureValidation</code> method:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">protected</span> <span class="pl-k">virtual</span> <span class="pl-k">void</span> ConfigureValidation([NotNull] IValidatorCollection validators)</pre></div>
+
+<p>All validators inherit from the <code>FlowValidator</code> abstract class.
+<code>FlowValidator</code> provides the implementation of visiting every node in the flow and then
+performing global validation. Global validation assumes that during the visiting phase validator accumulates 
+some information that should be checked later - on the global validation phase. 
+<code>FlowValidator</code> implementation must override <code>VisitXxx</code> methods for each kind of node.
+Global validation is fully optional and can be implemented by overriding the <code>PerformGlobalValidation</code> method.</p>
+
+<p>Future plans:</p>
+
+<ul>
+<li>Binding expressions validation;</li>
+<li>Variables scope validation;</li>
+<li>Forks data usage validaton
+etc.</li>
+</ul>
+
+<h3>
+<a id="fault-handling" class="anchor" href="#fault-handling" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Fault handling</h3>
+
+<p>As it was mentioned earlier if activity ends up with an exception
+then fault handler activity takes control.
+But there are cases when an exception occures before activity execution. For instance:</p>
+
+<ul>
+<li>Exception in activity constructor;</li>
+<li>Exception in service constructor;</li>
+<li>Exception during condition expression evaluation;</li>
+</ul>
+
+<p>and so on.</p>
+
+<p>Such situations differ from cases when activity results faulted <code>Task</code> and therefore
+require special handling.</p>
+
+<p>The <code>Flow.Run()</code> method returns a <code>Task</code>. 
+If the flow completes normally then returned <code>Task</code> ends up with the <code>RanToCompletion</code> status.
+But when an unexpected exception is encountered <code>Task</code> completes as <code>Faulted</code>.</p>
+
+<p>Thus to avoid unobserved exceptions one should attach a continuation to the <code>Task</code> returned from
+the <code>Run</code> method:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> flow = <span class="pl-k">new</span> MyFlow();
+
+<span class="pl-k">var</span> flowTask = flow.Run();
+
+flowTask.ContinueWith(t =&gt;
+{
+    <span class="pl-k">if</span> (t.IsFaulted)
+    {
+        <span class="pl-c">// Handle exception</span>
+    }
+    <span class="pl-k">else</span> <span class="pl-k">if</span> (t.Status == TaskStatus.RanToCompletion)
+    {
+        <span class="pl-c">// Flow is completed normally</span>
+    }
+});</pre></div>
+
+<h3>
+<a id="graph-generator" class="anchor" href="#graph-generator" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Graph generator</h3>
+
+<p>The MicroFlow comes with the tool called <em>MicroFlow.Graph</em> that allows to generate *.dgml files.
+DGML is an XML-based file format for directed graphs supported by the Microsoft Visual Studio 2010 and later.</p>
+
+<p>MicroFlow.Graph.exe is a console program with two required arguments:</p>
+
+<ul>
+<li>path to or name of the assembly containing the flow definition class;</li>
+<li>flow class name.</li>
+</ul>
+
+<p>Example: <code>MicroFlow.Graph MicroFlow.Test.dll Flow1</code></p>
+
+<p>The generated sample flow is presented below.</p>
+
+<blockquote>
+<p><strong>Note:</strong> Graph generation is available only if the flow has a default constructor</p>
+</blockquote>
+
+<h3>
+<a id="sample" class="anchor" href="#sample" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sample</h3>
+
+<p>Let's create the simple flow: 
+read two numbers and if first number greater than a second output "first &gt; second" 
+otherwise output "first &lt;= second". The graphical scheme of the flow is presented below. 
+<img src="https://raw.github.com/akarpov89/MicroFlow/master/content/flow1.png" alt="ExampleFlow1"></p>
+
+<p>At first let's create activity for reading numbers. It will use the following <code>IReader</code> interface.</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">interface</span> <span class="pl-en">IReader</span>
+{
+    <span class="pl-k">string</span> <span class="pl-en">Read</span>();
+}</pre></div>
+
+<p>Because reading activity is synchronous and returns an integer 
+it will inherit from the <code>SyncActivity&lt;int&gt;</code> class.</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">ReadIntActivity</span> : <span class="pl-k">SyncActivity</span>&lt;<span class="pl-k">int</span>&gt;
+{
+    <span class="pl-k">private</span> <span class="pl-k">readonly</span> IReader _reader;
+
+    <span class="pl-k">public</span> <span class="pl-en">ReadIntActivity</span>(<span class="pl-k">IReader</span> <span class="pl-smi">reader</span>)
+    {
+        _reader = reader;
+    }
+
+    <span class="pl-k">protected</span> <span class="pl-k">override</span> <span class="pl-k">int</span> ExecuteActivity() =&gt; <span class="pl-k">int</span>.Parse(_reader.Read());
+}</pre></div>
+
+<p>Now let's create output activity. It will use the following <code>IWriter</code> interface:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">interface</span> <span class="pl-en">IWriter</span>
+{
+    <span class="pl-k">void</span> <span class="pl-en">Write</span>(<span class="pl-k">string</span> <span class="pl-smi">message</span>);
+}</pre></div>
+
+<p>Because output activity is synchronous and doesn't return any value
+it will inherit from the <code>SyncActivity</code> class. Also output activity requires a message to print out.
+This can be experessed by declaring the property marked with <code>[Required]</code> attribute.</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">WriteMessageActivity</span> : <span class="pl-k">SyncActivity</span>
+{
+    <span class="pl-k">private</span> <span class="pl-k">readonly</span> IWriter _writer;
+
+    <span class="pl-k">public</span> <span class="pl-en">WriteMessageActivity</span>(<span class="pl-k">IWriter</span> <span class="pl-smi">writer</span>)
+    {
+        _writer = writer;
+    }
+
+    [Required]
+    <span class="pl-k">public</span> <span class="pl-k">string</span> <span class="pl-en">Message</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }
+
+    <span class="pl-k">protected</span> <span class="pl-k">override</span> <span class="pl-k">void</span> <span class="pl-en">ExecuteActivity</span>() 
+    {
+        _writer.Write(Message);
+    }
+}</pre></div>
+
+<p>Every activity may fail or be cancelled. That's why we also need to define fault handler 
+and cancellation handler activities:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">MyFaultHandler</span> : <span class="pl-k">SyncActivity</span>, <span class="pl-k">IFaultHandlerActivity</span>
+{
+    <span class="pl-k">public</span> Exception <span class="pl-en">Exception</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }
+
+    <span class="pl-k">protected</span> <span class="pl-k">override</span> <span class="pl-k">void</span> <span class="pl-en">ExecuteActivity</span>()
+    {
+        Console.WriteLine(Exception);
+    }
+}
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">MyCancellationHandler</span> : <span class="pl-k">SyncActivity</span>
+{
+    <span class="pl-k">protected</span> <span class="pl-k">override</span> <span class="pl-k">void</span> <span class="pl-en">ExecuteActivity</span>()
+    {
+        Console.WriteLine(<span class="pl-s"><span class="pl-pds">"</span>Cancelled<span class="pl-pds">"</span></span>);
+    }
+}</pre></div>
+
+<p>Before creating the flow itself we should provide the implementations of the <code>IReader</code> and <code>IWriter</code>
+services:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">ConsoleReader</span> : <span class="pl-k">IReader</span>
+{
+    <span class="pl-k">public</span> <span class="pl-k">string</span> Read() =&gt; Console.ReadLine();
+}
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">ConsoleWriter</span> : <span class="pl-k">IWriter</span>
+{
+    <span class="pl-k">public</span> <span class="pl-k">string</span> <span class="pl-en">Write</span>(<span class="pl-k">string</span> <span class="pl-smi">message</span>)
+    {
+        Console.WriteLine(message);
+    }
+}</pre></div>
+
+<p>Now we are ready to define the flow. All flows inherit from the <code>Flow</code> class. 
+This base class allows to build the flow structure, configure the dependency injection and run the flow.</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">Flow1</span> : <span class="pl-k">Flow</span>
+{
+    <span class="pl-k">public</span> <span class="pl-k">override</span> <span class="pl-k">string</span> Name =&gt; <span class="pl-s"><span class="pl-pds">"</span>Flow1. Uses condition node<span class="pl-pds">"</span></span>;
+
+    <span class="pl-k">protected</span> <span class="pl-k">override</span> <span class="pl-k">void</span> <span class="pl-en">Build</span>(<span class="pl-k">FlowBuilder</span> <span class="pl-smi">builder</span>)
+    {
+        <span class="pl-c">// Create reading activity nodes.</span>
+        <span class="pl-k">var</span> inputFirst = builder.Activity&lt;ReadIntActivity&gt;(<span class="pl-s"><span class="pl-pds">"</span>Read first number<span class="pl-pds">"</span></span>);
+        <span class="pl-k">var</span> inputSecond = builder.Activity&lt;ReadIntActivity&gt;(<span class="pl-s"><span class="pl-pds">"</span>Read second number<span class="pl-pds">"</span></span>);
+
+        <span class="pl-c">// Create bindings to the results.</span>
+        <span class="pl-k">var</span> first = Result&lt;<span class="pl-k">int</span>&gt;.Of(inputFirst);
+        <span class="pl-k">var</span> second = Result&lt;<span class="pl-k">int</span>&gt;.Of(inputSecond);
+
+        <span class="pl-c">// Create condition node.</span>
+        <span class="pl-k">var</span> condition = builder.Condition(<span class="pl-s"><span class="pl-pds">"</span>If first number &gt; second number<span class="pl-pds">"</span></span>);
+
+        <span class="pl-c">// Set condition to the expression.</span>
+        condition.WithCondition(() =&gt; first.Get() &gt; second.Get());
+
+        <span class="pl-c">// Create true branch output activity.</span>
+        <span class="pl-k">var</span> outputWhenTrue = builder.Activity&lt;WriteMessageActivity&gt;(<span class="pl-s"><span class="pl-pds">"</span>Output: first &gt; second<span class="pl-pds">"</span></span>);
+
+        <span class="pl-c">// Bind the output message to the expression.</span>
+        outputWhenTrue.Bind(x =&gt; x.Message).To(() =&gt; $<span class="pl-s"><span class="pl-pds">"</span>{first.Get()} &gt; {second.Get()}<span class="pl-pds">"</span></span>);
+
+        <span class="pl-c">// Create false branch output activity.</span>
+        <span class="pl-k">var</span> outputWhenFalse = builder.Activity&lt;WriteMessageActivity&gt;(<span class="pl-s"><span class="pl-pds">"</span>Output: first &lt;= second<span class="pl-pds">"</span></span>);
+
+        <span class="pl-c">// Bind the output message to the expression.</span>
+        outputWhenFalse.Bind(x =&gt; x.Message).To(() =&gt; $<span class="pl-s"><span class="pl-pds">"</span>{first.Get()} &lt;= {second.Get()}<span class="pl-pds">"</span></span>);
+
+        <span class="pl-c">// Set initial node of the flow.</span>
+        builder.WithInitialNode(inputFirst);
+
+        <span class="pl-c">// Set default fault and cancellation handlers.</span>
+        builder.WithDefaultFaultHandler&lt;MyFaultHandler&gt;();
+        builder.WithDefaultCancellationHandler&lt;MyCancellationHandler&gt;();
+
+        <span class="pl-c">//</span>
+        <span class="pl-c">// Connect nodes.</span>
+        <span class="pl-c">//</span>
+
+        inputFirst.ConnectTo(inputSecond);
+        inputSecond.ConnectTo(condition);
+
+        condition.ConnectTrueTo(outputWhenTrue)
+                 .ConnectFalseTo(outputWhenFalse);
+    }
+
+    <span class="pl-k">protected</span> <span class="pl-k">override</span> <span class="pl-k">void</span> <span class="pl-en">ConfigureServices</span>(<span class="pl-k">IServiceCollection</span> <span class="pl-smi">services</span>)
+    {
+        <span class="pl-c">// Register services.</span>
+        services.AddSingleton&lt;IReader, ConsoleReader&gt;();
+        services.AddSingleton&lt;IWriter, ConsoleWriter&gt;();
+    }
+}</pre></div>
+
+<p>That's it. Now we can create the instance of the flow and run it:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> Main(<span class="pl-k">string</span>[] args)
+{
+    <span class="pl-k">var</span> flow = <span class="pl-k">new</span> Flow1();
+    flow.Run();
+}</pre></div>
+
+<h3>
+<a id="special-thanks" class="anchor" href="#special-thanks" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Special thanks</h3>
+
+<p><img src="https://pbs.twimg.com/profile_images/674917637646716928/lni0by_I.png" width="64px"></p>
+
+<p><a href="http://www.jetbrains.com/resharper/">ReSharper</a> - the most advanced productivity add-in for Visual Studio!</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/akarpov89/MicroFlow">MicroFlow</a> is maintained by <a href="https://github.com/akarpov89">akarpov89</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
