@@ -31,14 +31,11 @@
       </header>
       <section>
         <h1>
-<a id="microflow" class="anchor" href="#microflow" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>MicroFlow</h1>
-
-<h3>
-<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Getting Started</h3>
+<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Getting Started</h1>
 
 <ul>
 <li><a href="#what-is-microflow">What is MicroFlow?</a></li>
-<li><a href="https://www.nuget.org/packages/MicroFlow/">NuGet Package</a></li>
+<li><a href="#nuget-package">NuGet Package</a></li>
 <li><a href="#activities">Activities</a></li>
 <li><a href="#nodes">Nodes</a></li>
 <li><a href="#data-flow">Data flow</a></li>
@@ -46,10 +43,11 @@
 <li><a href="#fault-handling">Fault handling</a></li>
 <li><a href="#graph-generator">Graph generator</a></li>
 <li><a href="#sample">Sample</a></li>
+<li><a href="https://raw.githubusercontent.com/akarpov89/MicroFlow/master/License.txt">License</a></li>
 </ul>
 
-<h3>
-<a id="what-is-microflow" class="anchor" href="#what-is-microflow" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What is MicroFlow?</h3>
+<h2>
+<a id="what-is-microflow" class="anchor" href="#what-is-microflow" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What is MicroFlow?</h2>
 
 <p>MicroFlow is a lightweight workflow engine. It allows to build workflows as flowcharts.
 Every flow is constructed from a limited number of connected nodes.</p>
@@ -76,11 +74,24 @@ Every flow is constructed from a limited number of connected nodes.</p>
 <li>
 <strong>fork-join</strong> node represents concurrent activities;</li>
 <li>
-<strong>block</strong> node groups several nodes (like blocks in programming languages).</li>
+<strong>block</strong> node groups several nodes (like blocks in programming languages). </li>
 </ul>
 
-<h3>
-<a id="activities" class="anchor" href="#activities" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Activities</h3>
+<h2>
+<a id="nuget-package" class="anchor" href="#nuget-package" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>NuGet Package</h2>
+
+<p>MicroFlow is available on <a href="https://www.nuget.org/packages/MicroFlow/">NuGet</a> and <a href="https://www.myget.org/gallery/microflow/">MyGet</a>.</p>
+
+<p>Target frameworks:</p>
+
+<ul>
+<li>.NET 4.0+</li>
+<li>.NET Core</li>
+<li>Portable Libraries (net45+win8+wpa81+wp8)</li>
+</ul>
+
+<h2>
+<a id="activities" class="anchor" href="#activities" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Activities</h2>
 
 <p>The user-defined activities should inherit from one of the following base classes</p>
 
@@ -127,11 +138,11 @@ An implemenation must override the method:</p>
 
 <ul>
 <li>
-<code>CancellationToken CancellationToken { get; set; }</code> - allows the work to be cancelled;</li>
+<code>CancellationToken</code> - allows the work to be cancelled;</li>
 <li>
-<code>TaskScheduler Scheduler { get; set; }</code> - schedules the worker task;</li>
+<code>Scheduler</code> - schedules the worker task;</li>
 <li>
-<code>bool IsLongRunning { get; set; }</code> - allows to hint <code>TaskScheduler</code> that task will be a long-running operation.<br>
+<code>IsLongRunning</code> - allows to hint <code>TaskScheduler</code> that task will be a long-running operation.<br>
 </li>
 </ul>
 
@@ -152,15 +163,15 @@ An implemenation must override the method:</p>
 
 <div class="highlight highlight-source-cs"><pre>Exception Exception { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }</pre></div>
 
-<h3>
-<a id="nodes" class="anchor" href="#nodes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Nodes</h3>
+<h2>
+<a id="nodes" class="anchor" href="#nodes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Nodes</h2>
 
 <p>The <code>FlowBuilder</code> class provides the way to create nodes of the flow.</p>
 
 <h5>
 <a id="activitynodetactivity" class="anchor" href="#activitynodetactivity" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ActivityNode&lt;TActivity&gt;</h5>
 
-<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> node = builder.Activity&lt;SomeActivity&gt;(<span class="pl-s"><span class="pl-pds">"</span>Optional node name<span class="pl-pds">"</span></span>);
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> node = builder.Activity&lt;SomeActivity&gt;(<span class="pl-s"><span class="pl-pds">"</span>Node name<span class="pl-pds">"</span></span>);
 
 node.ConnectTo(anotherNode)
     .ConnectFaultTo(faultHandler)
@@ -169,8 +180,8 @@ node.ConnectTo(anotherNode)
 <h5>
 <a id="conditionnode" class="anchor" href="#conditionnode" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ConditionNode</h5>
 
-<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> node = builder.Condition(<span class="pl-s"><span class="pl-pds">"</span>Optional node name<span class="pl-pds">"</span></span>);
-node.WithCondition(() =&gt; someBooleanExpression);
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> node = builder.Condition(<span class="pl-s"><span class="pl-pds">"</span>Node name<span class="pl-pds">"</span></span>);
+node.WithCondition(() =&gt; boolExpr);
 
 node.ConnectFalseTo(falseBranchNode)
     .ConnectTrueTo(trueBranchNode);</pre></div>
@@ -178,8 +189,8 @@ node.ConnectFalseTo(falseBranchNode)
 <p>There is also an alternative syntax that allows to create <code>if-then-else</code> constructs:</p>
 
 <div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> node = builder
-    .If(<span class="pl-s"><span class="pl-pds">"</span>Condition description<span class="pl-pds">"</span></span>, () =&gt; someBooleanExpression1).Then(node1)
-    .ElseIf(<span class="pl-s"><span class="pl-pds">"</span>Another condition description<span class="pl-pds">"</span></span>, () =&gt; someBooleanExpression2).Then(node2)
+    .If(<span class="pl-s"><span class="pl-pds">"</span>Condition1<span class="pl-pds">"</span></span>, () =&gt; boolExpr1).Then(node1)
+    .ElseIf(<span class="pl-s"><span class="pl-pds">"</span>Condition2<span class="pl-pds">"</span></span>, () =&gt; boolExpr2).Then(node2)
     .Else(node3);    </pre></div>
 
 <p>Notice that in this case <code>node</code> is initial <code>ConditionNode</code> (the one with condition description "Condition description").</p>
@@ -187,7 +198,7 @@ node.ConnectFalseTo(falseBranchNode)
 <h5>
 <a id="switchnode" class="anchor" href="#switchnode" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SwitchNode</h5>
 
-<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> node = builder.SwitchOf&lt;<span class="pl-k">int</span>&gt;(<span class="pl-s"><span class="pl-pds">"</span>Optional node name<span class="pl-pds">"</span></span>);
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> node = builder.SwitchOf&lt;<span class="pl-k">int</span>&gt;(<span class="pl-s"><span class="pl-pds">"</span>Node name<span class="pl-pds">"</span></span>);
 node.WithChoice(() =&gt; someIntExpression);
 
 node.ConnectCase(<span class="pl-c1">0</span>).To(caseHandler1)
@@ -198,11 +209,11 @@ node.ConnectCase(<span class="pl-c1">0</span>).To(caseHandler1)
 <h5>
 <a id="forkjoinnode" class="anchor" href="#forkjoinnode" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ForkJoinNode</h5>
 
-<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> node = builder.ForkJoin(<span class="pl-s"><span class="pl-pds">"</span>Optional node name<span class="pl-pds">"</span></span>);
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> node = builder.ForkJoin(<span class="pl-s"><span class="pl-pds">"</span>Node name<span class="pl-pds">"</span></span>);
 
-<span class="pl-k">var</span> fork1 = node.Fork&lt;SomeForkActivity&gt;(<span class="pl-s"><span class="pl-pds">"</span>Optional fork name<span class="pl-pds">"</span></span>);
-<span class="pl-k">var</span> fork2 = node.Fork&lt;SomeAnotherForkActivity&gt;(<span class="pl-s"><span class="pl-pds">"</span>Optional fork name<span class="pl-pds">"</span></span>);
-<span class="pl-k">var</span> fork3 = node.Fork&lt;SomeActivity&gt;(<span class="pl-s"><span class="pl-pds">"</span>Optional fork name<span class="pl-pds">"</span></span>);</pre></div>
+<span class="pl-k">var</span> fork1 = node.Fork&lt;SomeForkActivity&gt;(<span class="pl-s"><span class="pl-pds">"</span>Fork 1 name<span class="pl-pds">"</span></span>);
+<span class="pl-k">var</span> fork2 = node.Fork&lt;SomeAnotherForkActivity&gt;(<span class="pl-s"><span class="pl-pds">"</span>Fork 2 name<span class="pl-pds">"</span></span>);
+<span class="pl-k">var</span> fork3 = node.Fork&lt;SomeActivity&gt;(<span class="pl-s"><span class="pl-pds">"</span>Fork 3 name<span class="pl-pds">"</span></span>);</pre></div>
 
 <h5>
 <a id="blocknode" class="anchor" href="#blocknode" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>BlockNode</h5>
@@ -220,27 +231,17 @@ node.ConnectCase(<span class="pl-c1">0</span>).To(caseHandler1)
 
 <p>Every activity node should be connected with some specific or default fault handler</p>
 
-<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> globalFaultHandler = builder.FaultHandler&lt;MyFaultHandler&gt;(<span class="pl-s"><span class="pl-pds">"</span>Global fault handler<span class="pl-pds">"</span></span>);
-builder.WithDefaultFaultHandler(globalFaultHandler); </pre></div>
-
-<p>Or alternatively:</p>
-
-<div class="highlight highlight-source-cs"><pre>builder.WithDefaultFaultHandler&lt;MyFaultHandler&gt;(<span class="pl-s"><span class="pl-pds">"</span>Global fault handler<span class="pl-pds">"</span></span>); </pre></div>
+<div class="highlight highlight-source-cs"><pre>builder.WithDefaultFaultHandler&lt;MyFaultHandler&gt;(); </pre></div>
 
 <h5>
 <a id="default-cancellation-handler" class="anchor" href="#default-cancellation-handler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Default cancellation handler</h5>
 
 <p>Every activity node should be connected with some specific or default cancellation handler</p>
 
-<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> globalCancellationHandler = builder.Activity&lt;MyCancellationHandler&gt;(<span class="pl-s"><span class="pl-pds">"</span>Global cancellation handler<span class="pl-pds">"</span></span>);
-builder.WithDefaultCancellationHandler(globalCancellationHandler);</pre></div>
+<div class="highlight highlight-source-cs"><pre>builder.WithDefaultCancellationHandler&lt;MyCancellationHandler&gt;();</pre></div>
 
-<p>Or alternatively:</p>
-
-<div class="highlight highlight-source-cs"><pre>builder.WithDefaultCancellationHandler&lt;MyCancellationHandler&gt;(<span class="pl-s"><span class="pl-pds">"</span>Global cancellation handler<span class="pl-pds">"</span></span>);</pre></div>
-
-<h3>
-<a id="data-flow" class="anchor" href="#data-flow" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Data flow</h3>
+<h2>
+<a id="data-flow" class="anchor" href="#data-flow" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Data flow</h2>
 
 <p>As flow executes data transfers from one activity to another.
 The MicroFlow has two mechanisms to define the data flow: <em>bindings</em> and <em>variables</em>.</p>
@@ -249,7 +250,10 @@ The MicroFlow has two mechanisms to define the data flow: <em>bindings</em> and 
 
 <div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">ReadIntActivity</span> : <span class="pl-k">SyncActivity</span>&lt;<span class="pl-k">int</span>&gt;
 {
-    <span class="pl-k">protected</span> <span class="pl-k">override</span> <span class="pl-k">int</span> ExecuteActivity() =&gt; <span class="pl-k">int</span>.Parse(Console.ReadLine());
+    <span class="pl-k">protected</span> <span class="pl-k">override</span> <span class="pl-k">int</span> <span class="pl-en">ExecuteActivity</span>()
+    {
+        <span class="pl-k">return</span> <span class="pl-k">int</span>.Parse(Console.ReadLine());
+    }
 }
 
 <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">SumActivity</span> : <span class="pl-k">SyncActivity</span>&lt;<span class="pl-k">int</span>&gt;
@@ -257,7 +261,10 @@ The MicroFlow has two mechanisms to define the data flow: <em>bindings</em> and 
     [Required] <span class="pl-k">public</span> <span class="pl-k">int</span> <span class="pl-en">FirstNumber</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }
     [Required] <span class="pl-k">public</span> <span class="pl-k">int</span> <span class="pl-en">SecondNumber</span> { <span class="pl-k">get</span>; <span class="pl-k">set</span>; }
 
-    <span class="pl-k">protected</span> <span class="pl-k">override</span> <span class="pl-k">int</span> <span class="pl-en">ExecuteActivity</span>() =&gt; FirstNumber + SecondNumber;
+    <span class="pl-k">protected</span> <span class="pl-k">override</span> <span class="pl-k">int</span> <span class="pl-en">ExecuteActivity</span>()
+    {
+        <span class="pl-k">return</span> FirstNumber + SecondNumber;
+    }
 }</pre></div>
 
 <h5>
@@ -308,14 +315,12 @@ sumTwoNumbers.Bind(a =&gt; a.SecondNumber).To(() =&gt; Factorial(<span class="pl
 
 <span class="pl-k">var</span> block = builder.Block(<span class="pl-s"><span class="pl-pds">"</span>my block<span class="pl-pds">"</span></span>, (thisBlock, blockBuilder) =&gt;
 {
-    <span class="pl-k">var</span> localVariable = thisBlock.Variable&lt;<span class="pl-k">string</span>&gt;(<span class="pl-s"><span class="pl-pds">"</span>some initial variable value<span class="pl-pds">"</span></span>);
+    <span class="pl-k">var</span> localVariable = thisBlock.Variable&lt;<span class="pl-k">string</span>&gt;(<span class="pl-s"><span class="pl-pds">"</span>initial value<span class="pl-pds">"</span></span>);
 });</pre></div>
 
 <p>It's possible to change the variable value after completion of some activity:</p>
 
-<ul>
-<li>Assign activity result:</li>
-</ul>
+<p><em>Assign activity result</em>:</p>
 
 <div class="highlight highlight-source-cs"><pre> <span class="pl-k">var</span> myVar = builder.Variable&lt;<span class="pl-k">int</span>&gt;();
 
@@ -323,35 +328,35 @@ sumTwoNumbers.Bind(a =&gt; a.SecondNumber).To(() =&gt; Factorial(<span class="pl
 
  myVar.BindToResultOf(readFirstNumber);</pre></div>
 
-<ul>
-<li>Assign some constant value:</li>
-</ul>
+<p><em>Assign some constant value</em>:</p>
 
-<div class="highlight highlight-source-cs"><pre> <span class="pl-k">var</span> myVar = builder.Variable&lt;<span class="pl-k">bool</span>&gt;();
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> myVar = builder.Variable&lt;<span class="pl-k">bool</span>&gt;();
 
- <span class="pl-k">var</span> readFirstNumber = builder.Activity&lt;ReadIntActivity&gt;();
+<span class="pl-k">var</span> readFirstNumber = builder.Activity&lt;ReadIntActivity&gt;();
 
 readFirstNumber.OnCompletionAssign(myVar, <span class="pl-c1">true</span>);</pre></div>
 
-<ul>
-<li>Update value without using activity result:</li>
-</ul>
+<p><em>Update value without using activity result</em>:</p>
 
-<div class="highlight highlight-source-cs"><pre> <span class="pl-k">var</span> myVar = builder.Variable&lt;<span class="pl-k">int</span>&gt;(<span class="pl-c1">42</span>);
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> myVar = builder.Variable&lt;<span class="pl-k">int</span>&gt;(<span class="pl-c1">42</span>);
 
- <span class="pl-k">var</span> readFirstNumber = builder.Activity&lt;ReadIntActivity&gt;();
+<span class="pl-k">var</span> readFirstNumber = builder.Activity&lt;ReadIntActivity&gt;();
 
- readFirstNumber.OnCompletionUpdate(myVar, oldValue =&gt; oldValue + <span class="pl-c1">1</span>);</pre></div>
+readFirstNumber.OnCompletionUpdate(
+    myVar, 
+    oldValue =&gt; oldValue + <span class="pl-c1">1</span>
+);</pre></div>
 
-<ul>
-<li>Update value using activity result:</li>
-</ul>
+<p><em>Update value using activity result</em>:</p>
 
-<div class="highlight highlight-source-cs"><pre> <span class="pl-k">var</span> myVar = builder.Variable&lt;<span class="pl-k">int</span>&gt;(<span class="pl-c1">42</span>);
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> myVar = builder.Variable&lt;<span class="pl-k">int</span>&gt;(<span class="pl-c1">42</span>);
 
- <span class="pl-k">var</span> readFirstNumber = builder.Activity&lt;ReadIntActivity&gt;();
+<span class="pl-k">var</span> readFirstNumber = builder.Activity&lt;ReadIntActivity&gt;();
 
- readFirstNumber.OnCompletionUpdate(myVar, (<span class="pl-k">int</span> oldValue, <span class="pl-k">int</span> result) =&gt; oldValue + result);</pre></div>
+readFirstNumber.OnCompletionUpdate(
+    myVar, 
+    (<span class="pl-k">int</span> oldValue, <span class="pl-k">int</span> result) =&gt; oldValue + result
+);</pre></div>
 
 <p>Later the current value of a variable can retrieved via property <code>CurrentValue</code>:</p>
 
@@ -359,11 +364,12 @@ readFirstNumber.OnCompletionAssign(myVar, <span class="pl-c1">true</span>);</pre
 ...
 <span class="pl-k">var</span> sumTwoNumbers = builder.Activity&lt;SumActivity&gt;();
 
-sumTwoNumbers.Bind(a =&gt; a.FirstNumber).To(() =&gt; myVar.CurrentValue);
+sumTwoNumbers.Bind(a =&gt; a.FirstNumber)
+             .To(() =&gt; myVar.CurrentValue);
 ...</pre></div>
 
-<h3>
-<a id="flow-creation" class="anchor" href="#flow-creation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Flow creation</h3>
+<h2>
+<a id="flow-creation" class="anchor" href="#flow-creation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Flow creation</h2>
 
 <p>Every flow is a subclass of the <code>Flow</code> abstract class. 
 The <code>Flow</code> base class provides the way to validate and run the
@@ -373,7 +379,7 @@ the constructed flow:</p>
 <span class="pl-k">public</span> Task Run();</pre></div>
 
 <p>In order to create new flow definition it's required to describe the flow structure 
-and give the flow some name:</p>
+and give the flow a name:</p>
 
 <div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">MyFlow</span> : <span class="pl-k">Flow</span>
 {
@@ -401,7 +407,9 @@ and give the flow some name:</p>
 
 <p>Configuring services is possible via overriding the method <code>ConfigureServices</code></p>
 
-<div class="highlight highlight-source-cs"><pre><span class="pl-k">protected</span> <span class="pl-k">virtual</span> <span class="pl-k">void</span> ConfigureServices(IServiceCollection services);</pre></div>
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">protected</span> <span class="pl-k">virtual</span> <span class="pl-k">void</span> ConfigureServices(
+    [NotNull]IServiceCollection services
+);</pre></div>
 
 <p>Let's say our <code>ReadIntActivity</code> uses <code>IReader</code> service:</p>
 
@@ -486,7 +494,9 @@ log messages and exceptions.</p>
 
 <p>Any <code>Flow</code> implementation can add custom validators by overriding the <code>ConfigureValidation</code> method:</p>
 
-<div class="highlight highlight-source-cs"><pre><span class="pl-k">protected</span> <span class="pl-k">virtual</span> <span class="pl-k">void</span> ConfigureValidation([NotNull] IValidatorCollection validators)</pre></div>
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">protected</span> <span class="pl-k">virtual</span> <span class="pl-k">void</span> ConfigureValidation(
+    [NotNull] IValidatorCollection validators
+)</pre></div>
 
 <p>All validators inherit from the <code>FlowValidator</code> abstract class.
 <code>FlowValidator</code> provides the implementation of visiting every node in the flow and then
@@ -504,8 +514,8 @@ Global validation is fully optional and can be implemented by overriding the <co
 etc.</li>
 </ul>
 
-<h3>
-<a id="fault-handling" class="anchor" href="#fault-handling" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Fault handling</h3>
+<h2>
+<a id="fault-handling" class="anchor" href="#fault-handling" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Fault handling</h2>
 
 <p>As it was mentioned earlier if activity ends up with an exception
 then fault handler activity takes control.
@@ -545,8 +555,8 @@ flowTask.ContinueWith(t =&gt;
     }
 });</pre></div>
 
-<h3>
-<a id="graph-generator" class="anchor" href="#graph-generator" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Graph generator</h3>
+<h2>
+<a id="graph-generator" class="anchor" href="#graph-generator" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Graph generator</h2>
 
 <p>The MicroFlow comes with the tool called <em>MicroFlow.Graph</em> that allows to generate *.dgml files.
 DGML is an XML-based file format for directed graphs supported by the Microsoft Visual Studio 2010 and later.</p>
@@ -566,8 +576,8 @@ DGML is an XML-based file format for directed graphs supported by the Microsoft 
 <p><strong>Note:</strong> Graph generation is available only if the flow has a default constructor</p>
 </blockquote>
 
-<h3>
-<a id="sample" class="anchor" href="#sample" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sample</h3>
+<h2>
+<a id="sample" class="anchor" href="#sample" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sample</h2>
 
 <p>Let's create the simple flow: 
 read two numbers and if first number greater than a second output "first &gt; second" 
@@ -672,30 +682,38 @@ This base class allows to build the flow structure, configure the dependency inj
     <span class="pl-k">protected</span> <span class="pl-k">override</span> <span class="pl-k">void</span> <span class="pl-en">Build</span>(<span class="pl-k">FlowBuilder</span> <span class="pl-smi">builder</span>)
     {
         <span class="pl-c">// Create reading activity nodes.</span>
-        <span class="pl-k">var</span> inputFirst = builder.Activity&lt;ReadIntActivity&gt;(<span class="pl-s"><span class="pl-pds">"</span>Read first number<span class="pl-pds">"</span></span>);
-        <span class="pl-k">var</span> inputSecond = builder.Activity&lt;ReadIntActivity&gt;(<span class="pl-s"><span class="pl-pds">"</span>Read second number<span class="pl-pds">"</span></span>);
+        <span class="pl-k">var</span> inputFirst = builder.Activity&lt;ReadIntActivity&gt;();
+        inputFirst.WithName(<span class="pl-s"><span class="pl-pds">"</span>Read first number<span class="pl-pds">"</span></span>);
+
+        <span class="pl-k">var</span> inputSecond = builder.Activity&lt;ReadIntActivity&gt;();
+        inputSecond.WithName(<span class="pl-s"><span class="pl-pds">"</span>Read second number<span class="pl-pds">"</span></span>);
 
         <span class="pl-c">// Create bindings to the results.</span>
         <span class="pl-k">var</span> first = Result&lt;<span class="pl-k">int</span>&gt;.Of(inputFirst);
         <span class="pl-k">var</span> second = Result&lt;<span class="pl-k">int</span>&gt;.Of(inputSecond);
 
         <span class="pl-c">// Create condition node.</span>
-        <span class="pl-k">var</span> condition = builder.Condition(<span class="pl-s"><span class="pl-pds">"</span>If first number &gt; second number<span class="pl-pds">"</span></span>);
+        <span class="pl-k">var</span> condition = builder.Condition();
+        condition.WithName(<span class="pl-s"><span class="pl-pds">"</span>If first number &gt; second number<span class="pl-pds">"</span></span>);
 
         <span class="pl-c">// Set condition to the expression.</span>
         condition.WithCondition(() =&gt; first.Get() &gt; second.Get());
 
         <span class="pl-c">// Create true branch output activity.</span>
-        <span class="pl-k">var</span> outputWhenTrue = builder.Activity&lt;WriteMessageActivity&gt;(<span class="pl-s"><span class="pl-pds">"</span>Output: first &gt; second<span class="pl-pds">"</span></span>);
+        <span class="pl-k">var</span> outputWhenTrue = builder.Activity&lt;WriteMessageActivity&gt;();
+        outputWhenTrue.WithName(<span class="pl-s"><span class="pl-pds">"</span>Output: first &gt; second<span class="pl-pds">"</span></span>);
 
         <span class="pl-c">// Bind the output message to the expression.</span>
-        outputWhenTrue.Bind(x =&gt; x.Message).To(() =&gt; $<span class="pl-s"><span class="pl-pds">"</span>{first.Get()} &gt; {second.Get()}<span class="pl-pds">"</span></span>);
+        outputWhenTrue.Bind(x =&gt; x.Message)
+                      .To(() =&gt; $<span class="pl-s"><span class="pl-pds">"</span>{first.Get()} &gt; {second.Get()}<span class="pl-pds">"</span></span>);
 
         <span class="pl-c">// Create false branch output activity.</span>
-        <span class="pl-k">var</span> outputWhenFalse = builder.Activity&lt;WriteMessageActivity&gt;(<span class="pl-s"><span class="pl-pds">"</span>Output: first &lt;= second<span class="pl-pds">"</span></span>);
+        <span class="pl-k">var</span> outputWhenFalse = builder.Activity&lt;WriteMessageActivity&gt;();
+        outputWhenFalse.WithName(<span class="pl-s"><span class="pl-pds">"</span>Output: first &lt;= second<span class="pl-pds">"</span></span>);
 
         <span class="pl-c">// Bind the output message to the expression.</span>
-        outputWhenFalse.Bind(x =&gt; x.Message).To(() =&gt; $<span class="pl-s"><span class="pl-pds">"</span>{first.Get()} &lt;= {second.Get()}<span class="pl-pds">"</span></span>);
+        outputWhenFalse.Bind(x =&gt; x.Message)
+                       .To(() =&gt; $<span class="pl-s"><span class="pl-pds">"</span>{first.Get()} &lt;= {second.Get()}<span class="pl-pds">"</span></span>);
 
         <span class="pl-c">// Set initial node of the flow.</span>
         builder.WithInitialNode(inputFirst);
