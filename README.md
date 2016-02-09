@@ -5,7 +5,7 @@
 ### Getting Started
 
 * [What is MicroFlow?](#what-is-microflow)
-* [NuGet Package](https://www.nuget.org/packages/MicroFlow/)
+* [NuGet Package](#nuget-package)
 * [Activities](#activities)
 * [Nodes](#nodes)
 * [Data flow](#data-flow)
@@ -32,7 +32,16 @@ Available node types:
 * **condition** node represents decision (like `if-else` statement);
 * **switch** node represents multiway branch (like `switch` statement);
 * **fork-join** node represents concurrent activities;
-* **block** node groups several nodes (like blocks in programming languages).
+* **block** node groups several nodes (like blocks in programming languages). 
+
+### NuGet Package
+
+MicroFlow is available on [NuGet](https://www.nuget.org/packages/MicroFlow/) and [MyGet](https://www.myget.org/gallery/microflow/).
+
+Target frameworks:
+* .NET 4.0+
+* .NET Core
+* Portable Libraries (net45+win8+wpa81+wp8)
 
 ### Activities
 
