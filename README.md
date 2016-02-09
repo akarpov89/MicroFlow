@@ -1,8 +1,10 @@
-# MicroFlow
+MicroFlow
+=============
 
 [![Build status](https://ci.appveyor.com/api/projects/status/yqymhi8dqekg778u?svg=true)](https://ci.appveyor.com/project/akarpov89/microflow)
 
-### Getting Started
+Getting Started
+----------------
 
 * [What is MicroFlow?](#what-is-microflow)
 * [NuGet Package](#nuget-package)
@@ -15,7 +17,8 @@
 * [Sample](#sample)
 * [License](https://raw.githubusercontent.com/akarpov89/MicroFlow/master/License.txt)
 
-### What is MicroFlow?
+What is MicroFlow?
+---------------------
 
 MicroFlow is a lightweight workflow engine. It allows to build workflows as flowcharts.
 Every flow is constructed from a limited number of connected nodes.
@@ -34,7 +37,8 @@ Available node types:
 * **fork-join** node represents concurrent activities;
 * **block** node groups several nodes (like blocks in programming languages). 
 
-### NuGet Package
+NuGet Package
+---------------
 
 MicroFlow is available on [NuGet](https://www.nuget.org/packages/MicroFlow/) and [MyGet](https://www.myget.org/gallery/microflow/).
 
@@ -43,7 +47,8 @@ Target frameworks:
 * .NET Core
 * Portable Libraries (net45+win8+wpa81+wp8)
 
-### Activities
+Activities
+-------------
 
 The user-defined activities should inherit from one of the following base classes
 
@@ -87,9 +92,9 @@ protected abstract TResult ExecuteCore();
 ```
 
 `BackgroundActivity<TResult>` exposes the following properties:
-* `CancellationToken CancellationToken { get; set; }` - allows the work to be cancelled;
-* `TaskScheduler Scheduler { get; set; }` - schedules the worker task;
-* `bool IsLongRunning { get; set; }` - allows to hint `TaskScheduler` that task will be a long-running operation.  
+* `CancellationToken` - allows the work to be cancelled;
+* `Scheduler` - schedules the worker task;
+* `IsLongRunning` - allows to hint `TaskScheduler` that task will be a long-running operation.  
 
 ##### BackgroundActivity
 Provides the way to execute a function as a separate background task. 
@@ -108,14 +113,15 @@ The interface of all fault handlers. Every fault handler must provide the follow
 Exception Exception { get; set; }
 ```
 
-### Nodes
+Nodes
+----------
 
 The `FlowBuilder` class provides the way to create nodes of the flow.
 
 ##### ActivityNode&lt;TActivity&gt;
 
 ```cs
-var node = builder.Activity<SomeActivity>("Optional node name");
+var node = builder.Activity<SomeActivity>("Node name");
 
 node.ConnectTo(anotherNode)
     .ConnectFaultTo(faultHandler)
@@ -125,8 +131,8 @@ node.ConnectTo(anotherNode)
 ##### ConditionNode
 
 ```cs
-var node = builder.Condition("Optional node name");
-node.WithCondition(() => someBooleanExpression);
+var node = builder.Condition("Node name");
+node.WithCondition(() => boolExpr);
 
 node.ConnectFalseTo(falseBranchNode)
     .ConnectTrueTo(trueBranchNode);
@@ -136,8 +142,8 @@ There is also an alternative syntax that allows to create `if-then-else` constru
 
 ```cs
 var node = builder
-    .If("Condition description", () => someBooleanExpression1).Then(node1)
-    .ElseIf("Another condition description", () => someBooleanExpression2).Then(node2)
+    .If("Condition1", () => boolExpr1).Then(node1)
+    .ElseIf("Condition2", () => boolExpr2).Then(node2)
     .Else(node3);    
 ```
 
@@ -146,7 +152,7 @@ Notice that in this case `node` is initial `ConditionNode` (the one with conditi
 ##### SwitchNode
 
 ```cs
-var node = builder.SwitchOf<int>("Optional node name");
+var node = builder.SwitchOf<int>("Node name");
 node.WithChoice(() => someIntExpression);
 
 node.ConnectCase(0).To(caseHandler1)
@@ -158,11 +164,11 @@ node.ConnectCase(0).To(caseHandler1)
 ##### ForkJoinNode
 
 ```cs
-var node = builder.ForkJoin("Optional node name");
+var node = builder.ForkJoin("Node name");
 
-var fork1 = node.Fork<SomeForkActivity>("Optional fork name");
-var fork2 = node.Fork<SomeAnotherForkActivity>("Optional fork name");
-var fork3 = node.Fork<SomeActivity>("Optional fork name");
+var fork1 = node.Fork<SomeForkActivity>("Fork 1 name");
+var fork2 = node.Fork<SomeAnotherForkActivity>("Fork 2 name");
+var fork3 = node.Fork<SomeActivity>("Fork 3 name");
 ```
 
 ##### BlockNode
@@ -182,14 +188,7 @@ var node = builder.Block("Optional node name", (block, blockBuilder) =>
 Every activity node should be connected with some specific or default fault handler
 
 ```cs
-var globalFaultHandler = builder.FaultHandler<MyFaultHandler>("Global fault handler");
-builder.WithDefaultFaultHandler(globalFaultHandler); 
-```
-
-Or alternatively:
-
-```cs
-builder.WithDefaultFaultHandler<MyFaultHandler>("Global fault handler"); 
+builder.WithDefaultFaultHandler<MyFaultHandler>(); 
 ```
 
 ##### Default cancellation handler
@@ -197,17 +196,11 @@ builder.WithDefaultFaultHandler<MyFaultHandler>("Global fault handler");
 Every activity node should be connected with some specific or default cancellation handler
 
 ```cs
-var globalCancellationHandler = builder.Activity<MyCancellationHandler>("Global cancellation handler");
-builder.WithDefaultCancellationHandler(globalCancellationHandler);
+builder.WithDefaultCancellationHandler<MyCancellationHandler>();
 ```
 
-Or alternatively:
-
-```cs
-builder.WithDefaultCancellationHandler<MyCancellationHandler>("Global cancellation handler");
-```
-
-### Data flow
+Data flow
+--------------
 
 As flow executes data transfers from one activity to another.
 The MicroFlow has two mechanisms to define the data flow: _bindings_ and _variables_.
@@ -217,7 +210,7 @@ In the examples below we will use the following activities:
 ```cs
 public class ReadIntActivity : SyncActivity<int>
 {
-    protected override int ExecuteActivity() => int.Parse(Console.ReadLine());
+    protected override int ExecuteActivity() => int.Parse(ReadLine());
 }
 
 public class SumActivity : SyncActivity<int>
@@ -280,13 +273,13 @@ var globalVariable = builder.Variable<int>();
 
 var block = builder.Block("my block", (thisBlock, blockBuilder) =>
 {
-    var localVariable = thisBlock.Variable<string>("some initial variable value");
+    var localVariable = thisBlock.Variable<string>("initial value");
 });
 ```
 
 It's possible to change the variable value after completion of some activity:
 
-* Assign activity result:
+_Assign activity result_:
 
 ```cs
  var myVar = builder.Variable<int>();
@@ -296,34 +289,40 @@ It's possible to change the variable value after completion of some activity:
  myVar.BindToResultOf(readFirstNumber);
 ```
 
-* Assign some constant value:
+_Assign some constant value_:
 
 ```cs
- var myVar = builder.Variable<bool>();
+var myVar = builder.Variable<bool>();
  
- var readFirstNumber = builder.Activity<ReadIntActivity>();
+var readFirstNumber = builder.Activity<ReadIntActivity>();
 
 readFirstNumber.OnCompletionAssign(myVar, true);
 ```
 
-* Update value without using activity result:
+_Update value without using activity result_:
 
 ```cs
- var myVar = builder.Variable<int>(42);
+var myVar = builder.Variable<int>(42);
  
- var readFirstNumber = builder.Activity<ReadIntActivity>();
+var readFirstNumber = builder.Activity<ReadIntActivity>();
  
- readFirstNumber.OnCompletionUpdate(myVar, oldValue => oldValue + 1);
+readFirstNumber.OnCompletionUpdate(
+    myVar, 
+    oldValue => oldValue + 1
+);
 ```
 
-* Update value using activity result:
+_Update value using activity result_:
 
 ```cs
- var myVar = builder.Variable<int>(42);
+var myVar = builder.Variable<int>(42);
  
- var readFirstNumber = builder.Activity<ReadIntActivity>();
+var readFirstNumber = builder.Activity<ReadIntActivity>();
  
- readFirstNumber.OnCompletionUpdate(myVar, (int oldValue, int result) => oldValue + result);
+readFirstNumber.OnCompletionUpdate(
+    myVar, 
+    (int oldValue, int result) => oldValue + result
+);
 ```
 
 Later the current value of a variable can retrieved via property `CurrentValue`:
@@ -333,11 +332,13 @@ var myVar = builder.Variable<int>();
 ...
 var sumTwoNumbers = builder.Activity<SumActivity>();
 
-sumTwoNumbers.Bind(a => a.FirstNumber).To(() => myVar.CurrentValue);
+sumTwoNumbers.Bind(a => a.FirstNumber)
+             .To(() => myVar.CurrentValue);
 ...
 ```
 
-### Flow creation
+Flow creation
+-----------------
 
 Every flow is a subclass of the `Flow` abstract class. 
 The `Flow` base class provides the way to validate and run the
@@ -349,7 +350,7 @@ public Task Run();
 ```
 
 In order to create new flow definition it's required to describe the flow structure 
-and give the flow some name:
+and give the flow a name:
 
 ```cs
 public class MyFlow : Flow
@@ -373,7 +374,9 @@ The `Flow` сlass also has several configuration extension points:
 Configuring services is possible via overriding the method `ConfigureServices`
 
 ```cs
-protected virtual void ConfigureServices(IServiceCollection services);
+protected virtual void ConfigureServices(
+    [NotNull]IServiceCollection services
+);
 ```
 
 Let's say our `ReadIntActivity` uses `IReader` service:
@@ -461,7 +464,8 @@ Future plans:
 * Forks data usage validaton
 etc.
 
-### Fault handling
+Fault handling
+----------------------
 
 As it was mentioned earlier if activity ends up with an exception
 then fault handler activity takes control.
@@ -501,7 +505,8 @@ flowTask.ContinueWith(t =>
 });
 ```
 
-### Graph generator
+Graph generator
+--------------------
 
 The MicroFlow comes with the tool called _MicroFlow.Graph_ that allows to generate *.dgml files.
 DGML is an XML-based file format for directed graphs supported by the Microsoft Visual Studio 2010 and later.
@@ -516,7 +521,8 @@ The generated sample flow is presented below.
 
 > **Note:** Graph generation is available only if the flow has a default constructor
 
-### Sample
+Sample
+-------------
 
 Let's create the simple flow: 
 read two numbers and if first number greater than a second output "first > second" 
@@ -634,30 +640,38 @@ public class Flow1 : Flow
     protected override void Build(FlowBuilder builder)
     {
         // Create reading activity nodes.
-        var inputFirst = builder.Activity<ReadIntActivity>("Read first number");
-        var inputSecond = builder.Activity<ReadIntActivity>("Read second number");
+        var inputFirst = builder.Activity<ReadIntActivity>();
+        inputFirst.WithName("Read first number");
+        
+        var inputSecond = builder.Activity<ReadIntActivity>();
+        inputSecond.WithName("Read second number");
 
         // Create bindings to the results.
         var first = Result<int>.Of(inputFirst);
         var second = Result<int>.Of(inputSecond);
 
         // Create condition node.
-        var condition = builder.Condition("If first number > second number");
+        var condition = builder.Condition();
+        condition.WithName("If first number > second number");
         
         // Set condition to the expression.
         condition.WithCondition(() => first.Get() > second.Get());
 
         // Create true branch output activity.
-        var outputWhenTrue = builder.Activity<WriteMessageActivity>("Output: first > second");
+        var outputWhenTrue = builder.Activity<WriteMessageActivity>();
+        outputWhenTrue.WithName("Output: first > second");
         
         // Bind the output message to the expression.
-        outputWhenTrue.Bind(x => x.Message).To(() => $"{first.Get()} > {second.Get()}");
+        outputWhenTrue.Bind(x => x.Message)
+                      .To(() => $"{first.Get()} > {second.Get()}");
 
         // Create false branch output activity.
-        var outputWhenFalse = builder.Activity<WriteMessageActivity>("Output: first <= second");
+        var outputWhenFalse = builder.Activity<WriteMessageActivity>();
+        outputWhenFalse.WithName("Output: first <= second");
         
         // Bind the output message to the expression.
-        outputWhenFalse.Bind(x => x.Message).To(() => $"{first.Get()} <= {second.Get()}");
+        outputWhenFalse.Bind(x => x.Message)
+                       .To(() => $"{first.Get()} <= {second.Get()}");
 
         // Set initial node of the flow.
         builder.WithInitialNode(inputFirst);
