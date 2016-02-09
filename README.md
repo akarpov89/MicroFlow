@@ -210,7 +210,10 @@ In the examples below we will use the following activities:
 ```cs
 public class ReadIntActivity : SyncActivity<int>
 {
-    protected override int ExecuteActivity() => int.Parse(ReadLine());
+    protected override int ExecuteActivity()
+    {
+        return int.Parse(Console.ReadLine());
+    }
 }
 
 public class SumActivity : SyncActivity<int>
@@ -218,7 +221,10 @@ public class SumActivity : SyncActivity<int>
     [Required] public int FirstNumber { get; set; }
     [Required] public int SecondNumber { get; set; }
     
-    protected override int ExecuteActivity() => FirstNumber + SecondNumber;
+    protected override int ExecuteActivity()
+    {
+        return FirstNumber + SecondNumber;
+    }
 }
 ``` 
 
@@ -448,7 +454,9 @@ MicroFlow supports flow validation. Currently by default the following checks ar
 Any `Flow` implementation can add custom validators by overriding the `ConfigureValidation` method:
 
 ```cs
-protected virtual void ConfigureValidation([NotNull] IValidatorCollection validators)
+protected virtual void ConfigureValidation(
+    [NotNull] IValidatorCollection validators
+)
 ```
 
 All validators inherit from the `FlowValidator` abstract class.
