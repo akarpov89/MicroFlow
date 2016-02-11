@@ -331,7 +331,7 @@ readFirstNumber.OnCompletionUpdate(
 );
 ```
 
-Later the current value of a variable can retrieved via property `CurrentValue`:
+Later the current value of a variable can be retrieved via property `CurrentValue`:
 
 ```cs
 var myVar = builder.Variable<int>();
