@@ -433,7 +433,7 @@ and give the flow a name:</p>
 <p><code>ConfigureServices</code> method allows to register service implementation
 passing to the <code>ReadIntActivity</code> constructor whenever the activity is created.</p>
 
-<p><code>IServiceCollection</code> has several helper methods:</p>
+<p><code>IServiceCollection</code> has several extension methods for service registration:</p>
 
 <ul>
 <li>
@@ -445,14 +445,14 @@ After finishing the flow execution the instance will be disposed.</li>
 <code>AddSingleton&lt;TService, TImplementation&gt;()</code> registers the type of the service implementation. 
 The single instance of the <code>TImplementation</code> will be used throughout the whole flow;</li>
 <li>
+<code>AddSingleton&lt;TService, TImplementation&gt;(params object[] arguments)</code> the same as previous but allows to specify constructor arguments;</li>
+<li>
 <code>AddTransient&lt;TService, TImplementation&gt;()</code> registers the type of the service implemenation.
 The new instance of the <code>TImplementation</code> will be created each time it's needed to pass the
-service to the activity constructor.</li>
+service to the activity constructor;</li>
+<li>
+<code>AddTransient&lt;TService, TImplementation&gt;(params object[] arguments)</code> the same as previous but allows to specify constructor arguments.</li>
 </ul>
-
-<blockquote>
-<p><strong>Note:</strong> Current implementation allows to register only service implementation types having a default constructor.</p>
-</blockquote>
 
 <h5>
 <a id="logging" class="anchor" href="#logging" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Logging</h5>
