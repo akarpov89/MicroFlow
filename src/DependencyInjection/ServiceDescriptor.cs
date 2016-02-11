@@ -23,6 +23,18 @@ namespace MicroFlow
             };
         }
 
+        public static ServiceDescriptor Singleton<TService, TImplementation>(params object[] constructorArguments)
+            where TImplementation : class, TService
+        {
+            return new ServiceDescriptor
+            {
+                ServiceType = typeof(TService),
+                Factory = () => Activator.CreateInstance(typeof(TImplementation), constructorArguments),
+                Lifetime = ServiceLifetime.Singleton,
+                ShouldBeDisposed = typeof(TImplementation).IsDisposableType()
+            };
+        }
+
         public static ServiceDescriptor Singleton<TService, TImplementation>([NotNull] TImplementation instance)
             where TImplementation : class, TService
         {
@@ -74,6 +86,18 @@ namespace MicroFlow
                 Factory = () => new TImplementation(),
                 Lifetime = ServiceLifetime.Transient,
                 ShouldBeDisposed = typeof (TImplementation).IsDisposableType()
+            };
+        }
+
+        public static ServiceDescriptor Transient<TService, TImplementation>(params object[] constructorArgumements)
+            where TImplementation : class, TService
+        {
+            return new ServiceDescriptor
+            {
+                ServiceType = typeof(TService),
+                Factory = () => Activator.CreateInstance(typeof(TImplementation), constructorArgumements),
+                Lifetime = ServiceLifetime.Transient,
+                ShouldBeDisposed = typeof(TImplementation).IsDisposableType()
             };
         }
 

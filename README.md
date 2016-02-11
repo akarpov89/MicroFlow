@@ -409,17 +409,17 @@ public class ReadIntActivity : SyncActivity<int>
 `ConfigureServices` method allows to register service implementation
 passing to the `ReadIntActivity` constructor whenever the activity is created.
 
-`IServiceCollection` has several helper methods:
+`IServiceCollection` has several extension methods for service registration:
 * `AddSingleton<TService>(object instance)` registers the specified instance as a service implementation.
 * `AddDisposableSingleton<TService>(IDisposable instance)` registers the specified instance as a service implementation;
 After finishing the flow execution the instance will be disposed.
 * `AddSingleton<TService, TImplementation>()` registers the type of the service implementation. 
 The single instance of the `TImplementation` will be used throughout the whole flow;
+* `AddSingleton<TService, TImplementation>(params object[] arguments)` the same as previous but allows to specify constructor arguments;
 * `AddTransient<TService, TImplementation>()` registers the type of the service implemenation.
 The new instance of the `TImplementation` will be created each time it's needed to pass the
-service to the activity constructor.
-
-> **Note:** Current implementation allows to register only service implementation types having a default constructor.
+service to the activity constructor;
+* `AddTransient<TService, TImplementation>(params object[] arguments)` the same as previous but allows to specify constructor arguments.
 
 ##### Logging
 
