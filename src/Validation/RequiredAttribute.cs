@@ -2,8 +2,8 @@
 
 namespace MicroFlow
 {
-    [AttributeUsage(AttributeTargets.Property)]
-    public sealed class RequiredAttribute : Attribute
-    {
-    }
+  [AttributeUsage(AttributeTargets.Property)]
+  public sealed class RequiredAttribute : Attribute
+  {
+  }
 }

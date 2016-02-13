@@ -2,11 +2,11 @@
 
 namespace MicroFlow.Test
 {
-    public class DummyActivity : Activity
+  public class DummyActivity : Activity
+  {
+    protected override Task ExecuteCore()
     {
-        protected override Task ExecuteCore()
-        {
-            return TaskHelper.CompletedTask;
-        }
+      return TaskHelper.CompletedTask;
     }
+  }
 }

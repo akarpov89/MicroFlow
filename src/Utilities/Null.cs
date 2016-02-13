@@ -1,6 +1,6 @@
 ﻿namespace MicroFlow
 {
-    public sealed class Null
-    {
-    }
+  public sealed class Null
+  {
+  }
 }

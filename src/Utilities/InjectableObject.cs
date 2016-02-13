@@ -7,140 +7,140 @@ using JetBrains.Annotations;
 
 namespace MicroFlow
 {
-    internal struct InjectableObject<T> : IDisposable where T : class
+  internal struct InjectableObject<T> : IDisposable where T : class
+  {
+    private readonly IServiceProvider myServiceProvider;
+    private readonly T myInstance;
+    private readonly object[] myServices;
+
+    private bool myIsDisposed;
+
+    internal InjectableObject([NotNull] T instance, [NotNull] IServiceProvider serviceProvider, object[] services)
     {
-        private readonly IServiceProvider _serviceProvider;
-        private readonly T _instance;
-        private readonly object[] _services;
+      myInstance = instance.NotNull();
+      myServiceProvider = serviceProvider.NotNull();
+      myServices = services;
+      myIsDisposed = false;
+    }
 
-        private bool _isDisposed;
+    public T Instance
+    {
+      get
+      {
+        if (myIsDisposed) throw new ObjectDisposedException(ToString());
+        return myInstance;
+      }
+    }
 
-        internal InjectableObject([NotNull] T instance, [NotNull] IServiceProvider serviceProvider, object[] services)
+    public void Dispose()
+    {
+      if (!myIsDisposed)
+      {
+        var disposable = myInstance as IDisposable;
+        disposable?.Dispose();
+
+        if (myServices != null && myServices.Length > 0)
         {
-            _instance = instance.NotNull();
-            _serviceProvider = serviceProvider.NotNull();
-            _services = services;
-            _isDisposed = false;
+          foreach (object service in myServices)
+          {
+            myServiceProvider.ReleaseService(service);
+          }
         }
 
-        public T Instance
-        {
-            get
-            {
-                if (_isDisposed) throw new ObjectDisposedException(ToString());
-                return _instance;
-            }
-        }
+        myIsDisposed = true;
+      }
+    }
 
-        public void Dispose()
-        {
-            if (!_isDisposed)
-            {
-                var disposable = _instance as IDisposable;
-                disposable?.Dispose();
+    public static InjectableObject<T> Create([NotNull] IServiceProvider serviceProvider)
+    {
+      serviceProvider.AssertNotNull("serviceProvider != null");
 
-                if (_services != null && _services.Length > 0)
-                {
-                    foreach (object service in _services)
-                    {
-                        _serviceProvider.ReleaseService(service);
-                    }
-                }
+      object[] services;
+      object instance = CreateInstance(typeof (T), serviceProvider, out services);
 
-                _isDisposed = true;
-            }
-        }
+      return new InjectableObject<T>((T) instance, serviceProvider, services);
+    }
 
-        public static InjectableObject<T> Create([NotNull] IServiceProvider serviceProvider)
-        {
-            serviceProvider.AssertNotNull("serviceProvider != null");
-
-            object[] services;
-            object instance = CreateInstance(typeof (T), serviceProvider, out services);
-
-            return new InjectableObject<T>((T) instance, serviceProvider, services);
-        }
-
-        public static InjectableObject<T> Create([NotNull] Type type, [NotNull] IServiceProvider serviceProvider)
-        {
-            type.AssertNotNull("type != null");
-            serviceProvider.AssertNotNull("serviceProvider != null");
+    public static InjectableObject<T> Create([NotNull] Type type, [NotNull] IServiceProvider serviceProvider)
+    {
+      type.AssertNotNull("type != null");
+      serviceProvider.AssertNotNull("serviceProvider != null");
 
 #if PORTABLE
             Debug.Assert(typeof (T).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()));
 #else
-            Debug.Assert(typeof (T).IsAssignableFrom(type));
+      Debug.Assert(typeof (T).IsAssignableFrom(type));
 #endif
 
-            object[] services;
-            object instance = CreateInstance(type, serviceProvider, out services);
+      object[] services;
+      object instance = CreateInstance(type, serviceProvider, out services);
 
-            return new InjectableObject<T>((T) instance, serviceProvider, services);
-        }
+      return new InjectableObject<T>((T) instance, serviceProvider, services);
+    }
 
-        private static object CreateInstance(Type type, IServiceProvider serviceProvider, out object[] parameters)
-        {
+    private static object CreateInstance(Type type, IServiceProvider serviceProvider, out object[] parameters)
+    {
 #if PORTABLE
             ConstructorInfo[] constructors = type.GetTypeInfo().DeclaredConstructors.ToArray();
 #else
-            ConstructorInfo[] constructors = type.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
+      ConstructorInfo[] constructors = type.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
 #endif
 
-            Array.Sort(constructors, new ByParametersCountComparer());
+      Array.Sort(constructors, new ByParametersCountComparer());
 
-            if (constructors[0].GetParameters().Length == 0)
-            {
-                Func<object> factory = TypeUtils.CreateDefaultConstructorFactoryFor(type);
-                parameters = null;
-                return factory();
-            }
+      if (constructors[0].GetParameters().Length == 0)
+      {
+        Func<object> factory = TypeUtils.CreateDefaultConstructorFactoryFor(type);
+        parameters = null;
+        return factory();
+      }
 
-            ConstructorInfo applicableConstuctor = FindApplicableConstructor(constructors, serviceProvider);
-            if (applicableConstuctor == null) throw new InvalidOperationException("Applicable constuctor not found");
+      ConstructorInfo applicableConstuctor = FindApplicableConstructor(constructors, serviceProvider);
+      if (applicableConstuctor == null) throw new InvalidOperationException("Applicable constuctor not found");
 
-            parameters = CreateParameters(applicableConstuctor, serviceProvider);
-            return applicableConstuctor.Invoke(parameters);
-        }
-
-        [CanBeNull]
-        private static ConstructorInfo FindApplicableConstructor(
-            ConstructorInfo[] constructors, IServiceProvider serviceProvider)
-        {
-            foreach (ConstructorInfo constructor in constructors)
-            {
-                ParameterInfo[] parameters = constructor.GetParameters();
-
-                bool isApplicable = parameters.All(parameter => serviceProvider.HasService(parameter.ParameterType));
-
-                if (isApplicable) return constructor;
-            }
-
-            return null;
-        }
-
-        [NotNull]
-        private static object[] CreateParameters(ConstructorInfo constructor, IServiceProvider serviceProvider)
-        {
-            ParameterInfo[] parameters = constructor.GetParameters();
-            var result = new object[parameters.Length];
-
-            for (int i = 0; i < parameters.Length; ++i)
-            {
-                result[i] = serviceProvider.GetService(parameters[i].ParameterType);
-            }
-
-            return result;
-        }
-
-        private class ByParametersCountComparer : IComparer
-        {
-            public int Compare(object x, object y)
-            {
-                var left = (ConstructorInfo) x;
-                var right = (ConstructorInfo) y;
-
-                return left.GetParameters().Length.CompareTo(right.GetParameters().Length);
-            }
-        }
+      parameters = CreateParameters(applicableConstuctor, serviceProvider);
+      return applicableConstuctor.Invoke(parameters);
     }
+
+    [CanBeNull]
+    private static ConstructorInfo FindApplicableConstructor(
+      ConstructorInfo[] constructors, IServiceProvider serviceProvider)
+    {
+      foreach (ConstructorInfo constructor in constructors)
+      {
+        ParameterInfo[] parameters = constructor.GetParameters();
+
+        bool isApplicable = parameters.All(parameter => serviceProvider.HasService(parameter.ParameterType));
+
+        if (isApplicable) return constructor;
+      }
+
+      return null;
+    }
+
+    [NotNull]
+    private static object[] CreateParameters(ConstructorInfo constructor, IServiceProvider serviceProvider)
+    {
+      ParameterInfo[] parameters = constructor.GetParameters();
+      var result = new object[parameters.Length];
+
+      for (int i = 0; i < parameters.Length; ++i)
+      {
+        result[i] = serviceProvider.GetService(parameters[i].ParameterType);
+      }
+
+      return result;
+    }
+
+    private class ByParametersCountComparer : IComparer
+    {
+      public int Compare(object x, object y)
+      {
+        var left = (ConstructorInfo) x;
+        var right = (ConstructorInfo) y;
+
+        return left.GetParameters().Length.CompareTo(right.GetParameters().Length);
+      }
+    }
+  }
 }

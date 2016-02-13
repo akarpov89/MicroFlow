@@ -2,11 +2,11 @@
 
 namespace MicroFlow.Test
 {
-    public class ThrowService
+  public class ThrowService
+  {
+    public ThrowService()
     {
-        public ThrowService()
-        {
-            throw new Exception("Exception from ThrowService::ctor");
-        }
+      throw new Exception("Exception from ThrowService::ctor");
     }
+  }
 }

@@ -3,81 +3,81 @@ using JetBrains.Annotations;
 
 namespace MicroFlow
 {
-    public class BlockSelfContainednessValidator : NodeVisitor
+  public class BlockSelfContainednessValidator : NodeVisitor
+  {
+    private readonly BlockNode myBlock;
+    private readonly IFlowNode myDefaultCancellationHandler;
+    private readonly IFlowNode myDefaultFaultHandler;
+
+    public BlockSelfContainednessValidator(
+      [NotNull] BlockNode block,
+      [CanBeNull] IFlowNode defaultFaultHandler, [CanBeNull] IFlowNode defaultCancellationHandler)
     {
-        private readonly BlockNode _block;
-        private readonly IFlowNode _defaultCancellationHandler;
-        private readonly IFlowNode _defaultFaultHandler;
+      myBlock = block.NotNull();
+      myDefaultFaultHandler = defaultFaultHandler;
+      myDefaultCancellationHandler = defaultCancellationHandler;
 
-        public BlockSelfContainednessValidator(
-            [NotNull] BlockNode block,
-            [CanBeNull] IFlowNode defaultFaultHandler, [CanBeNull] IFlowNode defaultCancellationHandler)
-        {
-            _block = block.NotNull();
-            _defaultFaultHandler = defaultFaultHandler;
-            _defaultCancellationHandler = defaultCancellationHandler;
-
-            Result = new ValidationResult();
-        }
-
-        public ValidationResult Result { get; }
-
-        public ValidationResult Validate()
-        {
-            foreach (IFlowNode node in _block.InnerNodes)
-            {
-                node.Accept(this);
-            }
-
-            return Result;
-        }
-
-        protected override void VisitBlock(BlockNode blockNode)
-        {
-            CheckIfNodeIsInsideBlock(blockNode.PointsTo);
-        }
-
-        protected override void VisitActivity<TActivity>(ActivityNode<TActivity> activityNode)
-        {
-            VisitActivityNode(activityNode);
-        }
-
-        protected override void VisitSwitch<TChoice>(SwitchNode<TChoice> switchNode)
-        {
-            CheckIfNodeIsInsideBlock(switchNode.DefaultCase);
-
-            foreach (KeyValuePair<TChoice, IFlowNode> pair in switchNode.Cases)
-            {
-                CheckIfNodeIsInsideBlock(pair.Value);
-            }
-        }
-
-        protected override void VisitCondition(ConditionNode conditionNode)
-        {
-            CheckIfNodeIsInsideBlock(conditionNode.WhenFalse);
-            CheckIfNodeIsInsideBlock(conditionNode.WhenTrue);
-        }
-
-        protected override void VisitForkJoin(ForkJoinNode forkJoinNode)
-        {
-            VisitActivityNode(forkJoinNode);
-        }
-
-        private void VisitActivityNode(ActivityNode activityNode)
-        {
-            CheckIfNodeIsInsideBlock(activityNode.PointsTo);
-            CheckIfNodeIsInsideBlock(activityNode.FaultHandler);
-            CheckIfNodeIsInsideBlock(activityNode.CancellationHandler);
-        }
-
-        private void CheckIfNodeIsInsideBlock(IFlowNode node)
-        {
-            if (node == null || node == _defaultFaultHandler || node == _defaultCancellationHandler) return;
-
-            if (_block.InnerNodes.IndexOf(node) == -1)
-            {
-                Result.AddError(node, "Node is out of block " + _block);
-            }
-        }
+      Result = new ValidationResult();
     }
+
+    public ValidationResult Result { get; }
+
+    public ValidationResult Validate()
+    {
+      foreach (IFlowNode node in myBlock.InnerNodes)
+      {
+        node.Accept(this);
+      }
+
+      return Result;
+    }
+
+    protected override void VisitBlock(BlockNode blockNode)
+    {
+      CheckIfNodeIsInsideBlock(blockNode.PointsTo);
+    }
+
+    protected override void VisitActivity<TActivity>(ActivityNode<TActivity> activityNode)
+    {
+      VisitActivityNode(activityNode);
+    }
+
+    protected override void VisitSwitch<TChoice>(SwitchNode<TChoice> switchNode)
+    {
+      CheckIfNodeIsInsideBlock(switchNode.DefaultCase);
+
+      foreach (KeyValuePair<TChoice, IFlowNode> pair in switchNode.Cases)
+      {
+        CheckIfNodeIsInsideBlock(pair.Value);
+      }
+    }
+
+    protected override void VisitCondition(ConditionNode conditionNode)
+    {
+      CheckIfNodeIsInsideBlock(conditionNode.WhenFalse);
+      CheckIfNodeIsInsideBlock(conditionNode.WhenTrue);
+    }
+
+    protected override void VisitForkJoin(ForkJoinNode forkJoinNode)
+    {
+      VisitActivityNode(forkJoinNode);
+    }
+
+    private void VisitActivityNode(ActivityNode activityNode)
+    {
+      CheckIfNodeIsInsideBlock(activityNode.PointsTo);
+      CheckIfNodeIsInsideBlock(activityNode.FaultHandler);
+      CheckIfNodeIsInsideBlock(activityNode.CancellationHandler);
+    }
+
+    private void CheckIfNodeIsInsideBlock(IFlowNode node)
+    {
+      if (node == null || node == myDefaultFaultHandler || node == myDefaultCancellationHandler) return;
+
+      if (myBlock.InnerNodes.IndexOf(node) == -1)
+      {
+        Result.AddError(node, "Node is out of block " + myBlock);
+      }
+    }
+  }
 }

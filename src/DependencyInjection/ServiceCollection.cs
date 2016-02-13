@@ -2,7 +2,7 @@
 
 namespace MicroFlow
 {
-    internal sealed class ServiceCollection : Collection<ServiceDescriptor>, IServiceCollection
-    {
-    }
+  internal sealed class ServiceCollection : Collection<ServiceDescriptor>, IServiceCollection
+  {
+  }
 }

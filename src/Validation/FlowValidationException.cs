@@ -6,33 +6,33 @@ namespace MicroFlow
 #if PORTABLE
     [DataContract]
 #else
-    [Serializable]
+  [Serializable]
 #endif
-    public class FlowValidationException : Exception
+  public class FlowValidationException : Exception
+  {
+    public FlowValidationException()
     {
-        public FlowValidationException()
-        {
-        }
+    }
 
-        public FlowValidationException(string message) : base(message)
-        {
-        }
+    public FlowValidationException(string message) : base(message)
+    {
+    }
 
-        public FlowValidationException(string message, Exception inner) : base(message, inner)
-        {
-        }
+    public FlowValidationException(string message, Exception inner) : base(message, inner)
+    {
+    }
 
 #if !PORTABLE
-        protected FlowValidationException(
-            SerializationInfo info,
-            StreamingContext context) : base(info, context)
-        {
-        }
+    protected FlowValidationException(
+      SerializationInfo info,
+      StreamingContext context) : base(info, context)
+    {
+    }
 #endif
 
 #if PORTABLE
         [DataMember]
 #endif
-        public ValidationResult ValidatonResult { get; internal set; }
-    }
+    public ValidationResult ValidatonResult { get; internal set; }
+  }
 }

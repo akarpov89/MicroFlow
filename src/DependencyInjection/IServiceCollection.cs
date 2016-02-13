@@ -2,7 +2,7 @@
 
 namespace MicroFlow
 {
-    public interface IServiceCollection : IList<ServiceDescriptor>
-    {
-    }
+  public interface IServiceCollection : IList<ServiceDescriptor>
+  {
+  }
 }

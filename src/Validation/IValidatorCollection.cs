@@ -2,7 +2,7 @@
 
 namespace MicroFlow
 {
-    public interface IValidatorCollection : IList<FlowValidator>
-    {
-    }
+  public interface IValidatorCollection : IList<FlowValidator>
+  {
+  }
 }

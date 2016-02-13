@@ -4,18 +4,18 @@ using JetBrains.Annotations;
 
 namespace MicroFlow
 {
-    internal static class TaskHandlersCollectionExtensions
+  internal static class TaskHandlersCollectionExtensions
+  {
+    public static void ExecuteTaskHandlers(
+      [CanBeNull] this List<ActivityTaskHandler> taskHandlers, [NotNull] Task<object> activityTask)
     {
-        public static void ExecuteTaskHandlers(
-            [CanBeNull] this List<ActivityTaskHandler> taskHandlers, [NotNull] Task<object> activityTask)
-        {
-            if (taskHandlers == null || taskHandlers.Count == 0) return;
-            activityTask.AssertNotNull("activityTask != null");
+      if (taskHandlers == null || taskHandlers.Count == 0) return;
+      activityTask.AssertNotNull("activityTask != null");
 
-            foreach (ActivityTaskHandler handler in taskHandlers)
-            {
-                handler(activityTask);
-            }
-        }
+      foreach (ActivityTaskHandler handler in taskHandlers)
+      {
+        handler(activityTask);
+      }
     }
+  }
 }

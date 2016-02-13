@@ -3,47 +3,47 @@ using System.Threading.Tasks;
 
 namespace MicroFlow
 {
-    public abstract class SyncActivity<TResult> : Activity<TResult>
+  public abstract class SyncActivity<TResult> : Activity<TResult>
+  {
+    public sealed override Task<TResult> Execute()
     {
-        public sealed override Task<TResult> Execute()
-        {
-            var tcs = new TaskCompletionSource<TResult>();
+      var tcs = new TaskCompletionSource<TResult>();
 
-            try
-            {
-                TResult result = ExecuteActivity();
-                tcs.TrySetResult(result);
-            }
-            catch (Exception ex)
-            {
-                tcs.TrySetException(ex);
-            }
+      try
+      {
+        TResult result = ExecuteActivity();
+        tcs.TrySetResult(result);
+      }
+      catch (Exception ex)
+      {
+        tcs.TrySetException(ex);
+      }
 
-            return tcs.Task;
-        }
-
-        protected abstract TResult ExecuteActivity();
+      return tcs.Task;
     }
 
-    public abstract class SyncActivity : Activity
+    protected abstract TResult ExecuteActivity();
+  }
+
+  public abstract class SyncActivity : Activity
+  {
+    protected sealed override Task ExecuteCore()
     {
-        protected sealed override Task ExecuteCore()
-        {
-            var tcs = new TaskCompletionSource<Null>();
+      var tcs = new TaskCompletionSource<Null>();
 
-            try
-            {
-                ExecuteActivity();
-                tcs.TrySetResult(null);
-            }
-            catch (Exception ex)
-            {
-                tcs.TrySetException(ex);
-            }
+      try
+      {
+        ExecuteActivity();
+        tcs.TrySetResult(null);
+      }
+      catch (Exception ex)
+      {
+        tcs.TrySetException(ex);
+      }
 
-            return tcs.Task;
-        }
-
-        protected abstract void ExecuteActivity();
+      return tcs.Task;
     }
+
+    protected abstract void ExecuteActivity();
+  }
 }

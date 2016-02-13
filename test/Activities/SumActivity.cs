@@ -1,26 +1,26 @@
 ﻿namespace MicroFlow.Test
 {
-    public class SumActivity : SyncActivity
+  public class SumActivity : SyncActivity
+  {
+    private readonly IWriter myWriter;
+
+    public SumActivity(IWriter writer)
     {
-        private readonly IWriter _writer;
-
-        public SumActivity(IWriter writer)
-        {
-            _writer = writer;
-        }
-
-        [Required]
-        public int A { get; set; }
-
-        [Required]
-        public int B { get; set; }
-
-        [Required]
-        public int C { get; set; }
-
-        protected override void ExecuteActivity()
-        {
-            _writer.Write($"{A} + {B} + {C} = {A + B + C}");
-        }
+      myWriter = writer;
     }
+
+    [Required]
+    public int A { get; set; }
+
+    [Required]
+    public int B { get; set; }
+
+    [Required]
+    public int C { get; set; }
+
+    protected override void ExecuteActivity()
+    {
+      myWriter.Write($"{A} + {B} + {C} = {A + B + C}");
+    }
+  }
 }

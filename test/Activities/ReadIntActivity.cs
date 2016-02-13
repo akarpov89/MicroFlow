@@ -2,18 +2,18 @@
 
 namespace MicroFlow.Test
 {
-    public class ReadIntActivity : SyncActivity<int>
+  public class ReadIntActivity : SyncActivity<int>
+  {
+    private readonly IReader myReader;
+
+    public ReadIntActivity(IReader reader)
     {
-        private readonly IReader _reader;
-
-        public ReadIntActivity(IReader reader)
-        {
-            _reader = reader;
-        }
-
-        protected override int ExecuteActivity()
-        {
-            return Convert.ToInt32(_reader.Read());
-        }
+      myReader = reader;
     }
+
+    protected override int ExecuteActivity()
+    {
+      return Convert.ToInt32(myReader.Read());
+    }
+  }
 }

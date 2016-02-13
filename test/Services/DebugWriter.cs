@@ -2,11 +2,11 @@
 
 namespace MicroFlow.Test
 {
-    public class DebugWriter : IWriter
+  public class DebugWriter : IWriter
+  {
+    public void Write(string text)
     {
-        public void Write(string text)
-        {
-            Debug.WriteLine(text);
-        }
+      Debug.WriteLine(text);
     }
+  }
 }

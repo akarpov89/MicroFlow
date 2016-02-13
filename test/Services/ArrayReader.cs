@@ -2,18 +2,18 @@
 
 namespace MicroFlow.Test
 {
-    public class ArrayReader : IReader
+  public class ArrayReader : IReader
+  {
+    private readonly Queue<string> myQueue;
+
+    public ArrayReader(params string[] lines)
     {
-        private readonly Queue<string> _queue;
-
-        public ArrayReader(params string[] lines)
-        {
-            _queue = new Queue<string>(lines);
-        }
-
-        public string Read()
-        {
-            return _queue.Dequeue();
-        }
+      myQueue = new Queue<string>(lines);
     }
+
+    public string Read()
+    {
+      return myQueue.Dequeue();
+    }
+  }
 }

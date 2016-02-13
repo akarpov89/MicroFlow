@@ -2,13 +2,13 @@
 
 namespace MicroFlow
 {
-    public interface IPropertyBindingInfo
-    {
-        [NotNull]
-        string PropertyName { get; }
+  public interface IPropertyBindingInfo
+  {
+    [NotNull]
+    string PropertyName { get; }
 
-        PropertyBindingKind Kind { get; }
+    PropertyBindingKind Kind { get; }
 
-        TResult Analyze<TResult>([NotNull] IBindingInfoAnalyzer<TResult> analyzer);
-    }
+    TResult Analyze<TResult>([NotNull] IBindingInfoAnalyzer<TResult> analyzer);
+  }
 }

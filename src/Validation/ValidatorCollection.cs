@@ -2,7 +2,7 @@
 
 namespace MicroFlow
 {
-    public class ValidatorCollection : Collection<FlowValidator>, IValidatorCollection
-    {
-    }
+  public class ValidatorCollection : Collection<FlowValidator>, IValidatorCollection
+  {
+  }
 }

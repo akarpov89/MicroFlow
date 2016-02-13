@@ -2,32 +2,32 @@ using JetBrains.Annotations;
 
 namespace MicroFlow
 {
-    public abstract class FlowValidator : NodeVisitor
+  public abstract class FlowValidator : NodeVisitor
+  {
+    protected FlowDescription Flow { get; private set; }
+
+    [NotNull]
+    public ValidationResult Result { get; } = new ValidationResult();
+
+    public bool Validate([NotNull] FlowDescription flowDescription)
     {
-        protected FlowDescription Flow { get; private set; }
+      Flow = flowDescription.NotNull();
+      Result.ClearErrors();
 
-        [NotNull]
-        public ValidationResult Result { get; } = new ValidationResult();
+      foreach (IFlowNode node in flowDescription.Nodes)
+      {
+        node.Accept(this);
+      }
 
-        public bool Validate([NotNull] FlowDescription flowDescription)
-        {
-            Flow = flowDescription.NotNull();
-            Result.ClearErrors();
+      PerformGlobalValidation(flowDescription);
 
-            foreach (IFlowNode node in flowDescription.Nodes)
-            {
-                node.Accept(this);
-            }
+      Flow = null;
 
-            PerformGlobalValidation(flowDescription);
-
-            Flow = null;
-
-            return !Result.HasErrors;
-        }
-
-        protected virtual void PerformGlobalValidation([NotNull] FlowDescription flowDescription)
-        {
-        }
+      return !Result.HasErrors;
     }
+
+    protected virtual void PerformGlobalValidation([NotNull] FlowDescription flowDescription)
+    {
+    }
+  }
 }

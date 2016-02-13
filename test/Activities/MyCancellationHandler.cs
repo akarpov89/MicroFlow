@@ -2,11 +2,11 @@
 
 namespace MicroFlow.Test
 {
-    public class MyCancellationHandler : SyncActivity
+  public class MyCancellationHandler : SyncActivity
+  {
+    protected override void ExecuteActivity()
     {
-        protected override void ExecuteActivity()
-        {
-            Debug.WriteLine("Cancelled");
-        }
+      Debug.WriteLine("Cancelled");
     }
+  }
 }

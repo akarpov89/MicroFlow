@@ -2,20 +2,20 @@
 
 namespace MicroFlow.Test
 {
-    [TestFixture]
-    public class Flow5Tests
+  [TestFixture]
+  public class Flow5Tests
+  {
+    [Test]
+    public void ReturnsFaultedTask()
     {
-        [Test]
-        public void ReturnsFaultedTask()
-        {
-            // Arrange
-            var flow = new Flow5();
+      // Arrange
+      var flow = new Flow5();
 
-            // Act
-            var task = flow.Run();
+      // Act
+      var task = flow.Run();
 
-            // Assert
-            Assert.That(task.IsFaulted, Is.True);
-        }
+      // Assert
+      Assert.That(task.IsFaulted, Is.True);
     }
+  }
 }

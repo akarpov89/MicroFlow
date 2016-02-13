@@ -1,10 +1,10 @@
 namespace MicroFlow
 {
-    public enum PropertyBindingKind
-    {
-        Value,
-        Expression,
-        Result,
-        Fault
-    }
+  public enum PropertyBindingKind
+  {
+    Value,
+    Expression,
+    Result,
+    Fault
+  }
 }
