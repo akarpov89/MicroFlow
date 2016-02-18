@@ -7,19 +7,15 @@ namespace MicroFlow
   {
     public sealed override Task<TResult> Execute()
     {
-      var tcs = new TaskCompletionSource<TResult>();
-
       try
       {
         TResult result = ExecuteActivity();
-        tcs.TrySetResult(result);
+        return TaskHelper.FromResult(result);
       }
       catch (Exception ex)
       {
-        tcs.TrySetException(ex);
+        return TaskHelper.FromException<TResult>(ex);
       }
-
-      return tcs.Task;
     }
 
     protected abstract TResult ExecuteActivity();
@@ -29,19 +25,15 @@ namespace MicroFlow
   {
     protected sealed override Task ExecuteCore()
     {
-      var tcs = new TaskCompletionSource<Null>();
-
       try
       {
         ExecuteActivity();
-        tcs.TrySetResult(null);
+        return TaskHelper.CompletedTask;
       }
       catch (Exception ex)
       {
-        tcs.TrySetException(ex);
+        return TaskHelper.FromException(ex);
       }
-
-      return tcs.Task;
     }
 
     protected abstract void ExecuteActivity();
