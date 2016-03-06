@@ -13,7 +13,7 @@ namespace MicroFlow.Test
       var flow = new Flow8();
 
       // Act
-      var task = flow.Run();
+      var task = flow.RunAsync();
 
       // Assert
       Assert.Throws<AggregateException>(() => task.Wait());

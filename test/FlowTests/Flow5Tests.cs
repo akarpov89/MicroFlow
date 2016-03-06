@@ -12,7 +12,7 @@ namespace MicroFlow.Test
       var flow = new Flow5();
 
       // Act
-      var task = flow.Run();
+      var task = flow.RunAsync();
 
       // Assert
       Assert.That(task.IsFaulted, Is.True);

@@ -31,7 +31,7 @@ namespace MicroFlow.Test
       var flow = new Flow1 {Reader = reader, Writer = writer};
 
       // Act
-      flow.Run().Wait();
+      flow.RunAsync().Wait();
 
       // Assert
       writer.Received().Write(expectedMessage);

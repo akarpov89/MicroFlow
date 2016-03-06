@@ -29,7 +29,7 @@ namespace MicroFlow.Test
       var flow = new Flow2 {Writer = writer, A = a, B = b, C = c};
 
       // Act
-      flow.Run().Wait();
+      flow.RunAsync().Wait();
 
       // Assert
       writer.Received().Write(expectedMessage);

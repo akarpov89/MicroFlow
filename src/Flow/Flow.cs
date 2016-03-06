@@ -5,13 +5,17 @@ using JetBrains.Annotations;
 
 namespace MicroFlow
 {
-  public abstract class Flow
+  public abstract class Flow<TResult>
   {
+    protected Variable<TResult> Result { get; private set; }
+
     public abstract string Name { get; }
 
-    public Task Run()
+    public Task<TResult> RunAsync()
     {
       var flowBuilder = new FlowBuilder();
+      Result = flowBuilder.Variable<TResult>();
+
       Build(flowBuilder);
       var flowDescription = flowBuilder.CreateFlow();
 
@@ -49,7 +53,7 @@ namespace MicroFlow
 
         Debug.Assert(task != null);
 
-        Task continuation = task.ContinueWith(t =>
+        var continuation = task.ContinueWith(t =>
         {
           // ReSharper disable once AccessToDisposedClosure
           runner.Dispose();
@@ -62,19 +66,19 @@ namespace MicroFlow
             log.Exception("Unhandled exception", t.Exception);
             log.Info("Flow '{0}' is terminated due to an unhandled exception", Name);
 
-            return TaskHelper.FromException(t.Exception);
+            return TaskHelper.FromException<TResult>(t.Exception);
           }
 
           if (t.IsCanceled)
           {
             log.Info("Flow '{0}' is cancelled", Name);
 
-            return TaskHelper.CancelledTask;
+            return TaskHelper.Cancelled<TResult>();
           }
 
           log.Info("Flow '{0}' is completed", Name);
 
-          return TaskHelper.CompletedTask;
+          return TaskHelper.FromResult(Result.CurrentValue);
         }, TaskContinuationOptions.ExecuteSynchronously).Unwrap();
 
         return continuation;
@@ -87,7 +91,7 @@ namespace MicroFlow
         log.Exception("Unhandled exception", ex);
         log.Info("Flow '{0}' is terminated due to an unhandled exception", Name);
 
-        return TaskHelper.FromException(ex);
+        return TaskHelper.FromException<TResult>(ex);
       }
     }
 
@@ -127,6 +131,7 @@ namespace MicroFlow
       return null;
     }
 
+    [NotNull]
     private static ValidationResult ValidateFlow(
       [NotNull] ValidatorCollection validators,
       [NotNull] FlowDescription flowDescription)
@@ -154,6 +159,15 @@ namespace MicroFlow
         new ActivityInitializationValidator(),
         new ActivityTypeValidator()
       };
+    }
+  }
+
+  public abstract class Flow : Flow<Null>
+  {
+    [Obsolete("Consider using method RunAsync instead of Run")]
+    public Task Run()
+    {
+      return RunAsync();
     }
   }
 }

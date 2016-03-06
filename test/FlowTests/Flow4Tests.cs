@@ -33,7 +33,7 @@ namespace MicroFlow.Test
       };
 
       // Act
-      flow.Run().Wait();
+      flow.RunAsync().Wait();
 
       // Assert
       writer.Received().Write(message);
