@@ -7,6 +7,10 @@
 *.sln.docstates
 .vs/
 
++# JetBrains Rider
+.idea/
+*.sln.iml
+
 # Build results
 [Bb]inaries/
 [Dd]ebug/
