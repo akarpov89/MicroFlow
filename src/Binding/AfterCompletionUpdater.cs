@@ -58,16 +58,47 @@ namespace MicroFlow
       });
     }
 
-    public static void OnCompletionUpdate<TActivity, TVariable>(
-      [NotNull] this ActivityNode<TActivity> node, [NotNull] Variable<TVariable> variable,
-      [NotNull] Func<TVariable, TVariable> updateFunc)
+    public static void OnCompletionAssign<TActivity, TVariable>(
+      [NotNull] this ActivityNode<TActivity> node, 
+      [NotNull] Variable<TVariable> variable, 
+      [NotNull] Func<TVariable> valueFunc)
       where TActivity : class, IActivity
     {
       node.AssertNotNull("node != null");
       variable.AssertNotNull("variable != null");
-      updateFunc.AssertNotNull("updateFunc != null");
 
-      OnCompletionUpdate(node.Descriptor, variable, updateFunc);
+      OnCompletionAssign(node.Descriptor, variable, valueFunc);
+    }
+
+    public static void OnCompletionAssign<TActivity, TVariable>(
+      [NotNull] this ActivityDescriptor<TActivity> descriptor, 
+      [NotNull] Variable<TVariable> variable,
+      [NotNull] Func<TVariable> valueProvider)
+      where TActivity : class, IActivity
+    {
+      descriptor.AssertNotNull("descriptor != null");
+      variable.AssertNotNull("variable != null");
+      valueProvider.AssertNotNull("valueProvider != null");
+
+      descriptor.RegisterActivityTaskHandler(t =>
+      {
+        if (t.Status == TaskStatus.RanToCompletion)
+        {
+          variable.Assign(valueProvider());
+        }
+      });
+    }
+
+    public static void OnCompletionUpdate<TActivity, TVariable>(
+      [NotNull] this ActivityNode<TActivity> node, [NotNull] Variable<TVariable> variable,
+      [NotNull] Func<TVariable, TVariable> valueProvider)
+      where TActivity : class, IActivity
+    {
+      node.AssertNotNull("node != null");
+      variable.AssertNotNull("variable != null");
+      valueProvider.AssertNotNull("valueProvider != null");
+
+      OnCompletionUpdate(node.Descriptor, variable, valueProvider);
     }
 
     public static void OnCompletionUpdate<TActivity, TVariable>(
@@ -94,7 +125,7 @@ namespace MicroFlow
     {
       node.AssertNotNull("node != null");
       variable.AssertNotNull("variable != null");
-      updateFunc.AssertNotNull("updateFunc != null");
+      updateFunc.AssertNotNull("valueProvider != null");
 
       OnCompletionUpdate(node.Descriptor, variable, updateFunc);
     }

@@ -14,9 +14,10 @@ namespace MicroFlow
     public Task<TResult> RunAsync()
     {
       var flowBuilder = new FlowBuilder();
-      Result = flowBuilder.Variable<TResult>();
 
+      Result = flowBuilder.Variable<TResult>();
       Build(flowBuilder);
+
       var flowDescription = flowBuilder.CreateFlow();
 
       var validators = GetStandardValidators();
@@ -102,6 +103,7 @@ namespace MicroFlow
 
       try
       {
+        Result = flowBuilder.Variable<TResult>();
         Build(flowBuilder);
 
         var validators = GetStandardValidators();

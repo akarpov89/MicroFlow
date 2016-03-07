@@ -26,8 +26,8 @@
         .Bind(x => x.Message)
         .To(() => $"{first.Get()} > {second.Get()}");
 
-      var outputWhenFalse =
-        builder.Activity<WriteMessageActivity>("Output: first <= second");
+      var outputWhenFalse = builder.Activity<WriteMessageActivity>("Output: first <= second");
+
       outputWhenFalse
         .Bind(x => x.Message)
         .To(() => $"{first.Get()} <= {second.Get()}");
@@ -37,7 +37,8 @@
       inputFirst.ConnectTo(inputSecond);
       inputSecond.ConnectTo(condition);
 
-      condition.ConnectTrueTo(outputWhenTrue)
+      condition
+        .ConnectTrueTo(outputWhenTrue)
         .ConnectFalseTo(outputWhenFalse);
     }
 
