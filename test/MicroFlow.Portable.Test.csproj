@@ -67,6 +67,7 @@
     <Compile Include="Flows\Flow6.cs" />
     <Compile Include="Flows\Flow7.cs" />
     <Compile Include="Flows\Flow8.cs" />
+    <Compile Include="Flows\Flow9.cs" />
     <Compile Include="FlowTests\Flow1Tests.cs" />
     <Compile Include="FlowTests\Flow2Tests.cs" />
     <Compile Include="FlowTests\Flow3Tests.cs" />
@@ -74,6 +75,8 @@
     <Compile Include="FlowTests\Flow5Tests.cs" />
     <Compile Include="FlowTests\Flow6Tests.cs" />
     <Compile Include="FlowTests\Flow7Tests.cs" />
+    <Compile Include="FlowTests\Flow8Tests.cs" />
+    <Compile Include="FlowTests\Flow9Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ArrayReader.cs" />
     <Compile Include="Services\DebugWriter.cs" />
