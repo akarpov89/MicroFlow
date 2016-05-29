@@ -44,12 +44,6 @@
     <Compile Include="..\MicroFlowProject.cs">
       <Link>MicroFlowProject.cs</Link>
     </Compile>
-    <Compile Include="..\Utilities\Assertion.cs">
-      <Link>Utilities\Assertion.cs</Link>
-    </Compile>
-    <Compile Include="..\Utilities\JetBrainsAnnotations.cs">
-      <Link>Utilities\JetBrainsAnnotations.cs</Link>
-    </Compile>
     <Compile Include="Emit\FlowAssemblyEmitter.cs" />
     <Compile Include="Emit\FlowCompilationException.cs" />
     <Compile Include="Emit\ReferencesCollector.cs" />

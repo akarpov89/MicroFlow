@@ -4,7 +4,7 @@ if "%config%" == "" (
    set config=Release
 )
 
-set version=1.0.21
+set version=1.0.36
 if not "%PackageVersion%" == "" (
    set version=%PackageVersion%
 )
@@ -19,3 +19,7 @@ if "%nuget%" == "" (
 set package_id="MicroFlow"
 
 %nuget% pack "MicroFlow.nuspec" -sym -NoPackageAnalysis -Version %version% -Properties "Configuration=%config%;PackageId=%package_id%"
+
+set package_meta_id="MicroFlow.Meta"
+
+%nuget% pack "MicroFlow.Meta.nuspec" -sym -NoPackageAnalysis -Version %version% -Properties "Configuration=%config%;PackageId=%package_meta_id%"

@@ -9,9 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("MicroFlow.Graph")]
 [assembly: AssemblyDescription("Generates DGML from the flow")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany(MicroFlowProject.Company)]
 [assembly: AssemblyProduct("MicroFlow.Graph")]
-[assembly: AssemblyCopyright(MicroFlowProject.Copyright)]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -35,6 +33,3 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-
-[assembly: AssemblyVersion(MicroFlowProject.Version)]
-[assembly: AssemblyFileVersion(MicroFlowProject.Version)]
