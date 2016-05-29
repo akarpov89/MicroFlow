@@ -9,9 +9,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("MicroFlow.Graph")]
 [assembly: AssemblyDescription("Generates DGML from the flow")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Andrey Karpov")]
+[assembly: AssemblyCompany(MicroFlowProject.Company)]
 [assembly: AssemblyProduct("MicroFlow.Graph")]
-[assembly: AssemblyCopyright("Copyright ©  2016, Andrey Karpov")]
+[assembly: AssemblyCopyright(MicroFlowProject.Copyright)]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -36,5 +36,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion(MicroFlowProject.Version)]
+[assembly: AssemblyFileVersion(MicroFlowProject.Version)]

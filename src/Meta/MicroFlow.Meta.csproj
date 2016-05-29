@@ -41,6 +41,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\MicroFlowProject.cs">
+      <Link>MicroFlowProject.cs</Link>
+    </Compile>
     <Compile Include="..\Utilities\Assertion.cs">
       <Link>Utilities\Assertion.cs</Link>
     </Compile>

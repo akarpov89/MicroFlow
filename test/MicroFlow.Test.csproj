@@ -49,6 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\src\MicroFlowProject.cs">
+      <Link>MicroFlowProject.cs</Link>
+    </Compile>
     <Compile Include="Activities\DelayedIncrementActivity.cs" />
     <Compile Include="Activities\DummyActivity.cs" />
     <Compile Include="Activities\MyCancellationHandler.cs" />

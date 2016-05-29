@@ -40,10 +40,6 @@ namespace MicroFlow.Meta
 
     public SyntaxTree Build()
     {
-      //
-      // Syntax Tree
-      //
-
       var compilationUnit = CompilationUnit()
         .WithUsings(GetUsings())
         .WithMembers(

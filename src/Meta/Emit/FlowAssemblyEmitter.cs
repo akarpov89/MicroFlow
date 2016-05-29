@@ -60,12 +60,12 @@ namespace MicroFlow.Meta
 
       var references = new ReferencesCollector().Collect(scheme);
 
-      var assemblyRuntime = (Assembly)AssemblyLoadByName.Invoke(null,
+      var systemRuntime = (Assembly)AssemblyLoadByName.Invoke(null,
         new object[] { "System.Runtime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" });
 
-      if (assemblyRuntime != null)
+      if (systemRuntime != null)
       {
-        references.Add(assemblyRuntime);
+        references.Add(systemRuntime);
       }
 
       var metadataReferences = references.Select(r => MetadataReference.CreateFromFile((string)LocationProperty.GetValue(r)));

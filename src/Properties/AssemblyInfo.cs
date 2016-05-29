@@ -12,9 +12,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("MicroFlow")]
 [assembly: AssemblyDescription("Lightweight framework to create workflows")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Andrey Karpov")]
+[assembly: AssemblyCompany(MicroFlowProject.Company)]
 [assembly: AssemblyProduct("MicroFlow")]
-[assembly: AssemblyCopyright("Copyright ©  2015-2016, Andrey Karpov")]
+[assembly: AssemblyCopyright(MicroFlowProject.Copyright)]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -46,7 +46,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.0.21.0")]
-[assembly: AssemblyFileVersion("1.0.21.0")]
+[assembly: AssemblyVersion(MicroFlowProject.Version)]
+[assembly: AssemblyFileVersion(MicroFlowProject.Version)]
 [assembly: InternalsVisibleTo("MicroFlow.Test")]
 [assembly: InternalsVisibleTo("MicroFlow.Graph")]
