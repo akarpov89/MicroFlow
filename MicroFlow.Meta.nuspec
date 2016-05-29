@@ -5,7 +5,7 @@
     <version>$version$</version>
     <authors>Andrey Karpov</authors>
     <owners>Andrey Karpov</owners>
-    <title>MicroFlow</title>
+    <title>MicroFlow.Meta</title>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>https://raw.githubusercontent.com/akarpov89/MicroFlow/master/License.txt</licenseUrl>
     <projectUrl>http://akarpov89.github.io/MicroFlow/</projectUrl>
