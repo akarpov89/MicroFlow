@@ -33,7 +33,7 @@ namespace MicroFlow
 
     [CanBeNull] private List<ActivityTaskHandler> myTaskHandlers;
 
-    [NotNull] private List<IPropertyBindingInfo> myPropertyBindings = new List<IPropertyBindingInfo>();
+    [NotNull] private readonly List<IPropertyBindingInfo> myPropertyBindings = new List<IPropertyBindingInfo>();
 
     internal ActivityDescriptor() : this(Guid.NewGuid())
     {
@@ -44,7 +44,7 @@ namespace MicroFlow
       Id = id;
     }
 
-    public Guid Id { get; private set; }
+    public Guid Id { get; }
 
     public string Name { get; private set; }
 
