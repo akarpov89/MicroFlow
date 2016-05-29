@@ -32,12 +32,16 @@ namespace MicroFlow.Meta
 
     public void Visit(ConditionInfo node)
     {
+      AddWithXxxStatement(node, "WithCondition", node.Expression);
+
       Connect(node, node.WhenTrue, "ConnectTrueTo");
-      Connect(node, node.WhenTrue, "ConnectFalseTo");
+      Connect(node, node.WhenFalse, "ConnectFalseTo");
     }
 
     public void Visit(SwitchInfo node)
     {
+      AddWithXxxStatement(node, "WithChoice", node.Expression);
+
       foreach (var caseInfo in node.Cases)
       {
         ConnectCase(node, caseInfo);
@@ -122,6 +126,23 @@ namespace MicroFlow.Meta
               SingletonSeparatedList(
                 Argument(
                   IdentifierName(myVariableManager.GetVariableOf(caseInfo.Handler)))))));
+
+      myStatements.Add(statement);
+    }
+
+    private void AddWithXxxStatement(NodeInfo node, string method, string expression)
+    {
+      var statement = ExpressionStatement(
+        InvocationExpression(
+          MemberAccessExpression(
+            SyntaxKind.SimpleMemberAccessExpression,
+            IdentifierName(myVariableManager.GetVariableOf(node)),
+            IdentifierName(method)))
+          .WithArgumentList(
+            ArgumentList(
+              SingletonSeparatedList(
+                Argument(
+                  expression.ToExpression())))));
 
       myStatements.Add(statement);
     }

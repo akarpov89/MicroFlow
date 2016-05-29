@@ -15,7 +15,7 @@ namespace MicroFlow.Meta
     {
     }
 
-    public FlowCompilationException([NotNull] string[] errors)
+    public FlowCompilationException([NotNull] string[] errors) : this(String.Join("\r\n", errors))
     {
       Errors = errors;
     }

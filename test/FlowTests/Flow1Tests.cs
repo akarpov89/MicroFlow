@@ -5,15 +5,17 @@ using NUnit.Framework;
 namespace MicroFlow.Test
 {
   [TestFixture]
-  public class Flow1Tests
+  public abstract class Flow1TestBase
   {
+    protected abstract Flow CreateFlow(IReader reader, IWriter writer);
+
     [Test]
     public void FlowIsValid()
     {
       // Arrange
       var reader = Substitute.For<IReader>();
       var writer = Substitute.For<IWriter>();
-      var flow = new Flow1 {Reader = reader, Writer = writer};
+      var flow = CreateFlow(reader, writer);
 
       // Act
       var validationResult = flow.Validate();
@@ -22,13 +24,15 @@ namespace MicroFlow.Test
       Assert.That(validationResult.HasErrors, Is.False);
     }
 
-    [Test, TestCaseSource(nameof(Cases))]
+    [TestCase("1", "2", "1 <= 2")]
+    [TestCase("2", "1", "2 > 1")]
+    [TestCase("42", "42", "42 <= 42")]
     public void RunCase(string first, string second, string expectedMessage)
     {
       // Arrange
       var reader = new ArrayReader(first, second);
       var writer = Substitute.For<IWriter>();
-      var flow = new Flow1 {Reader = reader, Writer = writer};
+      var flow = CreateFlow(reader, writer);
 
       // Act
       flow.RunAsync().Wait();
@@ -36,18 +40,14 @@ namespace MicroFlow.Test
       // Assert
       writer.Received().Write(expectedMessage);
     }
+  }
 
-    public static IEnumerable<TestCaseData> Cases
+  [TestFixture]
+  public class Flow1Tests : Flow1TestBase
+  {
+    protected override Flow CreateFlow(IReader reader, IWriter writer)
     {
-      get
-      {
-        yield return Case("1", "2", "1 <= 2");
-        yield return Case("2", "1", "2 > 1");
-        yield return Case("42", "42", "42 <= 42");
-      }
+      return new Flow1 {Reader = reader, Writer = writer};
     }
-
-    public static TestCaseData Case(string first, string second, string message)
-      => new TestCaseData(first, second, message);
   }
 }

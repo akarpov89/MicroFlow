@@ -72,6 +72,19 @@ namespace MicroFlow.Meta
     }
 
     [NotNull]
+    public FlowScheme AddNodes([NotNull] params NodeInfo[] nodes)
+    {
+      nodes.AssertNotNull("nodes != null");
+
+      foreach (var node in nodes)
+      {
+        Nodes.Add(node.NotNull());
+      }
+      
+      return this;
+    }
+
+    [NotNull]
     public FlowScheme AddVariable([NotNull] VariableInfo variable)
     {
       GlobalVariables.Add(variable.NotNull());

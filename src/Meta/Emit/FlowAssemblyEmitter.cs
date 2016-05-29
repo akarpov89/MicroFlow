@@ -18,11 +18,7 @@ namespace MicroFlow.Meta
 
     private static readonly MethodInfo AssemblyLoadRawBytes =
       typeof(Assembly)
-        .GetRuntimeMethod("Load", new[] {typeof(byte[])});
-
-    public static readonly MethodInfo AssemblyLoadByName =
-      typeof(Assembly)
-        .GetRuntimeMethod("Load", new[] {typeof(string)});
+        .GetRuntimeMethod("Load", new[] {typeof(byte[])});    
 
     private static readonly CSharpCompilationOptions DefaultCompilationOptions = 
       new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary,        
@@ -58,15 +54,7 @@ namespace MicroFlow.Meta
 
       var syntaxTree = flowTreeBuilder.Build();
 
-      var references = new ReferencesCollector().Collect(scheme);
-
-      var systemRuntime = (Assembly)AssemblyLoadByName.Invoke(null,
-        new object[] { "System.Runtime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" });
-
-      if (systemRuntime != null)
-      {
-        references.Add(systemRuntime);
-      }
+      var references = new ReferencesCollector().Collect(scheme);      
 
       var metadataReferences = references.Select(r => MetadataReference.CreateFromFile((string)LocationProperty.GetValue(r)));
 
