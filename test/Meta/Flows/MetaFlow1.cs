@@ -1,5 +1,4 @@
-﻿using System;
-using MicroFlow.Test;
+﻿using MicroFlow.Test;
 
 namespace MicroFlow.Meta.Test
 {
@@ -34,7 +33,7 @@ namespace MicroFlow.Meta.Test
         Description = "Output: first > second"
       };
 
-      outputWhenTrue.AddBinding(new PropertyBindingInfo("Message", PropertyBindingKind.Expression)
+      outputWhenTrue.AddPropertyBinding(new PropertyBindingInfo("Message", PropertyBindingKind.Expression)
       {
         BindingExpression = "() => $\"{first.Get()} > {second.Get()}\""
       });
@@ -44,7 +43,7 @@ namespace MicroFlow.Meta.Test
         Description = "Output: first <= second"
       };
 
-      outputWhenFalse.AddBinding(new PropertyBindingInfo("Message", PropertyBindingKind.Expression)
+      outputWhenFalse.AddPropertyBinding(new PropertyBindingInfo("Message", PropertyBindingKind.Expression)
       {
         BindingExpression = "() => $\"{first.Get()} <= {second.Get()}\""
       });
@@ -68,12 +67,7 @@ namespace MicroFlow.Meta.Test
       scheme.AddService(
         new ServiceInfo(typeof(IWriter), lifetimeKind: LifetimeKind.Singleton, instanceExpression: "Writer"));
 
-      
-
-      var assembly = new FlowAssemblyEmitter().EmitAssembly(scheme, "Flow1.dll");
-      var flowType = assembly.GetType(scheme.FlowFullTypeName);
-
-      return (Flow)Activator.CreateInstance(flowType);
-    }    
+      return scheme.EmitFlow();
+    }
   }
 }

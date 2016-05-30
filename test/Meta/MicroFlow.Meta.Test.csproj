@@ -47,7 +47,11 @@
       <Link>MicroFlowProject.cs</Link>
     </Compile>
     <Compile Include="Flows\MetaFlow1.cs" />
-    <Compile Include="FlowTests\Flow1Tests.cs" />
+    <Compile Include="Flows\MetaFlow2.cs" />
+    <Compile Include="Flows\MetaFlow3.cs" />
+    <Compile Include="FlowTests\MetaFlow1Tests.cs" />
+    <Compile Include="FlowTests\MetaFlow2Tests.cs" />
+    <Compile Include="FlowTests\MetaFlow3Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

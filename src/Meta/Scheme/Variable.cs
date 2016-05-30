@@ -10,7 +10,6 @@ namespace MicroFlow.Meta
     {
       Type = variableType.NotNull();
       Name = variableName.NotNull();
-      Bindings = new List<VariableBindingInfo>();
     }
 
     [NotNull]
@@ -21,28 +20,18 @@ namespace MicroFlow.Meta
 
     [CanBeNull]
     public string InitialValueExpression { get; set; }
-
-    [NotNull]
-    public List<VariableBindingInfo> Bindings { get; }
-
-    [NotNull]
-    public VariableInfo AddBinding([NotNull] VariableBindingInfo binding)
-    {
-      Bindings.Add(binding.NotNull());
-      return this;
-    }
   }
 
   public class VariableBindingInfo
   {
-    public VariableBindingInfo(ActivityInfo activity, VariableBindingKind bindingKind)
+    public VariableBindingInfo(VariableInfo variable, VariableBindingKind bindingKind)
     {
-      Activity = activity.NotNull();
+      Variable = variable.NotNull();
       Kind = bindingKind;
     }
 
     [NotNull]
-    public ActivityInfo Activity { get; }
+    public VariableInfo Variable { get; }
 
     public VariableBindingKind Kind { get; set; }
 

@@ -106,6 +106,18 @@ namespace MicroFlow.Meta
     }
 
     [NotNull]
+    public FlowScheme AddProperty([NotNull] Type type, [NotNull] string name)
+    {
+      return AddProperty(new FlowPropertyInfo(type, name));
+    }
+
+    [NotNull]
+    public FlowScheme AddProperty<TProperty>([NotNull] string name)
+    {
+      return AddProperty(new FlowPropertyInfo(typeof(TProperty), name));
+    }
+
+    [NotNull]
     public FlowScheme AddService([NotNull] ServiceInfo service)
     {
       Services.Add(service.NotNull());

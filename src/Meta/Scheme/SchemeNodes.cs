@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace MicroFlow.Meta
 {
@@ -40,7 +41,8 @@ namespace MicroFlow.Meta
     public ActivityInfo([NotNull] Type activityType)
     {
       ActivityType = activityType.NotNull();
-      Bindings = new List<PropertyBindingInfo>();
+      PropertyBindings = new List<PropertyBindingInfo>();
+      VariableBindings = new List<VariableBindingInfo>();
     }
 
     public override NodeKind Kind => NodeKind.Activity;
@@ -51,7 +53,10 @@ namespace MicroFlow.Meta
     public Type ActivityType { get; }
 
     [NotNull]
-    public List<PropertyBindingInfo> Bindings { get; }
+    public List<PropertyBindingInfo> PropertyBindings { get; }
+
+    [NotNull]
+    public List<VariableBindingInfo> VariableBindings { get; }
 
     [CanBeNull]
     public VariableInfo Result { get; set; }
@@ -62,10 +67,30 @@ namespace MicroFlow.Meta
     }
 
     [NotNull]
-    public ActivityInfo AddBinding([NotNull] PropertyBindingInfo binding)
+    public ActivityInfo AddPropertyBinding([NotNull] PropertyBindingInfo binding)
     {
-      Bindings.Add(binding.NotNull());
+      PropertyBindings.Add(binding.NotNull());
       return this;
+    }
+
+    [NotNull]
+    public ActivityInfo AddVariableBinding([NotNull] VariableBindingInfo binding)
+    {
+      VariableBindings.Add(binding.NotNull());
+      return this;
+    }
+
+    [NotNull]
+    public ActivityInfo WithResult([NotNull] Type resultType, [NotNull] string variableName)
+    {
+      Result = new VariableInfo(resultType, variableName);
+      return this;
+    }
+
+    [NotNull]
+    public ActivityInfo WithResult<TResult>([NotNull] string variableName)
+    {
+      return WithResult(typeof(TResult), variableName);
     }
   }
 
@@ -127,6 +152,12 @@ namespace MicroFlow.Meta
       Cases.Add(caseInfo.NotNull());
       return this;
     }
+
+    [NotNull]
+    public SwitchInfo AddCase([NotNull] string valueExpression, [NotNull] NodeInfo handler)
+    {
+      return AddCase(new CaseInfo(valueExpression, handler));
+    }
   }
 
   public sealed class CaseInfo
@@ -167,6 +198,19 @@ namespace MicroFlow.Meta
       Forks.Add(fork.NotNull());
       return this;
     }
+
+    [NotNull]
+    public ForkJoinInfo AddForks([NotNull] params ActivityInfo[] forks)
+    {
+      forks.AssertNotNull("forks != null");
+
+      foreach (var fork in forks)
+      {
+        AddFork(fork);
+      }
+
+      return this;
+    }
   }
 
   public class BlockInfo : NodeInfo
@@ -201,9 +245,35 @@ namespace MicroFlow.Meta
     }
 
     [NotNull]
+    public BlockInfo AddNodes([NotNull] params NodeInfo[] nodes)
+    {
+      nodes.AssertNotNull("nodes != null");
+
+      foreach (var node in nodes)
+      {
+        AddNode(node);
+      }
+
+      return this;
+    }
+
+    [NotNull]
     public BlockInfo AddVariable([NotNull] VariableInfo variable)
     {
       Variables.Add(variable.NotNull());
+      return this;
+    }
+
+    [NotNull]
+    public BlockInfo AddVariables([NotNull] params VariableInfo[] variables)
+    {
+      variables.AssertNotNull("variables != null");
+
+      foreach (var variable in variables)
+      {
+        AddVariable(variable);
+      }
+
       return this;
     }
   }
@@ -221,6 +291,13 @@ namespace MicroFlow.Meta
     {
       Property = property.NotNull();
       Kind = bindingKind;
+    }
+
+    public PropertyBindingInfo([NotNull] string property, [NotNull] string expression)
+    {
+      Property = property.NotNull();
+      Kind = PropertyBindingKind.Expression;
+      BindingExpression = expression.NotNull();
     }
 
     public PropertyBindingKind Kind { get; }

@@ -1,18 +1,22 @@
 ﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using NSubstitute;
 using NUnit.Framework;
 
 namespace MicroFlow.Test
 {
   [TestFixture]
-  public class Flow2Tests
+  public abstract class Flow2TestsBase
   {
+    [NotNull]
+    protected abstract Flow CreateFlow([NotNull] IWriter writer, int a = 0, int b = 0, int c = 0);
+
     [Test]
     public void FlowIsValid()
     {
       // Arrange
       var writer = Substitute.For<IWriter>();
-      var flow = new Flow2 {Writer = writer};
+      var flow = CreateFlow(writer);
 
       // Act
       var validationResult = flow.Validate();
@@ -21,12 +25,13 @@ namespace MicroFlow.Test
       Assert.That(validationResult.HasErrors, Is.False);
     }
 
-    [Test, TestCaseSource(nameof(Cases))]
+    [TestCase(1, 2, 3, "2 + 3 + 4 = 9")]
+    [TestCase(0, 8, 19, "1 + 9 + 20 = 30")]
     public void RunCase(int a, int b, int c, string expectedMessage)
     {
       // Arrange
       var writer = Substitute.For<IWriter>();
-      var flow = new Flow2 {Writer = writer, A = a, B = b, C = c};
+      var flow = CreateFlow(writer, a, b, c);
 
       // Act
       flow.RunAsync().Wait();
@@ -34,16 +39,14 @@ namespace MicroFlow.Test
       // Assert
       writer.Received().Write(expectedMessage);
     }
+  }
 
-    public static IEnumerable<TestCaseData> Cases
+  [TestFixture]
+  public class Flow2Tests : Flow2TestsBase
+  {
+    protected override Flow CreateFlow(IWriter writer, int a = 0, int b = 0, int c = 0)
     {
-      get
-      {
-        yield return Case(1, 2, 3, "2 + 3 + 4 = 9");
-        yield return Case(0, 8, 19, "1 + 9 + 20 = 30");
-      }
+      return new Flow2 {Writer = writer, A = a, B = b, C = c};
     }
-
-    private static TestCaseData Case(int a, int b, int c, string message) => new TestCaseData(a, b, c, message);
   }
 }

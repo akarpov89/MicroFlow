@@ -10,7 +10,6 @@
     <licenseUrl>https://raw.githubusercontent.com/akarpov89/MicroFlow/master/License.txt</licenseUrl>
     <projectUrl>http://akarpov89.github.io/MicroFlow/</projectUrl>
     <dependencies>
-      <dependency id="MicroFlow" version="1.0.21" />
       <dependency id="Microsoft.CodeAnalysis.CSharp" version="1.2.2" />
     </dependencies>
     <description>Dynamic flow generation from scheme
@@ -23,13 +22,13 @@ Supported platforms:
     <copyright>Copyright &#x00A9; 2015-2016 Andrey Karpov</copyright>
     <tags>MicroFlow workflow engine wf framework .net scheme dynamic meta</tags>
   </metadata>
-  <files>    
+  <files>
 
     <file src="output\portable\$configuration$\**\MicroFlow.Meta.dll" target="lib\portable-net45+win8\" />
     <file src="output\portable\$configuration$\**\MicroFlow.Meta.pdb" target="lib\portable-net45+win8\" />
 
     <file src="output\portable\$configuration$\**\MicroFlow.Meta.dll" target="lib\dotnet\" />
-    <file src="output\portable\$configuration$\**\MicroFlow.Meta.pdb" target="lib\dotnet\" />    
+    <file src="output\portable\$configuration$\**\MicroFlow.Meta.pdb" target="lib\dotnet\" />
 
     <file src="src\**\*.cs" target="src" />
   </files>

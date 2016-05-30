@@ -25,21 +25,21 @@ namespace MicroFlow.Meta
 
     public void AddDeclarations([NotNull] List<NodeInfo> nodes, [NotNull] List<VariableInfo> variables)
     {
-      foreach (var node in nodes)
-      {
-        node.Accept(this);
-      }
-
       foreach (var variable in variables)
       {
         AddDeclaration(variable);
+      }
+
+      foreach (var node in nodes)
+      {
+        node.Accept(this);
       }
 
       var connector = new NodeConnector(myStatements, myVariableManager);
       connector.Connect(nodes);
 
       var binder = new Binder(myStatements, myVariableManager);
-      binder.Bind(nodes, variables);
+      binder.Bind(nodes);
     }
 
     public void Visit(ActivityInfo node)
@@ -166,7 +166,11 @@ namespace MicroFlow.Meta
 
       nestedDeclarator.AddDeclarations(node.Nodes, node.Variables);
 
-      var declaration = CreateBlock(node.Description, blockVariable, outerBuilder, nestedBuilder, nestedStatements);
+      var declaration = CreateBlock(
+        node.Description, 
+        blockVariable, 
+        outerBuilder, nestedBuilder, 
+        nestedStatements);
 
       myStatements.Add(declaration);
     }
@@ -240,7 +244,7 @@ namespace MicroFlow.Meta
               Literal(name)))));
     }
 
-    private static LocalDeclarationStatementSyntax CreateBlock(
+    private LocalDeclarationStatementSyntax CreateBlock(
       string description, string blockVariable,
       string outerBuilder, string nestedBuilder,
       List<StatementSyntax> nestedStatements)
@@ -250,7 +254,7 @@ namespace MicroFlow.Meta
         InvocationExpression(
           MemberAccessExpression(
             SyntaxKind.SimpleMemberAccessExpression,
-            IdentifierName(nestedBuilder),
+            myBuilder,
             IdentifierName("Block")))
           .WithArgumentList(
             ArgumentList(

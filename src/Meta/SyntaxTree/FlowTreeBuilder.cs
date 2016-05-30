@@ -330,15 +330,15 @@ namespace MicroFlow.Meta
     {
       TypeArgumentListSyntax typeArguments;
 
-      if (serviceInfo.Implementation == null)
+      if (serviceInfo.ImplementationType == null)
       {
-        typeArguments = TypeArgumentList(SingletonSeparatedList(serviceInfo.Interface.ToTypeSyntax()));
+        typeArguments = TypeArgumentList(SingletonSeparatedList(serviceInfo.ServiceType.ToTypeSyntax()));
       }
       else
       {
         typeArguments = TypeArgumentList(SeparatedList<TypeSyntax>(new SyntaxNodeOrToken[]
         {
-          serviceInfo.Interface.ToTypeSyntax(), Token(SyntaxKind.CommaToken), serviceInfo.Implementation.ToTypeSyntax()
+          serviceInfo.ServiceType.ToTypeSyntax(), Token(SyntaxKind.CommaToken), serviceInfo.ImplementationType.ToTypeSyntax()
         }));
       }
       return typeArguments;

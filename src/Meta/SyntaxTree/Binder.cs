@@ -19,22 +19,17 @@ namespace MicroFlow.Meta
       myVariableManager = variableManager.NotNull();
     }
 
-    public void Bind([NotNull] List<NodeInfo> nodes, [NotNull] List<VariableInfo> variables)
+    public void Bind([NotNull] List<NodeInfo> nodes)
     {
       foreach (var node in nodes)
       {
         node.Accept(this);
       }
-
-      foreach (var variable in variables)
-      {
-        AddVariableBindings(variable);
-      }
     }
 
     public void Visit(ActivityInfo node)
     {
-      foreach (var binding in node.Bindings)
+      foreach (var binding in node.PropertyBindings)
       {
         switch (binding.Kind)
         {
@@ -46,6 +41,24 @@ namespace MicroFlow.Meta
             break;
           case PropertyBindingKind.Expression:
             AddBindingStatement(node, binding.Property, "To", binding.BindingExpression);
+            break;
+          default:
+            throw new ArgumentOutOfRangeException();
+        }
+      }
+
+      foreach (var binding in node.VariableBindings)
+      {
+        switch (binding.Kind)
+        {
+          case VariableBindingKind.ActivityResult:
+            AddResultVariableBinding(binding.Variable, node);
+            break;
+          case VariableBindingKind.AssignExpression:
+            AddActivityCompletionBinding(node, binding.Variable, "OnCompletionAssign", binding.BindingExpression);
+            break;
+          case VariableBindingKind.UpdateExpression:
+            AddActivityCompletionBinding(node, binding.Variable, "OnCompletionUpdate", binding.BindingExpression);
             break;
           default:
             throw new ArgumentOutOfRangeException();
@@ -117,27 +130,6 @@ namespace MicroFlow.Meta
                     SyntaxKind.SimpleMemberAccessExpression,
                     IdentifierName("__act__"),
                     IdentifierName(property)))))));
-    }
-
-    private void AddVariableBindings(VariableInfo variable)
-    {
-      foreach (var binding in variable.Bindings)
-      {
-        switch (binding.Kind)
-        {
-          case VariableBindingKind.ActivityResult:
-            AddResultVariableBinding(variable, binding.Activity);
-            break;
-          case VariableBindingKind.AssignExpression:
-            AddActivityCompletionBinding(binding.Activity, variable, "OnCompletionAssign", binding.BindingExpression);
-            break;
-          case VariableBindingKind.UpdateExpression:
-            AddActivityCompletionBinding(binding.Activity, variable, "OnCompletionUpdate", binding.BindingExpression);
-            break;
-          default:
-            throw new ArgumentOutOfRangeException();
-        }
-      }
     }
 
     private void AddResultVariableBinding(VariableInfo variable, ActivityInfo activity)

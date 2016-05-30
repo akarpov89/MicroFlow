@@ -44,11 +44,12 @@
     <Compile Include="..\MicroFlowProject.cs">
       <Link>MicroFlowProject.cs</Link>
     </Compile>
-    <Compile Include="Emit\FlowAssemblyEmitter.cs" />
+    <Compile Include="Emit\FlowEmitter.cs" />
     <Compile Include="Emit\FlowCompilationException.cs" />
     <Compile Include="Emit\ReferencesCollector.cs" />
     <Compile Include="Scheme\FlowPropertyInfo.cs" />
     <Compile Include="Scheme\INodeVisitor.cs" />
+    <Compile Include="Scheme\NodeExtensions.cs" />
     <Compile Include="SyntaxTree\Binder.cs" />
     <Compile Include="SyntaxTree\NodeConnector.cs" />
     <Compile Include="SyntaxTree\FlowTreeBuilder.cs" />
