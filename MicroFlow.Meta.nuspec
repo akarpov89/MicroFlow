@@ -10,6 +10,7 @@
     <licenseUrl>https://raw.githubusercontent.com/akarpov89/MicroFlow/master/License.txt</licenseUrl>
     <projectUrl>http://akarpov89.github.io/MicroFlow/</projectUrl>
     <dependencies>
+      <dependency id="MicroFlow" version="1.0.36" />
       <dependency id="Microsoft.CodeAnalysis.CSharp" version="1.2.2" />
     </dependencies>
     <description>Dynamic flow generation from scheme

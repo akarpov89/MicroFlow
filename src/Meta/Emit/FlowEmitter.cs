@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.Emit;
 
 namespace MicroFlow.Meta
 {
+  public static class FlowEmitter
   {
     private static readonly PropertyInfo LocationProperty =
       typeof(Assembly)
@@ -24,6 +25,7 @@ namespace MicroFlow.Meta
         assemblyIdentityComparer: DesktopAssemblyIdentityComparer.Default);
 
     [NotNull]
+    public static Flow<TResult> EmitFlow<TResult>([NotNull] this FlowScheme scheme)
     {
       var assembly = EmitAssembly(scheme);
       var flowType = assembly.GetType(scheme.FlowFullTypeName);
@@ -32,6 +34,7 @@ namespace MicroFlow.Meta
     }
 
     [NotNull]
+    public static Flow EmitFlow([NotNull] this FlowScheme scheme)
     {
       var assembly = EmitAssembly(scheme);
       var flowType = assembly.GetType(scheme.FlowFullTypeName);
@@ -40,6 +43,8 @@ namespace MicroFlow.Meta
     }
 
     [NotNull]
+    public static Assembly EmitAssembly(
+      [NotNull] this FlowScheme scheme, [CanBeNull] string assemblyName = null,
       [CanBeNull] CSharpCompilationOptions options = null)
     {
       byte[] rawAssembly = EmitRawAssembly(scheme, assemblyName, options);
@@ -47,6 +52,8 @@ namespace MicroFlow.Meta
     }
 
     [NotNull]
+    public static byte[] EmitRawAssembly(
+      [NotNull] this FlowScheme scheme, [CanBeNull] string assemblyName = null,
       [CanBeNull] CSharpCompilationOptions options = null)
     {
       var flowTreeBuilder = new FlowTreeBuilder(scheme);
