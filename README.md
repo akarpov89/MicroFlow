@@ -630,7 +630,7 @@ public class ConsoleReader : IReader
 
 public class ConsoleWriter : IWriter
 {
-    public string Write(string message)
+    public void Write(string message)
     {
         Console.WriteLine(message);
     }
