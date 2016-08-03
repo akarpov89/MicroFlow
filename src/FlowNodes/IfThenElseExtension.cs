@@ -64,7 +64,7 @@ namespace MicroFlow
     {
       myConditionNode.ConnectFalseTo(node.NotNull());
 
-      return InitialConditionNode;
+      return InitialConditionNode ?? myConditionNode;
     }
 
     public ThenClause ElseIf([NotNull] string conditionDescription, [NotNull] Expression<Func<bool>> condition)

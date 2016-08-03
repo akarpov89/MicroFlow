@@ -62,6 +62,7 @@
     <Compile Include="Activities\ThrowServiceClient.cs" />
     <Compile Include="Activities\WriteMessageActivity.cs" />
     <Compile Include="Flows\Flow1.cs" />
+    <Compile Include="Flows\Flow10.cs" />
     <Compile Include="Flows\Flow2.cs" />
     <Compile Include="Flows\Flow3.cs" />
     <Compile Include="Flows\Flow4.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Flows\Flow7.cs" />
     <Compile Include="Flows\Flow8.cs" />
     <Compile Include="Flows\Flow9.cs" />
+    <Compile Include="FlowTests\Flow10Tests.cs" />
     <Compile Include="FlowTests\Flow1Tests.cs" />
     <Compile Include="FlowTests\Flow2Tests.cs" />
     <Compile Include="FlowTests\Flow3Tests.cs" />
