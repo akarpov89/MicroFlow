@@ -1,1 +1,1 @@
-build.cmd & %nuget% push "MicroFlow.%version%.nupkg" & %nuget% push "MicroFlow.Meta.%version%.nupkg"
+build.cmd & %nuget% push "MicroFlow.%version%.nupkg" -Source https://www.nuget.org/api/v2/package & %nuget% push "MicroFlow.Meta.%version%.nupkg" -Source https://www.nuget.org/api/v2/package
