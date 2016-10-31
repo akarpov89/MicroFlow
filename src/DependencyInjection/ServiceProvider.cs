@@ -62,7 +62,7 @@ namespace MicroFlow
     [CanBeNull]
     private ServiceDescriptor FindServiceDescriptor(Type serviceType)
     {
-      return myServices.FirstOrDefault(serviceDescriptor => serviceDescriptor.ServiceType == serviceType);
+      return myServices.FirstOrDefault(serviceDescriptor => serviceType.Is(serviceDescriptor.ServiceType));
     }
 
     private void DisposeService([CanBeNull] object service)

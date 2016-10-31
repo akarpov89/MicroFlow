@@ -19,6 +19,15 @@ namespace MicroFlow
 #endif
     }
 
+    public static bool Is(this Type type, Type otherType)
+    {
+#if PORTABLE
+            return otherType.GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
+#else
+      return otherType.IsAssignableFrom(type);
+#endif
+    }
+
     public static bool IsDisposableType([NotNull] this Type type)
     {
       type.AssertNotNull("type != null");
